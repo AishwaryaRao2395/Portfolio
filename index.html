@@ -66,7 +66,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   display:block;width:68px;height:auto;flex:0 0 auto;
 }
 .brand-sub{
-  font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;
+  font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--grey2);
 }
 .cs-topbar{
@@ -103,37 +103,120 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   background:rgba(193,18,31,.06);
 }
 
-.corner-nav{
-  position:fixed;right:-8.85rem;top:50%;transform:translateY(-50%) rotate(-90deg);
-  transform-origin:center;z-index:35;
-  display:flex;align-items:center;gap:.8rem;
-  padding:.9rem 1.15rem .95rem;border:1px solid rgba(223,49,67,.85);
-  border-right:none;border-radius:18px 18px 0 0;
-  background:rgba(7,10,14,.98);backdrop-filter:blur(14px);
-  box-shadow:0 20px 42px rgba(7,10,14,.22);
-  overflow:visible;
+/* ═══════════════════════════════════════
+   FLOATING NAV PILL
+═══════════════════════════════════════ */
+#top-nav{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:36;width:min(820px,calc(100vw - 2.5rem));height:56px;
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;gap:1.5rem;
+  padding:0 .72rem 0 .88rem;
+  background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(247,248,251,.92) 100%);
+  backdrop-filter:blur(24px) saturate(200%);
+  -webkit-backdrop-filter:blur(24px) saturate(200%);
+  border:1px solid rgba(7,10,14,.09);
+  border-radius:999px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 2px 8px rgba(7,10,14,.05),
+    0 8px 32px rgba(7,10,14,.04);
+  transition:
+    opacity .5s ease,visibility .5s ease,
+    box-shadow .4s ease,transform .4s cubic-bezier(.34,1.3,.64,1);
 }
-.corner-nav a{
-  text-decoration:none;font-family:'Space Mono',monospace;font-size:.58rem;
-  letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.82);
-  transition:color .3s;
+/* Lift the pill very slightly when any link is hovered — tactile feel */
+#top-nav:has(.tnav-links a:hover){
+  transform:translateX(-50%) translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 4px 16px rgba(7,10,14,.08),
+    0 12px 40px rgba(7,10,14,.06);
 }
-.corner-nav a:hover{color:#fff;}
-/* Hide nav + chat during intro, fade back in once intro is gone */
-.corner-nav,#ag-trigger { transition:opacity .5s ease,visibility .5s ease; }
-body.imm-active .corner-nav,
-body.imm-active #ag-trigger { opacity:0; visibility:hidden; pointer-events:none; }
-.corner-nav-sep{
-  width:18px;height:1px;background:rgba(223,49,67,.55);display:block;
+
+/* ── LOGO ── */
+.tnav-logo{
+  display:flex;align-items:center;text-decoration:none;cursor:none;flex-shrink:0;
+}
+.tnav-logo img{
+  height:28px;width:auto;
+  /* multiply removes the white PNG bg on the light nav */
+  mix-blend-mode:multiply;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1);
+}
+.tnav-logo:hover img{transform:scale(1.08);}
+
+/* ── LINKS + LIQUID GLIDE ── */
+.tnav-links{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  gap:0;padding:4px;
+}
+.tnav-glide{
+  position:absolute;top:50%;transform:translateY(-50%);
+  height:28px;border-radius:999px;
+  background:rgba(223,49,67,.07);
+  border:1px solid rgba(223,49,67,.18);
+  box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+  transition:
+    left .46s cubic-bezier(.34,1.38,.64,1),
+    width .46s cubic-bezier(.34,1.38,.64,1),
+    opacity .3s ease;
+  pointer-events:none;opacity:0;
+}
+.tnav-glide.visible{opacity:1;}
+.tnav-links a{
+  position:relative;z-index:1;
+  font-family:'Space Mono',monospace;font-size:.54rem;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(71,74,89,.52);
+  text-decoration:none;padding:.38rem .85rem;border-radius:999px;
+  transition:color .2s ease;cursor:none;white-space:nowrap;
+}
+.tnav-links a:hover{color:rgba(7,10,14,.82);}
+.tnav-links a.tnav-active{color:var(--red);font-weight:700;}
+
+/* ── RESUME BUTTON ── */
+.tnav-right{display:flex;align-items:center;justify-content:flex-end;flex-shrink:0;}
+.tnav-resume{
+  font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;
+  text-transform:uppercase;text-decoration:none;cursor:none;
+  color:var(--red);
+  padding:.44rem 1.02rem;
+  border:1px solid rgba(223,49,67,.3);border-radius:999px;
+  background:rgba(223,49,67,.04);
+  transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.tnav-resume:hover{
+  border-color:rgba(223,49,67,.55);
+  background:rgba(223,49,67,.08);
+  box-shadow:0 0 16px rgba(223,49,67,.1);
+}
+
+/* ── HIDE RULES ── */
+body.imm-active #top-nav,
+body.imm-active #ag-trigger{opacity:0;visibility:hidden;pointer-events:none;}
+body.projects-visible #top-nav,
+body.projects-visible #ag-trigger{opacity:0;visibility:hidden;pointer-events:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  #top-nav{width:min(620px,calc(100vw - 2rem));gap:1rem;padding:0 .6rem 0 .75rem;}
+  .tnav-links a{padding:.36rem .65rem;font-size:.5rem;}
+}
+@media(max-width:640px){
+  #top-nav{width:calc(100vw - 1.6rem);grid-template-columns:auto 1fr;gap:.5rem;height:50px;}
+  .tnav-right{display:none;}
+  .tnav-links a{font-size:.46rem;padding:.32rem .52rem;}
 }
 
 /* ════════════════════════════════════
    HOME PAGE
 ════════════════════════════════════ */
 /* HERO */
+.hero-pin-wrap{position:relative;height:150vh;}
 .hero{
-  min-height:100vh;display:flex;align-items:center;padding:4.5rem 5.5rem 3rem;
-  position:relative;overflow:hidden;
+  height:100vh;display:flex;align-items:center;padding:4.5rem 5.5rem 3rem;padding-top:calc(4.5rem + 70px);
+  position:sticky;top:0;overflow:hidden;
   --hsx:65%;--hsy:42%;
 }
 .hero::before{
@@ -166,9 +249,12 @@ body.imm-active #ag-trigger { opacity:0; visibility:hidden; pointer-events:none;
 }
 .hero-copy{max-width:620px;position:relative;}
 .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:560px;opacity:0;transition:opacity .9s ease;will-change:transform;}
-.hero-eyebrow{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;opacity:0;animation:fadeUp .8s .4s ease forwards;}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;opacity:0;animation:fadeUp .8s .4s ease forwards;}
 .hero-eyebrow span{display:inline-block;width:32px;height:1px;background:var(--red);}
-.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.9rem,8vw,8.6rem);line-height:.9;letter-spacing:.01em;max-width:7.8ch;opacity:0;transform:scale(.97);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.9rem,8vw,8.6rem);line-height:.9;letter-spacing:.01em;}
+.hero-clip{display:block;overflow:hidden;}
+.hero-clip-inner{display:block;transform:translateY(110%);transition:transform .9s cubic-bezier(.16,1,.3,1);}
+.hero.hero-in .hero-clip-inner{transform:translateY(0);}
 .hero-name .line1{display:block;}
 .hero-name .line2{display:block;-webkit-text-stroke:1.5px color-mix(in srgb, var(--white) 22%, transparent);color:transparent;}
 .hero-name .red{color:var(--red);}
@@ -176,16 +262,16 @@ body.imm-active #ag-trigger { opacity:0; visibility:hidden; pointer-events:none;
   font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
   line-height:1.7;color:var(--theme-text);margin-top:1.4rem;
   white-space:nowrap;
-  opacity:0;transform:scale(.97);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);
+  opacity:0;transition:opacity .85s ease;
 }
 .hero-desc{
   max-width:540px;font-size:1.02rem;line-height:1.78;color:var(--theme-text-soft);
-  margin-top:1.25rem;font-weight:300;opacity:0;transform:scale(.97);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);
+  margin-top:1.25rem;font-weight:300;opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);
 }
-.hero-actions{display:flex;gap:1.2rem;align-items:center;margin-top:2rem;opacity:0;transform:scale(.97);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);}
+.hero-actions{display:flex;gap:1.2rem;align-items:center;margin-top:2rem;opacity:0;transform:translateY(24px);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);}
 .hero-counter-row{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem;
-  margin-top:2rem;max-width:560px;opacity:0;transform:scale(.97);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);
+  margin-top:2rem;max-width:560px;opacity:0;transform:translateY(24px);transition:opacity .85s ease,transform .9s cubic-bezier(.16,1,.3,1);
 }
 .hero-count{
   min-width:0;padding:1rem 1rem .92rem;text-align:left;border:1px solid var(--theme-card-border);
@@ -196,7 +282,7 @@ body.imm-active #ag-trigger { opacity:0; visibility:hidden; pointer-events:none;
 .hero-count:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(26,36,48,.09);}
 .hc-num{font-family:'Bebas Neue',sans-serif;font-size:2.35rem;color:var(--white);line-height:1;margin-bottom:.3rem;}
 .hc-num span{color:var(--red);}
-.hc-lbl{font-family:'Space Mono',monospace;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);white-space:nowrap;}
+.hc-lbl{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);white-space:nowrap;}
 .hero-orbit{
   position:relative;width:500px;height:500px;display:flex;align-items:center;justify-content:center;
   animation:floatSoft 8s ease-in-out infinite;
@@ -267,11 +353,134 @@ body.imm-active #ag-trigger { opacity:0; visibility:hidden; pointer-events:none;
 @keyframes sheenDrift{0%{transform:translateX(-140%) skewX(-18deg);}100%{transform:translateX(220%) skewX(-18deg);}}
 @keyframes dotPing{0%{transform:scale(1);opacity:.75;}100%{transform:scale(3.2);opacity:0;}}
 
+/* ═══════════════════════════════════════════════════════
+   IMM INTRO v2 — MindJoin-style landing screen
+═══════════════════════════════════════════════════════ */
+#imm-intro{ display:block; }
+
+/* Full inset border frame */
+.imm-frame{
+  position:absolute;inset:1.4rem;
+  border:1px solid rgba(247,248,251,.1);
+  pointer-events:none;z-index:10;
+}
+/* Eyebrow — top-left (override old centered flex) */
+.imm-eyebrow{
+  position:absolute;top:5.8rem;left:3.2rem;
+  z-index:6;display:block;gap:unset;
+  font-size:.6rem;letter-spacing:.28em;
+  color:rgba(255,255,255,.3);
+  text-transform:uppercase;font-family:'Space Mono',monospace;
+}
+.imm-eyebrow::before,.imm-eyebrow::after{ display:none; }
+/* Giant full-width name — override old centered block */
+.imm-name{
+  position:absolute;left:0;right:0;
+  top:50%;transform:translateY(-52%);
+  padding:0 2.5rem;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,16vw,20rem);
+  line-height:.88;letter-spacing:.01em;
+  color:#f3f4f7;text-align:left;z-index:4;
+}
+/* Clip-line reveal wrappers */
+.imm-nl{ display:block;overflow:hidden; }
+.imm-nl-i{ display:block; }
+.imm-name .imm-nl:last-child .imm-nl-i{
+  -webkit-text-stroke:2px rgba(247,248,251,.2);
+  color:transparent;
+}
+.imm-rdot{ color:var(--red);-webkit-text-stroke:0; }
+/* Bottom-left box */
+.imm-bl{
+  position:absolute;bottom:3.2rem;left:3.2rem;
+  z-index:6;
+  border:1px solid rgba(247,248,251,.14);
+  padding:1.3rem 1.5rem;max-width:320px;
+  backdrop-filter:blur(6px);background:rgba(7,10,14,.35);
+}
+.imm-sub{
+  font-size:.72rem;letter-spacing:.15em;
+  color:rgba(255,255,255,.55);text-transform:uppercase;
+  font-family:'Space Mono',monospace;
+}
+/* Centred bottom scroll CTA — standalone, not inside .imm-bl */
+.imm-scroll-cta{
+  position:absolute;bottom:2.8rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:row;gap:.7rem;align-items:center;
+  z-index:6;white-space:nowrap;
+  color:rgba(255,255,255,.3);
+  font-size:.56rem;letter-spacing:.24em;
+  text-transform:uppercase;font-family:'Space Mono',monospace;
+}
+.imm-cta-line{
+  width:1.8rem;height:1px;
+  background:linear-gradient(to right,rgba(223,49,67,.8),transparent);
+  flex-shrink:0;
+}
+/* Bottom-right box */
+.imm-br{
+  position:absolute;bottom:3.2rem;right:3.2rem;
+  z-index:6;
+  border:1px solid rgba(247,248,251,.14);
+  padding:1.2rem 1.5rem;min-width:200px;
+  backdrop-filter:blur(6px);background:rgba(7,10,14,.35);
+  display:flex;flex-direction:column;gap:.5rem;
+}
+.imm-br-stat{
+  font-family:'Bebas Neue',sans-serif;font-size:2.4rem;
+  color:#f3f4f7;line-height:1;
+}
+.imm-br-stat span{ color:var(--red); }
+.imm-br-lbl{
+  font-family:'Space Mono',monospace;font-size:.56rem;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(247,248,251,.4);
+}
+/* Keyframes for imm-intro reveals */
+@keyframes immLineIn{
+  from{ transform:translateY(110%); }
+  to{   transform:translateY(0);    }
+}
+@keyframes immEyebrowIn{
+  from{ opacity:0; transform:translateX(-1.4rem); }
+  to{   opacity:1; transform:translateX(0);       }
+}
+
+/* Default: hide all elements until preloader exits and adds .imm-revealed */
+.imm-nl-i{ transform:translateY(110%); }
+.imm-eyebrow{ opacity:0; transform:translateX(-1.4rem); }
+.imm-bl{ opacity:0; }
+.imm-br{ opacity:0; }
+.imm-scroll-cta{ opacity:0; }
+
+/* Triggered by JS at preloader exit — everything animates in together */
+#imm-intro.imm-revealed .imm-nl:nth-child(1) .imm-nl-i{
+  animation:immLineIn 1.1s .0s cubic-bezier(.16,1,.3,1) both;
+}
+#imm-intro.imm-revealed .imm-nl:nth-child(2) .imm-nl-i{
+  animation:immLineIn 1.1s .18s cubic-bezier(.16,1,.3,1) both;
+}
+#imm-intro.imm-revealed .imm-eyebrow{
+  animation:immEyebrowIn .8s .36s cubic-bezier(.16,1,.3,1) both;
+}
+#imm-intro.imm-revealed .imm-bl{
+  animation:immEnter .8s .48s cubic-bezier(.16,1,.3,1) both;
+}
+#imm-intro.imm-revealed .imm-br{
+  animation:immEnter .8s .62s cubic-bezier(.16,1,.3,1) both;
+}
+#imm-intro.imm-revealed .imm-scroll-cta{
+  animation:immEnter .8s .72s cubic-bezier(.16,1,.3,1) both;
+}
+/* Hide old centered inner */
+.imm-inner{ display:none; }
+
 /* MARQUEE */
 .marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--black3);padding:.9rem 0;overflow:hidden;position:relative;z-index:1;}
 .marquee-track{display:flex;width:max-content;animation:marquee 25s linear infinite;}
 .marquee-track:hover{animation-play-state:paused;}
-.m-item{display:flex;align-items:center;gap:1.2rem;padding:0 2rem;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);white-space:nowrap;}
+.m-item{display:flex;align-items:center;gap:1.2rem;padding:0 2rem;font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);white-space:nowrap;}
 .m-star{color:var(--red);font-size:.5rem;}
 @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
@@ -282,8 +491,8 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   background:linear-gradient(180deg,rgba(26,36,48,.015),transparent 22%,transparent 78%,rgba(26,36,48,.02));
   opacity:1;
 }
-.s-tag{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
-.s-tag::before{content:'//';color:var(--grey2);}
+.s-tag{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
+.s-tag::before{display:none;}
 .s-title,.contact-big,.cs-section-title,.cs-hero-title,.cs-next-title{
   font-family:'Bebas Neue',sans-serif;line-height:.95;letter-spacing:.04em;text-transform:uppercase;
 }
@@ -300,7 +509,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 }
 .about-headcopy{max-width:760px;}
 .about-intro{
-  max-width:620px;font-size:.98rem;line-height:1.68;color:rgba(26,36,48,.64);margin-top:.18rem;
+  max-width:620px;font-size:1rem;line-height:1.75;color:rgba(26,36,48,.64);margin-top:.18rem;
 }
 .about-grid{display:grid;grid-template-columns:1fr;gap:.65rem;align-items:start;max-width:980px;}
 .about-main{
@@ -357,27 +566,23 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 #about .s-title{position:relative;z-index:1;}
 
 .value-shell{
-  margin-top:2.8rem;
+  margin-top:1.2rem;
   border:none;border-radius:0;
   background:transparent;box-shadow:none;
   overflow:visible;position:relative;z-index:1;
 }
-/* Red accent rule */
 .value-shell::before{
-  content:'';display:block;
-  width:100%;height:1px;
-  background:linear-gradient(90deg,var(--red) 0%,rgba(223,49,67,.18) 38%,transparent 100%);
-  margin-bottom:2.4rem;
+  display:none;
 }
 .value-intro{
-  padding:0 0 2.4rem;
+  padding:0 0 1.5rem;
   border-bottom:1px solid rgba(26,36,48,.08);
   display:grid;
   grid-template-columns:200px minmax(0,1fr);
   gap:2rem;align-items:start;
 }
 .value-kicker{
-  font-family:'Space Mono',monospace;font-size:.6rem;
+  font-family:'Space Mono',monospace;font-size:.58rem;
   letter-spacing:.22em;text-transform:uppercase;color:var(--red);
   padding-top:.18rem;
 }
@@ -483,7 +688,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .proj-meta{display:flex;flex-direction:column;align-items:flex-end;gap:.65rem;flex-shrink:0;}
 .proj-tags-sm{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:flex-end;}
 .proj-tag{
-  font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.1em;
+  font-family:'Space Mono',monospace;font-size:.54rem;letter-spacing:.1em;
   text-transform:uppercase;padding:.22rem .55rem;
   border:1px solid rgba(26,36,48,.1);border-radius:2px;color:var(--grey2);
   transition:border-color .3s,color .3s,background .3s;
@@ -495,6 +700,265 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   transition:transform .4s cubic-bezier(.16,1,.3,1),color .3s,opacity .3s;
 }
 .proj-item.is-active .proj-arrow{transform:translateX(5px);color:var(--red);opacity:1;}
+
+/* ── Featured Works — scroll-stacking folder panels ── */
+#projects{padding:0;background:var(--white);color:var(--black);}
+
+/* Section header */
+.fw-section-header{
+  padding:5rem 2.4rem 3rem;
+  border-bottom:1px solid rgba(247,248,251,.1);
+}
+.fw-section-tag{
+  font-family:'Space Mono',monospace;font-size:.64rem;
+  text-transform:uppercase;letter-spacing:.22em;
+  color:var(--red);margin-bottom:.7rem;
+}
+.fw-section-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,8vw,8rem);
+  line-height:.9;letter-spacing:.02em;
+  color:var(--black);margin:0;
+}
+
+/* Stack */
+.fw-stack{position:relative;}
+.fw-panel{
+  position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;
+  background:var(--white);
+  border-top:1px solid rgba(247,248,251,.08);
+}
+#fw-panel-1{z-index:1;}
+#fw-panel-2{z-index:2;}
+#fw-panel-3{z-index:3;}
+#fw-panel-4{z-index:4;}
+#fw-panel-5{z-index:5;}
+/* Trap: keeps last panel sticky for extra 100vh so page doesn't jump away */
+.fw-trap{height:200vh;}
+/* Breathing room between panels — user reads each fully before next slides in */
+.fw-gap{height:100vh;background:var(--white);}
+
+/* Tab row — angled parallelogram-style browser tabs */
+.fw-tab-row{
+  display:flex;align-items:stretch;height:52px;
+  flex-shrink:0;
+  border-bottom:1px solid rgba(247,248,251,.08);
+  overflow:hidden;
+}
+.fw-tab{
+  flex:1;display:flex;align-items:center;gap:.8rem;
+  padding:0 1.6rem 0 2.2rem;
+  clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%);
+  margin-right:-13px;
+  background:rgba(247,248,251,.05);
+  position:relative;z-index:1;
+  cursor:default;transition:background .2s;
+}
+.fw-tab.is-prev{
+  background:rgba(247,248,251,.03);
+  cursor:pointer;z-index:1;
+}
+.fw-tab.is-prev:hover{background:rgba(247,248,251,.09);}
+.fw-tab.is-active{
+  background:rgba(247,248,251,.13);
+  z-index:3;
+}
+.fw-tab-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;letter-spacing:.08em;
+  color:var(--red);line-height:1;flex-shrink:0;
+}
+.fw-tab-name{
+  font-family:'Space Mono',monospace;font-size:.48rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(247,248,251,.5);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.fw-tab.is-active .fw-tab-name{color:rgba(247,248,251,.88);}
+/* Each tab sits on top of the one before it so angled edges overlap correctly */
+.fw-tab:nth-child(1){z-index:1;}
+.fw-tab:nth-child(2){z-index:2;}
+.fw-tab:nth-child(3){z-index:3;}
+.fw-tab:nth-child(4){z-index:4;}
+.fw-tab:nth-child(5){z-index:5;}
+.fw-tab.is-active{z-index:6!important;}
+/* View Project CTA — angled left edge, dark bg for contrast */
+.fw-tab-cta{
+  clip-path:polygon(18px 0%,100% 0%,100% 100%,0% 100%);
+  padding:0 1.8rem 0 2.6rem;
+  display:flex;align-items:center;
+  font-family:'Space Mono',monospace;font-size:.54rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  background:var(--red);color:#f7f8fb;
+  border:none;cursor:pointer;flex-shrink:0;white-space:nowrap;
+  transition:opacity .2s;position:relative;z-index:4;
+}
+.fw-tab-cta:hover{opacity:.85;}
+
+/* Panel head */
+.fw-panel-head{
+  display:grid;grid-template-columns:1fr auto;align-items:end;gap:3rem;
+  padding:1.8rem 2.4rem 1.2rem;
+  border-bottom:1px solid rgba(247,248,251,.08);flex-shrink:0;
+}
+.fw-panel-title{
+  font-family:'Barlow',sans-serif;
+  font-size:clamp(2.8rem,4.2vw,5.5rem);
+  font-weight:700;line-height:.9;letter-spacing:-.05em;
+  color:var(--black);margin:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:1.8rem 2.4rem 1.2rem;
+  border-bottom:1px solid rgba(247,248,251,.08);
+  flex-shrink:0;
+}
+.fw-panel-meta{
+  display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;
+  flex-shrink:0;padding-bottom:.2rem;
+}
+.fw-panel-meta-row{display:flex;align-items:center;gap:.9rem;}
+.fw-year{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:rgba(247,248,251,.4);}
+.fw-category{
+  font-family:'Space Mono',monospace;font-size:.58rem;
+  color:rgba(247,248,251,.4);text-transform:uppercase;letter-spacing:.1em;
+}
+.fw-tags-strip{
+  font-family:'Space Mono',monospace;font-size:.54rem;
+  color:rgba(247,248,251,.3);letter-spacing:.1em;text-transform:uppercase;text-align:right;
+}
+
+/* Panel body */
+.fw-panel-body{
+  flex:1;display:grid;grid-template-columns:26% 1fr;
+  min-height:0;overflow:hidden;
+}
+.fw-info{
+  padding:2.2rem 2.4rem;display:flex;flex-direction:column;
+  border-right:1px solid rgba(247,248,251,.08);overflow:hidden;
+}
+
+/* Impactful stats — Problem / Approach / Outcome */
+.fw-metrics{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:.9rem .8rem;
+  padding-bottom:1.2rem;margin-bottom:1.2rem;
+  border-bottom:1px solid rgba(247,248,251,.08);
+  flex-shrink:0;
+}
+.fw-metric-label{
+  font-family:'Space Mono',monospace;font-size:.46rem;
+  text-transform:uppercase;letter-spacing:.18em;
+  color:rgba(247,248,251,.32);margin-bottom:.22rem;
+}
+.fw-metric-val{
+  font-family:'Barlow',sans-serif;font-size:.88rem;
+  font-weight:600;line-height:1.2;
+  color:rgba(247,248,251,.82);
+}
+.fw-info-role{
+  padding-bottom:.75rem;margin-bottom:.75rem;
+  border-bottom:1px solid rgba(247,248,251,.08);flex-shrink:0;
+}
+.fw-info-tags{
+  display:flex;flex-wrap:wrap;gap:.3rem;
+  padding-bottom:.75rem;margin-bottom:.75rem;
+  border-bottom:1px solid rgba(247,248,251,.08);flex-shrink:0;
+}
+.fw-info-tags span{
+  font-family:'Space Mono',monospace;font-size:.42rem;
+  text-transform:uppercase;letter-spacing:.1em;
+  color:rgba(247,248,251,.52);
+  padding:.18rem .5rem;
+  border:1px solid rgba(247,248,251,.14);border-radius:999px;
+}
+.fw-info-problem{
+  padding-bottom:.75rem;margin-bottom:.75rem;
+  border-bottom:1px solid rgba(247,248,251,.08);flex-shrink:0;
+}
+.fw-info-problem p{
+  margin:.2rem 0 0;
+  font-family:'Barlow',sans-serif;font-size:.82rem;
+  font-weight:400;line-height:1.4;
+  color:rgba(247,248,251,.6);
+}
+.fw-panel-desc{
+  font-family:'Space Mono',monospace;font-size:.54rem;
+  line-height:1.65;color:rgba(247,248,251,.38);
+  text-transform:uppercase;letter-spacing:.05em;
+  margin:0 0 .8rem;flex-shrink:0;
+}
+/* Phone screens — three portrait cards side by side */
+.fw-img-scene--phones{
+  aspect-ratio:16/9;
+  transform:perspective(900px) rotateY(-8deg) rotateX(3deg);
+}
+.fw-img-scene--phones .fw-img-card{border-radius:22px;}
+.fw-img-scene--phones .fw-img-c1{width:27%;left:4%;top:4%;z-index:3;opacity:1;}
+.fw-img-scene--phones .fw-img-c2{width:26%;left:37%;top:0;z-index:2;opacity:.9;}
+.fw-img-scene--phones .fw-img-c3{width:25%;left:68%;top:8%;z-index:1;opacity:.72;}
+.fw-view{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:'Space Mono',monospace;font-size:.58rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:#f7f8fb;cursor:pointer;
+  border:none;background:var(--red);
+  padding:.7rem 1.2rem .65rem;
+  border-radius:4px;
+  transition:opacity .2s;
+  flex-shrink:0;margin-top:1.4rem;align-self:flex-start;
+}
+.fw-view::after{content:'\2192';display:inline-block;transition:transform .25s;}
+.fw-view:hover{opacity:.85;}
+.fw-view:hover::after{transform:translateX(4px);}
+
+/* Images — 3-card perspective stack */
+.fw-img-3d{
+  flex:1;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  padding:1.6rem 2rem 1.6rem 1.5rem;
+}
+.fw-img-scene{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  transform:perspective(900px) rotateY(-11deg) rotateX(5deg);
+  transform-origin:center center;
+  transition:transform .4s ease;
+}
+.fw-img-3d:hover .fw-img-scene{
+  transform:perspective(900px) rotateY(-6deg) rotateX(2deg);
+}
+.fw-img-card{
+  position:absolute;
+  border-radius:8px;overflow:hidden;
+  box-shadow:0 16px 48px rgba(0,0,0,.55);
+  transition:transform .35s ease, opacity .35s ease;
+}
+.fw-img-c1{width:72%;left:0;top:0;z-index:3;background:rgba(247,248,251,.06);}
+.fw-img-c2{width:66%;left:16%;top:9%;z-index:2;opacity:.82;background:rgba(247,248,251,.04);}
+.fw-img-c3{width:60%;left:30%;top:18%;z-index:1;opacity:.62;background:rgba(247,248,251,.03);}
+.fw-img-3d:hover .fw-img-c1{transform:translate(-3px,-3px);}
+.fw-img-3d:hover .fw-img-c2{transform:translate(-1px,-1px);}
+.fw-img-card img{width:100%;display:block;object-fit:cover;height:auto;}
+
+@media(max-width:1024px){
+  .fw-panel-head{padding:1.4rem 1.8rem 1rem;gap:1.5rem;}
+  .fw-panel-title{font-size:clamp(2rem,3.5vw,3.8rem);}
+  .fw-panel-body{grid-template-columns:30% 1fr;}
+}
+@media(max-width:768px){
+  .fw-panel{height:auto;min-height:100vh;}
+  .fw-trap{display:none;}
+  .fw-tab.is-prev{display:none;}
+  .fw-panel-head{grid-template-columns:1fr;gap:.8rem;}
+  .fw-panel-title{white-space:normal;}
+  .fw-panel-meta{align-items:flex-start;}
+  .fw-tags-strip{text-align:left;}
+  .fw-panel-body{grid-template-columns:1fr;}
+  .fw-img-3d{display:none;}
+  .fw-info{border-right:none;padding:1.5rem;}
+}
+
 
 /* ══════════════════════════════════
    CURSOR-FOLLOWER PREVIEW (fixed, global)
@@ -604,74 +1068,96 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .pcc-swap{animation:pccFadeUp .28s cubic-bezier(.16,1,.3,1) both;}
 
 /* SKILLS */
-#skills{background:var(--black2);}
-.skills-frame{
-  margin-top:2.4rem;border:1px solid var(--border);border-radius:32px;overflow:hidden;
-  background:
-    radial-gradient(circle at 88% 80%, rgba(7,10,14,.025), transparent 24%),
-    linear-gradient(180deg,rgba(255,255,255,.98),rgba(245,246,250,.9));
-  box-shadow:0 20px 44px rgba(26,36,48,.08);
-  position:relative;
+#skills{background:#f9f9fb;}
+.sk-int{
+  display:grid;grid-template-columns:40% 1fr;
+  margin-top:2.4rem;
+  border:1px solid rgba(7,10,14,.1);border-radius:20px;
+  overflow:hidden;min-height:360px;
 }
-.skills-frame::before{display:none;}
-.skills-frame::after{
-  content:'';
-  position:absolute;inset:36px 42px auto auto;width:140px;height:140px;border-radius:50%;
-  border:1px solid rgba(7,10,14,.05);
-  pointer-events:none;
+
+/* ── Left: category list ── */
+.sk-cats{border-right:1px solid rgba(7,10,14,.08);}
+.sk-cat-btn{
+  width:100%;display:flex;align-items:center;gap:1.2rem;
+  padding:1.3rem 2rem;
+  border:none;border-bottom:1px solid rgba(7,10,14,.07);
+  background:transparent;cursor:pointer;text-align:left;
+  transition:background .2s;
 }
-.skills-summary{
-  display:grid;grid-template-columns:220px 1fr;gap:1.1rem;align-items:start;
-  padding:1.7rem 1.9rem 1.35rem;border-bottom:1px solid rgba(7,10,14,.08);
-  position:relative;z-index:1;
+.sk-cat-btn:last-child{border-bottom:none;}
+.sk-cat-btn:hover{background:rgba(7,10,14,.03);}
+.sk-cat-btn.sk-active{background:rgba(7,10,14,.05);}
+.sk-ci-num{
+  font-family:'Space Mono',monospace;font-size:.46rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--red);flex-shrink:0;
 }
-.skills-summary-label{
-  font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--red);
+.sk-ci-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.3rem,1.9vw,1.9rem);
+  line-height:.95;letter-spacing:.03em;
+  color:rgba(7,10,14,.28);flex:1;
+  transition:color .2s;
 }
-.skills-summary-copy{
-  font-size:.96rem;line-height:1.72;color:rgba(26,36,48,.7);font-weight:300;max-width:none;width:100%;
+.sk-cat-btn:hover .sk-ci-name,
+.sk-cat-btn.sk-active .sk-ci-name{color:var(--white);}
+.sk-ci-arrow{
+  font-size:.7rem;color:rgba(7,10,14,.18);
+  transition:transform .25s,color .2s;flex-shrink:0;
 }
-.skills-pillars{
-  display:grid;
-  grid-template-columns:repeat(12,minmax(0,1fr));
-  gap:1rem;
-  padding:1rem;
-  position:relative;z-index:1;
+.sk-cat-btn.sk-active .sk-ci-arrow{
+  color:var(--red);transform:translateX(4px);
 }
-.skills-pillar{
-  padding:1.2rem 1.15rem 1.05rem;position:relative;background:rgba(255,255,255,.56);
-  border:1px solid rgba(7,10,14,.08);border-radius:24px;transition:background .35s, transform .35s, border-color .35s, box-shadow .35s;
-  backdrop-filter:blur(8px);
-  overflow:hidden;
+
+/* ── Right: display panel ── */
+.sk-display{position:relative;}
+.sk-pane{
+  position:absolute;inset:0;
+  padding:2.2rem 2.4rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease,transform .3s ease;
+  transform:translateY(10px);
 }
-.skills-pillar::before{display:none;}
-.skills-pillar:nth-child(1){grid-column:span 5;min-height:198px;}
-.skills-pillar:nth-child(2){grid-column:span 4;min-height:198px;}
-.skills-pillar:nth-child(3){grid-column:span 3;min-height:198px;}
-.skills-pillar:nth-child(4){grid-column:span 7;min-height:182px;}
-.skills-pillar:nth-child(5){grid-column:span 5;min-height:182px;}
-.skills-pillar:hover{background:#fff;transform:translateY(-3px);border-color:rgba(223,49,67,.16);box-shadow:0 16px 28px rgba(26,36,48,.06);}
-.skills-pillar-no{
-  position:absolute;right:1rem;top:.8rem;
-  font-family:'Bebas Neue',sans-serif;font-size:2.7rem;letter-spacing:.06em;
-  color:rgba(223,49,67,.11);line-height:1;
+.sk-pane.sk-active{
+  opacity:1;pointer-events:auto;transform:translateY(0);
+  position:relative;inset:auto;
 }
-.skills-pillar-title{
-  font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.05em;
-  color:var(--white);margin-bottom:.35rem;position:relative;z-index:1;
+.sk-pane-eyebrow{
+  font-family:'Space Mono',monospace;font-size:.46rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--red);margin-bottom:.8rem;
 }
-.skills-pillar-copy{
-  font-size:.74rem;line-height:1.52;color:rgba(26,36,48,.66);font-weight:300;margin-bottom:.75rem;max-width:31ch;position:relative;z-index:1;
+.sk-pane-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.4rem,4vw,4.2rem);
+  line-height:.88;letter-spacing:-.01em;
+  color:var(--white);margin-bottom:1.6rem;
 }
-.skills-points{
-  display:flex;flex-wrap:wrap;gap:.36rem;position:relative;z-index:1;
+.sk-pane-desc{
+  font-family:'Barlow',sans-serif;font-size:.85rem;
+  line-height:1.5;color:rgba(7,10,14,.45);font-weight:300;
+  margin-bottom:1.6rem;max-width:38ch;
 }
-.skills-points div{
-  font-size:.6rem;line-height:1.3;color:rgba(26,36,48,.78);
-  padding:.34rem .52rem;border:1px solid rgba(7,10,14,.08);border-radius:999px;
-  background:rgba(255,255,255,.82);
-  font-family:'Space Mono',monospace;letter-spacing:.04em;
+.sk-pane-tags{display:flex;flex-wrap:wrap;gap:.45rem;}
+.sk-ptag{
+  font-family:'Space Mono',monospace;font-size:.48rem;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(7,10,14,.62);
+  padding:.38rem .8rem;
+  border:1px solid rgba(7,10,14,.1);border-radius:999px;
+  background:rgba(7,10,14,.03);
+  transition:background .2s,border-color .2s,color .2s;
+}
+.sk-ptag:hover{
+  background:rgba(223,49,67,.07);
+  border-color:rgba(223,49,67,.3);color:var(--red);
+}
+
+@media(max-width:900px){
+  .sk-int{grid-template-columns:1fr;min-height:auto;}
+  .sk-cats{border-right:none;border-bottom:1px solid rgba(7,10,14,.08);}
+  .sk-pane{position:relative;inset:auto;}
 }
 
 /* PROCESS */
@@ -835,12 +1321,12 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
 }
 .contact-signoff{
-  font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey2);
+  font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey2);
 }
 .contact-mini-note{
   font-family:'Space Mono',monospace;
-  font-size:.62rem;
-  letter-spacing:.12em;
+  font-size:.58rem;
+  letter-spacing:.14em;
   text-transform:uppercase;
   color:rgba(26,36,48,.58);
 }
@@ -852,7 +1338,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .btn-red:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(232,0,13,.4);}
 .btn-outline{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 2rem;border:1px solid rgba(26,36,48,.16);color:rgba(26,36,48,.72);text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:none;transition:border-color .3s,color .3s,background .3s;}
 .btn-outline:hover{border-color:var(--red);color:var(--white);background:rgba(193,18,31,.06);}
-.btn-resume{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border:1px solid rgba(26,36,48,.13);color:rgba(26,36,48,.55);text-decoration:none;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:none;transition:border-color .3s,color .3s,background .3s;}
+.btn-resume{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border:1px solid rgba(26,36,48,.13);color:rgba(26,36,48,.55);text-decoration:none;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:none;transition:border-color .3s,color .3s,background .3s;}
 .btn-resume:hover{border-color:rgba(26,36,48,.3);color:var(--white);background:rgba(26,36,48,.04);}
 .mag-wrap{display:inline-block;position:relative;}
 
@@ -872,6 +1358,22 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .reveal-r{opacity:0;filter:blur(8px);transform:scale(.96);transition:opacity .9s ease,transform 1s cubic-bezier(.16,1,.3,1),filter .9s ease;}
 .reveal-r.in{opacity:1;filter:blur(0);transform:scale(1);}
 .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+/* Word-clip stagger for section titles */
+.s-title-stagger.reveal{filter:none;}
+.stk-clip{display:inline-block;overflow:hidden;vertical-align:bottom;line-height:1.05;}
+.stk-inner{display:inline-block;transform:translateY(108%);transition:transform .78s cubic-bezier(.16,1,.3,1);}
+.stk-br{display:block;}
+.s-title-stagger.in .stk-inner{transform:translateY(0);}
+.s-title-stagger.in .stk-clip:nth-child(1) .stk-inner{transition-delay:.03s;}
+.s-title-stagger.in .stk-clip:nth-child(2) .stk-inner{transition-delay:.13s;}
+.s-title-stagger.in .stk-clip:nth-child(4) .stk-inner{transition-delay:.26s;}
+.s-title-stagger.in .stk-clip:nth-child(5) .stk-inner{transition-delay:.39s;}
+.s-title-stagger.in .stk-clip:nth-child(6) .stk-inner{transition-delay:.52s;}
+
+/* Word-by-word scroll reveal (.js-lines targets) */
+.w-clip{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.w-inner{display:inline-block;transform:translateY(105%);opacity:0;transition:transform .72s cubic-bezier(.16,1,.3,1),opacity .4s ease;}
+.w-inner.in{transform:translateY(0);opacity:1;}
 
 /* ════════════════════════════════════
    PROJECT CASE STUDY PAGES
@@ -894,8 +1396,8 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 }
 .cs-back{
   display:inline-flex;align-items:center;gap:.6rem;
-  font-family:'Space Mono',monospace;font-size:.65rem;
-  letter-spacing:.15em;text-transform:uppercase;
+  font-family:'Space Mono',monospace;font-size:.58rem;
+  letter-spacing:.16em;text-transform:uppercase;
   color:var(--grey);text-decoration:none;cursor:none;
   margin-bottom:2.5rem;
   transition:color .3s;
@@ -903,7 +1405,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 }
 .cs-back:hover{color:var(--red);}
 .cs-back::before{content:'←';font-size:.9rem;}
-.cs-eyebrow{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:#c44a58;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;}
+.cs-eyebrow{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:#c44a58;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;}
 .cs-eyebrow::before{content:'//';color:var(--grey2);}
 .cs-hero-title{font-size:clamp(3.2rem,7vw,6.8rem);margin-bottom:.9rem;}
 .cs-hero-title .red{color:#cf4252;}
@@ -937,8 +1439,8 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   color:#fff;
   text-decoration:none;
   font-family:'Space Mono',monospace;
-  font-size:.6rem;
-  letter-spacing:.14em;
+  font-size:.58rem;
+  letter-spacing:.16em;
   text-transform:uppercase;
   box-shadow:0 10px 20px rgba(223,49,67,.12);
   transition:border-color .25s ease,background .25s ease,color .25s ease,transform .25s ease,box-shadow .25s ease;
@@ -954,7 +1456,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 /* CASE STUDY SECTIONS */
 .cs-section{padding:5rem 5.5rem;border-bottom:1px solid var(--border);}
 .cs-section:last-child{border-bottom:none;}
-.cs-section-label{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#c44a58;margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem;}
+.cs-section-label{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#c44a58;margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem;}
 .cs-section-label::before{content:'//';color:var(--grey2);}
 .cs-section-title{font-size:clamp(2.8rem,5vw,5.5rem);margin-bottom:2rem;}
 .cs-section-title .red{color:#cf4252;}
@@ -1052,7 +1554,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .cs-gallery-frame{background:rgba(26,36,48,.02);padding:.9rem;border-bottom:1px solid var(--border);}
 .cs-gallery-card img{display:block;width:auto;max-width:100%;max-height:420px;height:auto;margin:0 auto;border-radius:12px;}
 .cs-gallery-title{font-family:'Bebas Neue',sans-serif;font-size:.96rem;letter-spacing:.06em;color:var(--white);margin-bottom:.25rem;}
-.cs-gallery-desc{font-size:.72rem;line-height:1.45;color:var(--grey);}
+.cs-gallery-desc{font-size:.78rem;line-height:1.55;color:var(--grey);}
 /* Holographic radial sheen (inserted by JS) */
 .cfx-sheen{
   position:absolute;inset:0;z-index:3;pointer-events:none;
@@ -1152,7 +1654,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .cs-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:3rem;}
 .cs-stat{background:var(--black2);padding:2rem;text-align:center;}
 .cs-stat-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#cf4252;line-height:1;}
-.cs-stat-lbl{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-top:.4rem;}
+.cs-stat-lbl{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-top:.4rem;}
 
 /* INSIGHT CARDS */
 .cs-insight{padding:1.8rem;border:1px solid var(--border);border-radius:3px;background:var(--black2);position:relative;transition:border-color .3s,background .3s;}
@@ -1255,7 +1757,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .mockup-grid.phones{grid-template-columns:repeat(3,1fr);align-items:start;}
 .mockup-grid.desktop1{grid-template-columns:1fr;}
 .mockup-grid.mix{grid-template-columns:1fr 1fr;align-items:start;}
-.mockup-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grey);text-align:center;margin-top:.8rem;}
+.mockup-label{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grey);text-align:center;margin-top:.8rem;}
 
 /* FLOW STEPS */
 .flow-steps{display:flex;gap:0;margin-top:2.5rem;position:relative;}
@@ -1269,17 +1771,24 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .fs-desc{font-size:.75rem;color:var(--grey);line-height:1.5;font-weight:300;}
 
 /* NEXT PROJECT */
-.cs-next{padding:4rem 5.5rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);background:var(--black2);cursor:none;transition:background .3s;}
+.cs-proj-nav{display:flex;border-top:1px solid var(--border);background:var(--black2);}
+.cs-prev{flex:1;padding:4rem 5.5rem;display:flex;align-items:center;gap:1.5rem;cursor:none;transition:background .3s;border-right:1px solid var(--border);text-decoration:none;}
+.cs-prev:hover{background:var(--black3);}
+.cs-prev-arrow{font-size:2.5rem;color:var(--grey2);flex-shrink:0;transition:transform .4s cubic-bezier(.16,1,.3,1),color .3s;}
+.cs-prev:hover .cs-prev-arrow{transform:translateX(-8px);color:var(--red);}
+.cs-prev-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,2.8vw,2.8rem);line-height:1;}
+.cs-next{flex:1;padding:4rem 5.5rem;display:flex;align-items:center;justify-content:space-between;cursor:none;transition:background .3s;}
 .cs-next:hover{background:var(--black3);}
-.cs-next-label{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:.5rem;}
+.cs-next-label{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:.5rem;}
 .cs-next-title{font-size:clamp(2.2rem,4vw,3.6rem);}
 .cs-next-arrow{font-size:2.5rem;color:var(--grey2);transition:transform .4s cubic-bezier(.16,1,.3,1),color .3s;}
 .cs-next:hover .cs-next-arrow{transform:translateX(8px);color:var(--red);}
 
 /* RESPONSIVE */
 @media(max-width:900px){
-  .hero,section,.cs-hero,.cs-section,.quote-strip,footer,.cs-next,.cs-topbar{padding-left:1.5rem;padding-right:1.5rem;}
-  .corner-nav{right:-9.15rem;}
+  .hero,section,.cs-hero,.cs-section,.quote-strip,footer,.cs-next,.cs-prev,.cs-topbar{padding-left:1.5rem;padding-right:1.5rem;}
+  .cs-proj-nav{flex-direction:column;}
+  .cs-prev{border-right:none;border-bottom:1px solid var(--border);}
   .cs-hero{min-height:auto;padding-top:3.5rem;padding-bottom:3rem;}
   .cs-meta-row{grid-template-columns:1fr;}
   .hero{padding-top:3.8rem;padding-bottom:3rem;}
@@ -1318,14 +1827,9 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   .contact-shell{padding:1.5rem;}
   .contact-big{max-width:none;}
   .c-link{grid-template-columns:72px minmax(0,1fr);gap:.85rem;}
-  .skills-summary{grid-template-columns:1fr;gap:.5rem;}
-  .skills-pillars{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .skills-pillar,
-  .skills-pillar:nth-child(1),
-  .skills-pillar:nth-child(2),
-  .skills-pillar:nth-child(3),
-  .skills-pillar:nth-child(4),
-  .skills-pillar:nth-child(5){grid-column:span 1;min-height:auto;}
+  .sk-strip{grid-template-columns:140px 1fr;}
+  .sk-strip-label{padding:1.1rem 1.2rem 1.1rem 0;}
+  .sk-strip-name{font-size:1.05rem;}
   .skills-grid,.cs-3col,.mockup-grid.phones{grid-template-columns:repeat(2,1fr);}
   .process-title{max-width:none;}
   .process-row,.cs-stats{grid-template-columns:1fr 1fr;}
@@ -1345,13 +1849,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   .hero-stage{padding:0;}
   .hero-panel{padding:0;gap:1.1rem;}
   .cs-topbar-link{font-size:.54rem;padding:.5rem .72rem;}
-  .corner-nav{
-    right:auto;left:50%;bottom:1rem;top:auto;
-    transform:translateX(-50%);border-radius:999px;border-right:1px solid rgba(223,49,67,.85);
-    padding:.72rem .9rem;gap:.6rem;
-  }
-  .corner-nav a{font-size:.54rem;}
-  .corner-nav-sep{width:10px;}
+
   .hero-3d-stack{display:none;}
   .hero-counter-row{grid-template-columns:1fr;}
   .about-summary{font-size:1.03rem;line-height:1.8;}
@@ -1361,7 +1859,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   .value-shell{margin-top:1.6rem;}
   .value-intro{padding:0 0 1.6rem;}
   .value-grid{grid-template-columns:1fr;}
-  .skills-pillars{grid-template-columns:1fr;padding:.85rem;}
+
   .cs-gallery-frame{padding:.75rem;}
   .cs-gallery-card img{max-height:280px;}
   .cs-gallery-copy{padding:.9rem;}
@@ -1369,7 +1867,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   .value-card:first-child{border-top:none;}
   .c-link{grid-template-columns:1fr;gap:.28rem;}
   .contact-foot{align-items:flex-start;flex-direction:column;}
-  .hero-name{font-size:clamp(3.8rem,22vw,5.4rem);}
+  .hero-name{font-size:clamp(3.2rem,13vw,5.4rem);}
   .hero-role{font-size:.72rem;letter-spacing:.13em;}
   .hero-desc{font-size:.95rem;}
   .hero-actions{flex-direction:column;align-items:flex-start;}
@@ -1439,20 +1937,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 }
 .hc-num.cnt-pop{animation:cntPop .45s cubic-bezier(.16,1,.3,1);}
 
-/* ── Skill pills stagger entrance ── */
-.skills-points div{
-  transition:opacity .35s ease,transform .35s cubic-bezier(.16,1,.3,1),
-    border-color .3s,background .3s;
-}
 
-/* ── Skill pillar bottom accent bar ── */
-.skills-pillar{overflow:hidden;}
-.skills-pillar::after{
-  content:'';position:absolute;left:0;bottom:0;height:2px;width:0;
-  background:rgba(26,36,48,.12);border-radius:0 0 24px 24px;
-  transition:width .45s cubic-bezier(.16,1,.3,1);
-}
-.skills-pillar:hover::after{width:100%;}
 
 /* ── Process connector line ── */
 .process-row{position:relative;}
@@ -1546,13 +2031,87 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 }
 .cs-insight.cs-ins-in{opacity:1;transform:scale(1);filter:blur(0);}
 
-/* ── CS section titles — clip-path wipe reveal ── */
-.cs-section-title{
-  clip-path:inset(0 0 100% 0);
-  opacity:1!important;
-  transition:clip-path 1.1s cubic-bezier(.16,1,.3,1)!important;
+/* ── CS section titles — visible by default, fade-in on scroll ── */
+.cs-section-title.cst-ready{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity 0.7s ease,transform 0.8s cubic-bezier(.16,1,.3,1);
 }
-.cs-section-title.cst-in{clip-path:inset(0 0 0% 0);}
+.cs-section-title.cst-in{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ── CS Scope of Work grid ── */
+.cs-scope-wrap{margin-top:2.4rem;}
+.cs-scope-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  min-height:18rem;
+}
+.cs-scope-col{
+  padding:1.4rem 1.2rem 2rem;
+  border-right:1px solid var(--border);
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .55s ease,transform .65s cubic-bezier(.16,1,.3,1);
+}
+.cs-scope-col:last-child{border-right:none;}
+.cs-scope-col.csg-in{opacity:1;transform:translateY(0);}
+.cs-scope-head{
+  display:flex;align-items:center;gap:.6rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:0;
+}
+.cs-scope-icon{
+  width:24px;height:24px;border-radius:50%;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.56rem;flex-shrink:0;
+  color:var(--grey);line-height:1;
+}
+.cs-scope-col-name{
+  font-family:'Barlow',sans-serif;font-size:.88rem;
+  font-weight:500;color:var(--white);line-height:1;
+}
+/* Staggered pill container offsets — creates diagonal cascade */
+.cs-scope-pills{
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.cs-scope-col:nth-child(1) .cs-scope-pills{padding-top:1.4rem;}
+.cs-scope-col:nth-child(2) .cs-scope-pills{padding-top:3.8rem;}
+.cs-scope-col:nth-child(3) .cs-scope-pills{padding-top:6rem;}
+.cs-scope-col:nth-child(4) .cs-scope-pills{padding-top:3.8rem;}
+.cs-scope-col:nth-child(5) .cs-scope-pills{padding-top:8rem;}
+.cs-scope-pill{
+  display:inline-block;padding:.42rem .9rem;
+  background:var(--white);border-radius:999px;
+  font-family:'Barlow',sans-serif;font-size:.78rem;font-weight:500;
+  color:var(--black);line-height:1.3;
+  align-self:flex-start;white-space:nowrap;
+}
+@media(max-width:1100px){
+  .cs-scope-pill{white-space:normal;font-size:.72rem;}
+}
+@media(max-width:900px){
+  .cs-scope-grid{grid-template-columns:1fr 1fr;min-height:auto;}
+  .cs-scope-col:nth-child(2){border-right:none;}
+  .cs-scope-col:nth-child(3),.cs-scope-col:nth-child(4),.cs-scope-col:nth-child(5){
+    border-top:1px solid var(--border);
+  }
+  .cs-scope-col:nth-child(4){border-right:none;}
+  .cs-scope-col:nth-child(odd) .cs-scope-pills,
+  .cs-scope-col:nth-child(even) .cs-scope-pills{padding-top:1rem;}
+}
+@media(max-width:540px){
+  .cs-scope-grid{grid-template-columns:1fr;}
+  .cs-scope-col{border-right:none;border-top:1px solid var(--border);}
+  .cs-scope-col:first-child{border-top:none;}
+  .cs-scope-col .cs-scope-pills{padding-top:1rem!important;}
+}
 
 /* ── Gallery kicker fade ── */
 .cs-gallery-kicker{
@@ -1780,13 +2339,16 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 /* ═══════════════════════════════════════════════════════
    HERO ENTRANCE — .hero-in added by JS on IntersectionObserver
 ═══════════════════════════════════════════════════════ */
-.hero.hero-in .hero-name         { opacity:1; transform:none; transition-delay:.05s; }
-.hero.hero-in .hero-role         { opacity:1; transform:none; transition-delay:.2s; }
-.hero.hero-in .hero-desc         { opacity:1; transform:none; transition-delay:.34s; }
-.hero.hero-in .hero-actions      { opacity:1; transform:none; transition-delay:.48s; }
-.hero.hero-in .hero-counter-row  { opacity:1; transform:none; transition-delay:.62s; }
-.hero.hero-in .hero-scroll-indicator { opacity:.82; transform:none; transition-delay:.78s; }
-.hero.hero-in .hero-visual       { opacity:1; transition-delay:.1s; }
+/* hero-in fires 180ms into the 1.1s preloader exit.
+   Clip delays ≥0.92s so text slides in on the *fully visible* hero. */
+.hero.hero-in .hero-clip:nth-child(1) .hero-clip-inner { transition-delay:.94s; }
+.hero.hero-in .hero-clip:nth-child(2) .hero-clip-inner { transition-delay:1.12s; }
+.hero.hero-in .hero-visual       { opacity:1; transition-delay:.92s; }
+.hero.hero-in .hero-role         { opacity:1; transform:none; transition-delay:1.26s; }
+.hero.hero-in .hero-desc         { opacity:1; transform:translateY(0); transition-delay:1.4s; }
+.hero.hero-in .hero-actions      { opacity:1; transform:translateY(0); transition-delay:1.54s; }
+.hero.hero-in .hero-counter-row  { opacity:1; transform:translateY(0); transition-delay:1.66s; }
+.hero.hero-in .hero-scroll-indicator { opacity:.82; transform:none; transition-delay:1.8s; }
 
 /* Portrait red aura pulse once hero is in */
 @keyframes portraitAura {
@@ -1822,7 +2384,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
    The intro itself is position:fixed so sticky issues can't break it.
    The spacer has the same dark bg as the intro so no flash shows
    behind the fading overlay.                                            */
-#imm-wrap{position:relative;height:220vh;background:#070a0e;}
+#imm-wrap{position:relative;height:160vh;background:#070a0e;}
 
 /* Fixed full-screen intro panel — lives above everything */
 #imm-intro{
@@ -1836,7 +2398,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   z-index:400;
 }
 
-/* Warm red radial glow from centre — slightly stronger */
+/* Warm red radial glow from centre */
 #imm-intro::before{
   content:'';
   position:absolute;inset:0;
@@ -1886,7 +2448,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 .imm-corner.bl{ bottom:2rem;left:2rem;transform:scaleY(-1); }
 .imm-corner.br{ bottom:2rem;right:2rem;transform:scale(-1); }
 
-/* Content layer — fades in on page load so it doesn't just snap in */
+/* Content layer */
 .imm-inner{
   position:relative;z-index:2;
   display:flex;flex-direction:column;
@@ -1899,64 +2461,6 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   to{opacity:1;transform:scale(1);}
 }
 
-/* Eyebrow */
-.imm-eyebrow{
-  display:flex;align-items:center;gap:.85rem;
-  font-size:.58rem;letter-spacing:.3em;
-  color:rgba(255,255,255,.28);
-  text-transform:uppercase;
-  font-family:'Space Mono',monospace;
-}
-.imm-eyebrow::before,.imm-eyebrow::after{
-  content:'';display:block;
-  width:2.5rem;height:1px;
-  background:rgba(255,255,255,.14);
-}
-
-/* Giant name */
-.imm-name{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(4.5rem,12vw,13rem);
-  line-height:.92;
-  letter-spacing:.04em;
-  color:#fff;
-}
-.imm-rdot{color:#df3143;}
-
-/* Thin accent line */
-.imm-divider{
-  width:3rem;height:1px;
-  background:rgba(223,49,67,.5);
-}
-
-/* Role subtitle */
-.imm-sub{
-  font-size:clamp(.62rem,.88vw,.88rem);
-  letter-spacing:.2em;
-  color:rgba(255,255,255,.36);
-  text-transform:uppercase;
-}
-
-/* Scroll CTA with pulse arrow */
-.imm-cta{
-  margin-top:.5rem;
-  display:flex;flex-direction:column;
-  align-items:center;gap:.45rem;
-  color:rgba(255,255,255,.2);
-  font-size:.56rem;letter-spacing:.26em;
-  text-transform:uppercase;
-  font-family:'Space Mono',monospace;
-  animation:immCta 2.1s ease-in-out infinite;
-}
-.imm-cta-line{
-  width:1px;height:2.4rem;
-  background:linear-gradient(to bottom,rgba(223,49,67,.75),transparent);
-}
-
-@keyframes immCta{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(7px);}
-}
 
 /* ══════════════════════════════════════════════════════
    3D SCROLL THEATRE — project list
@@ -1988,22 +2492,275 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   transform:scale(1);
 }
 
+
+/* ══════════════════════════════════════════════════════
+   PRELOADER — types welcome text then reveals name
+══════════════════════════════════════════════════════ */
+#preloader{
+  position:fixed;inset:0;z-index:9999;
+  background:#070a0e;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  transition:transform 1.1s cubic-bezier(.76,0,.24,1);
+}
+#preloader::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 55% at 50% 55%, rgba(223,49,67,.16), transparent 62%);
+  pointer-events:none;
+}
+/* Subtle dot-grid texture */
+#preloader::after{
+  content:'';position:absolute;inset:-25%;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:52px 52px;
+  pointer-events:none;
+}
+#preloader.pl-exit{ transform:translateY(-100%); }
+
+.pl-inner{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;text-align:center;
+}
+/* corner accents */
+.pl-corner{
+  position:absolute;width:24px;height:24px;pointer-events:none;opacity:.18;
+}
+.pl-corner::before,.pl-corner::after{content:'';position:absolute;background:rgba(255,255,255,.7);}
+.pl-corner::before{width:1px;height:100%;}
+.pl-corner::after{width:100%;height:1px;}
+.pl-corner.tl{top:2rem;left:2rem;}
+.pl-corner.tr{top:2rem;right:2rem;transform:scaleX(-1);}
+.pl-corner.bl{bottom:2rem;left:2rem;transform:scaleY(-1);}
+.pl-corner.br{bottom:2rem;right:2rem;transform:scale(-1);}
+
+/* "Welcome to the portfolio of" */
+.pl-welcome{
+  font-family:'Barlow',sans-serif;
+  font-size:clamp(1.1rem,2.2vw,1.8rem);
+  font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(247,248,251,.82);
+  margin-bottom:1.5rem;min-height:1.4em;
+  display:flex;align-items:center;gap:3px;
+}
+.pl-cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#df3143;vertical-align:middle;
+  animation:plBlink .65s step-start infinite;
+}
+@keyframes plBlink{50%{opacity:0;}}
+
+/* Name */
+.pl-name{display:flex;flex-direction:column;gap:0;}
+.pl-name-line{overflow:hidden;line-height:.88;}
+.pl-name-line span{
+  display:block;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,11vw,12rem);
+  letter-spacing:.04em;color:#fff;
+  transform:translateY(110%);
+  transition:transform .9s cubic-bezier(.16,1,.3,1);
+}
+.pl-name-line:nth-child(2) span{transition-delay:.09s;}
+.pl-name-line span.pl-up{transform:translateY(0);}
+.pl-rdot{color:#df3143;}
+
+/* Divider */
+.pl-divider{
+  width:3rem;height:1px;
+  background:rgba(223,49,67,.45);
+  margin:1.4rem auto;
+  opacity:0;transform:scaleX(0);transform-origin:left;
+  transition:opacity .5s ease,transform .6s cubic-bezier(.16,1,.3,1);
+}
+.pl-divider.pl-up{opacity:1;transform:scaleX(1);}
+
+/* Role */
+.pl-role{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.54rem,.82vw,.74rem);
+  letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(247,248,251,.3);
+  opacity:0;transform:translateY(6px);
+  transition:opacity .55s ease,transform .55s ease;
+}
+.pl-role.pl-up{opacity:1;transform:translateY(0);}
+
+
+/* ═══ MOBILE — imm-intro landing screen ═══ */
+@media(max-width:768px){
+  #imm-wrap{ height:130vh; }
+  .imm-eyebrow{ top:4rem; left:1.5rem; }
+  .imm-frame{ inset:.8rem; }
+  .imm-name{ padding:0 1.5rem; }
+  .imm-bl{
+    left:1.5rem; bottom:2.5rem;
+    max-width:calc(100% - 11rem);
+    padding:1rem 1.2rem;
+  }
+  .imm-br{
+    right:1.5rem; bottom:2.5rem;
+    padding:.9rem 1rem;
+    min-width:0;
+  }
+  .imm-br-stat{ font-size:1.8rem; }
+  .imm-scroll-cta{ bottom:1.5rem; font-size:.5rem; }
+}
+@media(max-width:640px){
+  .imm-br{ display:none; }
+  .imm-bl{
+    max-width:calc(100% - 3rem);
+    left:1.5rem;
+  }
+  .imm-name{ padding:0 1.2rem; }
+}
+
+/* ── prefers-reduced-motion: kill continuous & heavy animations ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+  .hero-orbit,.hero-orbit-ring,.hero-orbit-ring-2{animation:none!important;}
+  .hero-orbit-core{animation:none!important;}
+  .hero-portrait{animation:none!important;}
+  .hero-pill{animation:none!important;transform:none!important;}
+  .imm-grain{animation:none!important;}
+  #imm-intro{transition:none!important;}
+  #hero-particles{display:none!important;}
+  .glitch-wrap::before,.glitch-wrap::after{display:none!important;}
+  .imm-scroll-cta{animation:none!important;opacity:1!important;transform:translateX(-50%)!important;}
+}
+
+/* ── Per-project accent colours — explicit selectors ── */
+
+/* Digital Payments — blue */
+#page-proj-epay .cs-stat-num            { color:#2563eb!important; }
+#page-proj-epay .cs-hero-title .red     { color:#2563eb!important; }
+#page-proj-epay .cs-topbar-link:last-child { color:#2563eb; }
+#page-proj-epay .cs-hero::after         { background:#2563eb; }
+
+/* Studio Operations — amber */
+#page-proj-huemn .cs-stat-num           { color:#d97706!important; }
+#page-proj-huemn .cs-hero-title .red    { color:#d97706!important; }
+#page-proj-huemn .cs-topbar-link:last-child { color:#d97706; }
+#page-proj-huemn .cs-hero::after        { background:#d97706; }
+
+/* Decentralized / Resolute — purple */
+#page-proj-resolute .cs-stat-num        { color:#7c3aed!important; }
+#page-proj-resolute .cs-hero-title .red { color:#7c3aed!important; }
+#page-proj-resolute .cs-topbar-link:last-child { color:#7c3aed; }
+#page-proj-resolute .cs-hero::after     { background:#7c3aed; }
+
+/* Data Governance — teal */
+#page-proj-governance .cs-stat-num        { color:#059669!important; }
+#page-proj-governance .cs-hero-title .red { color:#059669!important; }
+#page-proj-governance .cs-topbar-link:last-child { color:#059669; }
+#page-proj-governance .cs-hero::after     { background:#059669; }
+
+/* Ground Ops / Indigo — sky blue */
+#page-proj-indigo .cs-stat-num          { color:#0284c7!important; }
+#page-proj-indigo .cs-hero-title .red   { color:#0284c7!important; }
+#page-proj-indigo .cs-topbar-link:last-child { color:#0284c7; }
+#page-proj-indigo .cs-hero::after       { background:#0284c7; }
+
+/* Accent-tinted scope pills + hero tag chips per project (light page bg) */
+#page-proj-epay .cs-scope-pill{background:rgba(37,99,235,.1);color:#1d4ed8;}
+#page-proj-epay .cs-tag{color:#1d4ed8;background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.28);}
+#page-proj-huemn .cs-scope-pill{background:rgba(217,119,6,.1);color:#92400e;}
+#page-proj-huemn .cs-tag{color:#92400e;background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.28);}
+#page-proj-resolute .cs-scope-pill{background:rgba(124,58,237,.1);color:#5b21b6;}
+#page-proj-resolute .cs-tag{color:#5b21b6;background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.28);}
+#page-proj-governance .cs-scope-pill{background:rgba(5,150,105,.1);color:#065f46;}
+#page-proj-governance .cs-tag{color:#065f46;background:rgba(5,150,105,.08);border-color:rgba(5,150,105,.28);}
+#page-proj-indigo .cs-scope-pill{background:rgba(2,132,199,.1);color:#075985;}
+#page-proj-indigo .cs-tag{color:#075985;background:rgba(2,132,199,.08);border-color:rgba(2,132,199,.28);}
+
+/* Shared ::after bar */
+.cs-page .cs-hero::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;z-index:2;
+}
+
+/* ── Story-driven case study sections ── */
+.cs-tension{background:#0d0f14;padding:4.5rem 5.5rem;}
+.cs-tension-eyebrow{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(247,248,251,.38);margin-bottom:1.8rem;}
+.cs-tension-quote{font-family:'Barlow',sans-serif;font-size:clamp(1.45rem,2.4vw,2.4rem);font-weight:500;line-height:1.3;color:#f7f8fb;border-left:3px solid var(--red);padding-left:2rem;margin:0 0 2.4rem;max-width:800px;}
+.cs-tension-sub{font-family:'Barlow',sans-serif;font-size:1rem;line-height:1.75;color:rgba(247,248,251,.5);max-width:640px;}
+.cs-reframe-section{padding:4rem 5.5rem;background:var(--black2);}
+.cs-reframe-text{font-family:'Barlow',sans-serif;font-size:clamp(1.05rem,1.6vw,1.35rem);font-weight:500;line-height:1.6;color:#1a2430;max-width:760px;margin-bottom:2rem;}
+.cs-reframe-text em{font-style:italic;}
+.cs-reframe-principle{display:flex;gap:1.2rem;align-items:flex-start;padding:1.2rem 1.6rem;background:rgba(26,36,48,.04);border-left:3px solid var(--red);border-radius:0 6px 6px 0;max-width:700px;}
+.cs-rp-label{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);white-space:nowrap;padding-top:.2rem;flex-shrink:0;}
+.cs-rp-text{font-family:'Barlow',sans-serif;font-size:.92rem;line-height:1.65;color:var(--grey);}
+.cs-dec-section{padding:4rem 5.5rem;}
+.cs-dec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2.4rem;background:rgba(26,36,48,.07);}
+.cs-dec{padding:2.2rem 2rem;background:var(--black2);display:flex;flex-direction:column;gap:.8rem;}
+.cs-dec-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--red);line-height:1;}
+.cs-dec-title{font-family:'Barlow',sans-serif;font-size:1rem;font-weight:700;color:#1a2430;line-height:1.2;}
+.cs-dec-body{font-family:'Barlow',sans-serif;font-size:.9rem;line-height:1.7;color:var(--grey);}
+@media(max-width:960px){
+  .cs-tension{padding:3.5rem 2rem;}
+  .cs-reframe-section,.cs-dec-section{padding:3rem 2rem;}
+  .cs-dec-grid{grid-template-columns:1fr;}
+}
+/* Accent overrides for story sections */
+#page-proj-epay .cs-tension-quote{border-left-color:#2563eb;}
+#page-proj-epay .cs-reframe-principle{border-left-color:#2563eb;}
+#page-proj-epay .cs-rp-label{color:#2563eb;}
+#page-proj-epay .cs-dec-num{color:#2563eb;}
+#page-proj-huemn .cs-tension-quote{border-left-color:#d97706;}
+#page-proj-huemn .cs-reframe-principle{border-left-color:#d97706;}
+#page-proj-huemn .cs-rp-label{color:#d97706;}
+#page-proj-huemn .cs-dec-num{color:#d97706;}
+#page-proj-resolute .cs-tension-quote{border-left-color:#7c3aed;}
+#page-proj-resolute .cs-reframe-principle{border-left-color:#7c3aed;}
+#page-proj-resolute .cs-rp-label{color:#7c3aed;}
+#page-proj-resolute .cs-dec-num{color:#7c3aed;}
+#page-proj-governance .cs-tension-quote{border-left-color:#059669;}
+#page-proj-governance .cs-reframe-principle{border-left-color:#059669;}
+#page-proj-governance .cs-rp-label{color:#059669;}
+#page-proj-governance .cs-dec-num{color:#059669;}
+#page-proj-indigo .cs-tension-quote{border-left-color:#0284c7;}
+#page-proj-indigo .cs-reframe-principle{border-left-color:#0284c7;}
+#page-proj-indigo .cs-rp-label{color:#0284c7;}
+#page-proj-indigo .cs-dec-num{color:#0284c7;}
 </style>
 </head>
 <body>
+<div id="preloader" aria-hidden="true">
+  <div class="pl-corner tl"></div>
+  <div class="pl-corner tr"></div>
+  <div class="pl-corner bl"></div>
+  <div class="pl-corner br"></div>
+  <div class="pl-inner">
+    <div class="pl-welcome">
+      <span id="pl-type"></span><span class="pl-cursor" id="pl-cursor"></span>
+    </div>
+  </div>
+</div>
 
 <div id="imm-progress"></div>
 <div id="page-curtain"></div>
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
-<nav class="corner-nav" aria-label="Section navigation">
-  <a href="#" data-page="home" data-scroll="about">About</a>
-  <span class="corner-nav-sep" aria-hidden="true"></span>
-  <a href="#" data-page="home" data-scroll="projects">Projects</a>
-  <span class="corner-nav-sep" aria-hidden="true"></span>
-  <a href="#" data-page="home" data-scroll="skills">Skills</a>
-  <span class="corner-nav-sep" aria-hidden="true"></span>
-  <a href="#" data-page="home" data-scroll="contact">Contact</a>
+<nav id="top-nav" aria-label="Site navigation">
+  <a href="#" data-page="home" data-scroll="hero" class="tnav-logo">
+    <img src="assets/ag-logo-clean.png" alt="AG" />
+  </a>
+  <div class="tnav-links">
+    <span class="tnav-glide" aria-hidden="true"></span>
+    <a href="#" data-page="home" data-scroll="about" data-tnav="about">About</a>
+    <a href="#" data-page="home" data-scroll="projects" data-tnav="projects">Work</a>
+    <a href="#" data-page="home" data-scroll="skills" data-tnav="skills">Skills</a>
+    <a href="#" data-page="home" data-scroll="contact" data-tnav="contact">Contact</a>
+  </div>
+  <div class="tnav-right">
+    <a href="Aishwarya_Gondlyala_Resume_2026.pdf" target="_blank" rel="noreferrer" class="tnav-resume">Resume ↗</a>
+  </div>
 </nav>
 
 <!-- ═══════════════════════════════════════
@@ -2015,26 +2772,33 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
 <div id="imm-wrap">
   <div id="imm-intro" aria-hidden="true">
     <div class="imm-grain"></div>
-    <div class="imm-corner tl"></div>
-    <div class="imm-corner tr"></div>
-    <div class="imm-corner bl"></div>
-    <div class="imm-corner br"></div>
-    <div class="imm-inner">
-      <div class="imm-eyebrow">Portfolio &nbsp;&middot;&nbsp; Product Design &nbsp;&middot;&nbsp; 2026</div>
-      <div class="imm-name">
-        <div>AISHWARYA</div>
-        <div>GONDLYALA<span class="imm-rdot">.</span></div>
-      </div>
-      <div class="imm-divider"></div>
+    <!-- Full inset border frame -->
+    <div class="imm-frame" aria-hidden="true"></div>
+    <!-- Eyebrow — top-left -->
+    <div class="imm-eyebrow">Portfolio &nbsp;&middot;&nbsp; Product Design &nbsp;&middot;&nbsp; 2026</div>
+    <!-- Giant full-width name with clip-line reveal -->
+    <div class="imm-name">
+      <div class="imm-nl"><div class="imm-nl-i">AISHWARYA</div></div>
+      <div class="imm-nl"><div class="imm-nl-i">GONDLYALA<span class="imm-rdot">.</span></div></div>
+    </div>
+    <!-- Bottom-left: role titles -->
+    <div class="imm-bl">
       <div class="imm-sub">Product Designer &nbsp;&middot;&nbsp; UX Strategist &nbsp;&middot;&nbsp; Design Lead</div>
-      <div class="imm-cta">
-        <div class="imm-cta-line"></div>
-        <span>Scroll to enter</span>
-      </div>
+    </div>
+    <!-- Bottom-centre: scroll CTA -->
+    <div class="imm-scroll-cta">
+      <div class="imm-cta-line"></div>
+      <span>Scroll to enter</span>
+    </div>
+    <!-- Bottom-right: experience stat -->
+    <div class="imm-br">
+      <div class="imm-br-stat"><span id="imm-cnt">6</span>+</div>
+      <div class="imm-br-lbl">Years of Experience</div>
     </div>
   </div>
 </div>
 
+<div class="hero-pin-wrap">
 <section class="hero">
   <div class="hero-grid-bg"></div>
   <div class="hero-shell">
@@ -2042,16 +2806,17 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
       <div class="hero-stage">
         <div class="hero-panel">
           <div class="hero-copy">
+
             <h1 class="hero-name">
-              <span class="line1"><span class="glitch-wrap" data-text="AISHWARYA">AISHWARYA</span></span>
-              <span class="line2">GONDLYALA<span class="red">.</span></span>
+              <span class="hero-clip"><span class="hero-clip-inner line1">DESIGNING</span></span>
+              <span class="hero-clip"><span class="hero-clip-inner line2">CLARITY<span class="red">.</span></span></span>
             </h1>
             <p class="hero-role">Product Designer &nbsp;|&nbsp; UX Strategist &nbsp;|&nbsp; Design Lead</p>
-            <p class="hero-desc">I craft human-centred digital experiences that turn complexity into clarity — across AI products, blockchain platforms, enterprise SaaS, and fintech.</p>
+            <p class="hero-desc">I craft human-centred digital experiences that turn complexity into clarity across AI products, blockchain platforms, enterprise SaaS, and fintech.</p>
             <div class="hero-actions">
               <div class="mag-wrap"><a href="#" data-page="home" data-scroll="projects" class="btn-red mag">View My Work ↓</a></div>
               <div class="mag-wrap"><a href="#" data-page="home" data-scroll="contact" class="btn-outline mag">Let's Talk →</a></div>
-              <div class="mag-wrap"><a href="aishwarya_resume_2026.html" target="_blank" class="btn-resume mag">Resume ↗</a></div>
+              <div class="mag-wrap"><a href="Aishwarya_Gondlyala_Resume_2026.pdf" target="_blank" download class="btn-resume mag">Resume ↗</a></div>
             </div>
             <div class="hero-counter-row">
               <div class="hero-count"><div class="hc-num"><span id="cnt1">15</span><span class="plus">+</span></div><div class="hc-lbl">Projects</div></div>
@@ -2082,14 +2847,15 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   </div>
   <div class="hero-scroll-indicator" aria-hidden="true"></div>
 </section>
+</div><!-- /hero-pin-wrap -->
 
-<section id="about">
+<section id="about" style="scroll-margin-top:82px">
   <div class="s-tag reveal">What I Bring To The Table</div>
-  <h2 class="s-title reveal d1">DESIGNING <span class="red">CLARITY</span><br><span class="outline">WITH PRODUCT THINKING</span></h2>
-  <div class="value-shell reveal d1">
+  <h2 class="s-title s-title-stagger reveal d1"><span class="stk-clip"><span class="stk-inner">DESIGNING&nbsp;</span></span><span class="stk-clip"><span class="stk-inner red">CLARITY</span></span><span class="stk-br"></span><span class="stk-clip"><span class="stk-inner outline">WITH&nbsp;</span></span><span class="stk-clip"><span class="stk-inner outline">PRODUCT&nbsp;</span></span><span class="stk-clip"><span class="stk-inner outline">THINKING</span></span></h2>
+  <div class="value-shell">
     <div class="value-intro">
-      <div class="value-kicker">Product Strengths</div>
-      <p class="value-copy">I design products that turn complexity into clarity, especially where trust, structure, and usability matter. My strength is shaping clearer logic, stronger flows, and experiences people can understand with confidence.</p>
+      <div class="value-kicker reveal">Product Strengths</div>
+      <p class="value-copy js-lines">I design products that turn complexity into clarity, especially where trust, structure, and usability matter. My strength is shaping clearer logic, stronger flows, and experiences people can understand with confidence.</p>
     </div>
     <div class="value-grid">
       <div class="value-card reveal d2">
@@ -2116,124 +2882,392 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   </div>
 </section>
 
-<section id="projects">
-  <div class="proj-header">
-    <div><div class="s-tag reveal">Selected Work</div><h2 class="s-title reveal d1">SELECTED <span class="red">CASE</span><br><span class="outline">STUDIES</span></h2></div>
+<section id="projects" style="scroll-margin-top:82px">
+
+  <!-- Section header -->
+  <div class="fw-section-header">
+    <div class="fw-section-tag">Featured Work</div>
+    <h2 class="fw-section-title">CASE <span class="red">STUDIES</span></h2>
   </div>
-  <div class="proj-list reveal">
-    <div class="proj-item" data-page="proj-epay" data-preview="https://ritzy-tusk-12212444.figma.site/_assets/v11/6501c77168573e0d3d9d6373b7e320baf1ed3786.png" data-type="Fintech · Mobile UX">
-      <div class="proj-num">01</div>
-      <div class="proj-info"><div class="proj-title">Digital Payments Platform</div><div class="proj-desc">A mobile-first fintech concept built around KYC-led access, wallet journeys, and utility payments.</div></div>
-      <div class="proj-meta"><div class="proj-tags-sm"><span class="proj-tag">Fintech</span><span class="proj-tag">Mobile UX</span><span class="proj-tag">KYC Flows</span></div><div class="proj-arrow">→</div></div>
+
+  <!-- Scroll-stacking panels — each is sticky at top:0 with increasing z-index -->
+  <div class="fw-stack">
+
+    <!-- ── Panel 01 ── -->
+    <div class="fw-panel" id="fw-panel-1">
+      <div class="fw-tab-row">
+        <div class="fw-tab is-active">
+          <span class="fw-tab-num">01</span>
+          <span class="fw-tab-name">Digital Payments Platform</span>
+        </div>
+        <button class="fw-tab-cta" data-page="proj-epay">View Project &#x2197;</button>
+      </div>
+      <h2 class="fw-panel-title">Digital Payments Platform</h2>
+      <div class="fw-panel-body">
+                <div class="fw-info">
+          <div class="fw-metrics">
+            <div class="fw-metric"><div class="fw-metric-label">Year</div><div class="fw-metric-val">2024</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Platform</div><div class="fw-metric-val">Mobile</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Domain</div><div class="fw-metric-val">Fintech</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Pattern</div><div class="fw-metric-val">Progressive Access</div></div>
+          </div>
+          <div class="fw-info-role">
+            <div class="fw-metric-label">Role</div>
+            <div class="fw-metric-val">Product &amp; Experience Design</div>
+          </div>
+          <div class="fw-info-tags">
+            <span>Fintech</span><span>Mobile UX</span><span>KYC Flows</span><span>Wallet Design</span><span>Payments Journey</span>
+          </div>
+          <div class="fw-info-problem">
+            <div class="fw-metric-label">Problem</div>
+            <p>Making regulated payment flows feel simple without hiding compliance rules.</p>
+          </div>
+          <p class="fw-panel-desc">A mobile-first concept built around KYC-led progressive access: wallet journeys, utility flows, and trust by design.</p>
+          <button class="fw-view" data-page="proj-epay">View Case Study</button>
+        </div>
+        <div class="fw-img-3d">
+          <div class="fw-img-scene fw-img-scene--phones">
+            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/6501c77168573e0d3d9d6373b7e320baf1ed3786.png" alt="Digital Payments" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/3a9784709f9303f53df7daafdef8a0f1d49ca143.png" alt="Wallet screen" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/2e663df5355e425bd39558beff6134099a9edf75.png" alt="Utility payments" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="proj-item" data-page="proj-huemn" data-preview="https://ritzy-tusk-12212444.figma.site/_assets/v11/5a0209f587c9663e6dbbe7b72b4a9dcb3d099d6d.png" data-type="Workflow · Operations">
-      <div class="proj-num">02</div>
-      <div class="proj-info"><div class="proj-title">Studio Project Operations System</div><div class="proj-desc">A workflow-first system for studio projects, shoots, deliverables, and payments.</div></div>
-      <div class="proj-meta"><div class="proj-tags-sm"><span class="proj-tag">Workflow Design</span><span class="proj-tag">Dashboard UX</span><span class="proj-tag">Operations</span></div><div class="proj-arrow">→</div></div>
+
+    <div class="fw-gap"></div>
+
+    <!-- ── Panel 02 (tab row shows 01 ghost + 02 active) ── -->
+    <div class="fw-panel" id="fw-panel-2">
+      <div class="fw-tab-row">
+        <div class="fw-tab is-prev" data-page="proj-epay">
+          <span class="fw-tab-num">01</span>
+          <span class="fw-tab-name">Digital Payments</span>
+        </div>
+        <div class="fw-tab is-active">
+          <span class="fw-tab-num">02</span>
+          <span class="fw-tab-name">Studio Operations System</span>
+        </div>
+        <button class="fw-tab-cta" data-page="proj-huemn">View Project &#x2197;</button>
+      </div>
+      <h2 class="fw-panel-title">Studio Project Operations System</h2>
+      <div class="fw-panel-body">
+                <div class="fw-info">
+          <div class="fw-metrics">
+            <div class="fw-metric"><div class="fw-metric-label">Year</div><div class="fw-metric-val">2024</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Platform</div><div class="fw-metric-val">Web App</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Domain</div><div class="fw-metric-val">Studio Ops</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Pattern</div><div class="fw-metric-val">Workflow-first</div></div>
+          </div>
+          <div class="fw-info-role">
+            <div class="fw-metric-label">Role</div>
+            <div class="fw-metric-val">Product &amp; Workflow Experience Design</div>
+          </div>
+          <div class="fw-info-tags">
+            <span>Workflow Design</span><span>Dashboard UX</span><span>Service Business</span><span>Project Planning</span>
+          </div>
+          <div class="fw-info-problem">
+            <div class="fw-metric-label">Problem</div>
+            <p>Generic project tools don't match multi-event studio workflows with shoots, payments, and deliverables.</p>
+          </div>
+          <p class="fw-panel-desc">A workflow-first system connecting project setup, shoot planning, deliverables, and payment milestones.</p>
+          <button class="fw-view" data-page="proj-huemn">View Case Study</button>
+        </div>
+        <div class="fw-img-3d">
+          <div class="fw-img-scene">
+            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/5a0209f587c9663e6dbbe7b72b4a9dcb3d099d6d.png" alt="Studio Dashboard" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/ce583502ad4b6c351d8d095b1829c59f2b1dad2b.png" alt="Shoots grid" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/b10f2578a387fdc3812a629347b6f281aa8a03fc.png" alt="Shoot detail" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="proj-item" data-page="proj-resolute" data-preview="https://ritzy-tusk-12212444.figma.site/_assets/v11/b08a0326b47b58c79a8174ff5b70dcc121233921.png" data-type="Web3 · Dashboard">
-      <div class="proj-num">03</div>
-      <div class="proj-info"><div class="proj-title">Decentralized Interchain Platform</div><div class="proj-desc">A unified Web3 dashboard for governance, staking, transfers, and portfolio visibility.</div></div>
-      <div class="proj-meta"><div class="proj-tags-sm"><span class="proj-tag">Web3 Product Design</span><span class="proj-tag">Governance</span><span class="proj-tag">Cross-chain UX</span></div><div class="proj-arrow">→</div></div>
+
+    <div class="fw-gap"></div>
+
+    <!-- ── Panel 03 (ghosts 01, 02 + active 03) ── -->
+    <div class="fw-panel" id="fw-panel-3">
+      <div class="fw-tab-row">
+        <div class="fw-tab is-prev" data-page="proj-epay">
+          <span class="fw-tab-num">01</span>
+          <span class="fw-tab-name">Payments</span>
+        </div>
+        <div class="fw-tab is-prev" data-page="proj-huemn">
+          <span class="fw-tab-num">02</span>
+          <span class="fw-tab-name">Studio Ops</span>
+        </div>
+        <div class="fw-tab is-active">
+          <span class="fw-tab-num">03</span>
+          <span class="fw-tab-name">Interchain Platform</span>
+        </div>
+        <button class="fw-tab-cta" data-page="proj-resolute">View Project &#x2197;</button>
+      </div>
+      <h2 class="fw-panel-title">Decentralized Interchain Platform</h2>
+      <div class="fw-panel-body">
+                <div class="fw-info">
+          <div class="fw-metrics">
+            <div class="fw-metric"><div class="fw-metric-label">Year</div><div class="fw-metric-val">2024</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Platform</div><div class="fw-metric-val">Web App</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Domain</div><div class="fw-metric-val">Web3 / DeFi</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Pattern</div><div class="fw-metric-val">Unified Dashboard</div></div>
+          </div>
+          <div class="fw-info-role">
+            <div class="fw-metric-label">Role</div>
+            <div class="fw-metric-val">Product, Dashboard &amp; Design System</div>
+          </div>
+          <div class="fw-info-tags">
+            <span>Web3</span><span>Governance Flows</span><span>Design System</span><span>Cross-chain UX</span>
+          </div>
+          <div class="fw-info-problem">
+            <div class="fw-metric-label">Problem</div>
+            <p>Web3 flows feel fragmented, technical, and difficult to trust for mainstream users.</p>
+          </div>
+          <p class="fw-panel-desc">A unified interchain dashboard for governance, staking, token transfers, and portfolio visibility.</p>
+          <button class="fw-view" data-page="proj-resolute">View Case Study</button>
+        </div>
+        <div class="fw-img-3d">
+          <div class="fw-img-scene">
+            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/b08a0326b47b58c79a8174ff5b70dcc121233921.png" alt="Interchain Dashboard" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f6ccb04a2bab9c7bd6a03fda45bf4f7cf92aa043.png" alt="Staking" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/944d288d5dc2a2289dc01f657f1d354826f18a51.png" alt="Transfer" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="proj-item" data-page="proj-governance" data-preview="https://ritzy-tusk-12212444.figma.site/_assets/v11/7b9a39a3a9a2cfc32c0985696971f2f097c6124b.png" data-type="Enterprise · SaaS">
-      <div class="proj-num">04</div>
-      <div class="proj-info"><div class="proj-title">Data Governance Platform</div><div class="proj-desc">An enterprise platform for policies, permissions, datasets, auditability, and compliance workflows.</div></div>
-      <div class="proj-meta"><div class="proj-tags-sm"><span class="proj-tag">Enterprise SaaS</span><span class="proj-tag">Access Control</span><span class="proj-tag">Policy Design</span></div><div class="proj-arrow">→</div></div>
+
+    <div class="fw-gap"></div>
+
+    <!-- ── Panel 04 (ghosts 01-03 + active 04) ── -->
+    <div class="fw-panel" id="fw-panel-4">
+      <div class="fw-tab-row">
+        <div class="fw-tab is-prev" data-page="proj-epay">
+          <span class="fw-tab-num">01</span>
+          <span class="fw-tab-name">Payments</span>
+        </div>
+        <div class="fw-tab is-prev" data-page="proj-huemn">
+          <span class="fw-tab-num">02</span>
+          <span class="fw-tab-name">Studio</span>
+        </div>
+        <div class="fw-tab is-prev" data-page="proj-resolute">
+          <span class="fw-tab-num">03</span>
+          <span class="fw-tab-name">Interchain</span>
+        </div>
+        <div class="fw-tab is-active">
+          <span class="fw-tab-num">04</span>
+          <span class="fw-tab-name">Data Governance</span>
+        </div>
+        <button class="fw-tab-cta" data-page="proj-governance">View Project &#x2197;</button>
+      </div>
+      <h2 class="fw-panel-title">Data Governance Platform</h2>
+      <div class="fw-panel-body">
+                <div class="fw-info">
+          <div class="fw-metrics">
+            <div class="fw-metric"><div class="fw-metric-label">Year</div><div class="fw-metric-val">2024</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Platform</div><div class="fw-metric-val">Enterprise SaaS</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Domain</div><div class="fw-metric-val">Data Governance</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Pattern</div><div class="fw-metric-val">Multi-module System</div></div>
+          </div>
+          <div class="fw-info-role">
+            <div class="fw-metric-label">Role</div>
+            <div class="fw-metric-val">Product &amp; Experience Design</div>
+          </div>
+          <div class="fw-info-tags">
+            <span>Enterprise SaaS</span><span>Governance UX</span><span>Access Control</span><span>Policy Design</span>
+          </div>
+          <div class="fw-info-problem">
+            <div class="fw-metric-label">Problem</div>
+            <p>Governance work is fragmented across tools. Catalogues, access, and policy live in separate places.</p>
+          </div>
+          <p class="fw-panel-desc">A multi-module platform for datasets, policies, access, audit trails, and AI-assisted compliance.</p>
+          <button class="fw-view" data-page="proj-governance">View Case Study</button>
+        </div>
+        <div class="fw-img-3d">
+          <div class="fw-img-scene">
+            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/7b9a39a3a9a2cfc32c0985696971f2f097c6124b.png" alt="Data Governance" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/ee14c944415184787b4d7c172d4894f26c4d1b52.png" alt="Policy preview" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f907222f62f532c467b34cfb74a4ee93dad8feee.png" alt="Audit" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="proj-item" data-page="proj-indigo" data-preview="https://ritzy-tusk-12212444.figma.site/_assets/v11/47de891823451c65f0e06a55e2436c9dd6934de6.png" data-type="Ops Intelligence · Analytics">
-      <div class="proj-num">05</div>
-      <div class="proj-info"><div class="proj-title">Ground Operations Intelligence Platform</div><div class="proj-desc">A dual-dashboard system for airport asset monitoring, fleet health, and operational analytics.</div></div>
-      <div class="proj-meta"><div class="proj-tags-sm"><span class="proj-tag">Operations Intelligence</span><span class="proj-tag">Dashboard Design</span><span class="proj-tag">Fleet Analytics</span></div><div class="proj-arrow">→</div></div>
+
+    <div class="fw-gap"></div>
+
+    <!-- ── Panel 05 (ghosts 01-04 + active 05) ── -->
+    <div class="fw-panel" id="fw-panel-5">
+      <div class="fw-tab-row">
+        <div class="fw-tab is-prev" data-page="proj-epay">
+          <span class="fw-tab-num">01</span>
+          <span class="fw-tab-name">Payments</span>
+        </div>
+        <div class="fw-tab is-prev" data-page="proj-huemn">
+          <span class="fw-tab-num">02</span>
+          <span class="fw-tab-name">Studio</span>
+        </div>
+        <div class="fw-tab is-prev" data-page="proj-resolute">
+          <span class="fw-tab-num">03</span>
+          <span class="fw-tab-name">Interchain</span>
+        </div>
+        <div class="fw-tab is-prev" data-page="proj-governance">
+          <span class="fw-tab-num">04</span>
+          <span class="fw-tab-name">Governance</span>
+        </div>
+        <div class="fw-tab is-active">
+          <span class="fw-tab-num">05</span>
+          <span class="fw-tab-name">Ground Operations</span>
+        </div>
+        <button class="fw-tab-cta" data-page="proj-indigo">View Project &#x2197;</button>
+      </div>
+      <h2 class="fw-panel-title">Ground Operations Intelligence Platform</h2>
+      <div class="fw-panel-body">
+                <div class="fw-info">
+          <div class="fw-metrics">
+            <div class="fw-metric"><div class="fw-metric-label">Year</div><div class="fw-metric-val">2024</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Platform</div><div class="fw-metric-val">Web / Control Room</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Domain</div><div class="fw-metric-val">Ops Intelligence</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Pattern</div><div class="fw-metric-val">Dual Dashboard</div></div>
+          </div>
+          <div class="fw-info-role">
+            <div class="fw-metric-label">Role</div>
+            <div class="fw-metric-val">Product &amp; Dashboard Experience Design</div>
+          </div>
+          <div class="fw-info-tags">
+            <span>Ops Intelligence</span><span>Geospatial UX</span><span>Fleet Analytics</span><span>Control Room</span>
+          </div>
+          <div class="fw-info-problem">
+            <div class="fw-metric-label">Problem</div>
+            <p>Operations teams need live fleet visibility and long-term planning tools, without cramming both into one overloaded dashboard.</p>
+          </div>
+          <p class="fw-panel-desc">A dual-dashboard system for live airport fleet monitoring and long-term operational analytics.</p>
+          <button class="fw-view" data-page="proj-indigo">View Case Study</button>
+        </div>
+        <div class="fw-img-3d">
+          <div class="fw-img-scene">
+            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/47de891823451c65f0e06a55e2436c9dd6934de6.png" alt="Ground Operations" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/70ca825f5faae2b5a1a5fe7e316387c236b9aab7.png" alt="Fleet health" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/808a4d2c5eab791e3ca3aaf387cd3b8892d75dce.png" alt="Asset search" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="fw-trap"></div>
+
   </div>
 </section>
 
-<section id="skills">
+<section id="skills" style="scroll-margin-top:82px">
   <div class="s-tag reveal">Skills</div>
-  <h2 class="s-title reveal d1">CORE <span class="red">SKILLS</span> &<br><span class="outline">TOOLS</span></h2>
-  <div class="skills-frame reveal d1">
-    <div class="skills-summary">
-      <div class="skills-summary-label">What I Work With</div>
-      <p class="skills-summary-copy">A design toolkit shaped by systems thinking, interface craft, research, and collaboration, organized to support products from early structure to polished execution.</p>
+  <h2 class="s-title reveal d1">CORE <span class="red">SKILLS</span> &amp;<br><span class="outline">TOOLS</span></h2>
+
+  <div class="sk-int reveal d1">
+
+    <div class="sk-cats">
+      <button class="sk-cat-btn sk-active" data-sk="0">
+        <span class="sk-ci-num">01</span>
+        <span class="sk-ci-name">Experience Design</span>
+        <span class="sk-ci-arrow">&#x2192;</span>
+      </button>
+      <button class="sk-cat-btn" data-sk="1">
+        <span class="sk-ci-num">02</span>
+        <span class="sk-ci-name">Research &amp; Validation</span>
+        <span class="sk-ci-arrow">&#x2192;</span>
+      </button>
+      <button class="sk-cat-btn" data-sk="2">
+        <span class="sk-ci-num">03</span>
+        <span class="sk-ci-name">Design Tools</span>
+        <span class="sk-ci-arrow">&#x2192;</span>
+      </button>
+      <button class="sk-cat-btn" data-sk="3">
+        <span class="sk-ci-num">04</span>
+        <span class="sk-ci-name">Product &amp; Systems</span>
+        <span class="sk-ci-arrow">&#x2192;</span>
+      </button>
+      <button class="sk-cat-btn" data-sk="4">
+        <span class="sk-ci-num">05</span>
+        <span class="sk-ci-name">Collaboration &amp; Delivery</span>
+        <span class="sk-ci-arrow">&#x2192;</span>
+      </button>
     </div>
-    <div class="skills-pillars">
-      <div class="skills-pillar reveal d2">
-        <div class="skills-pillar-no">01</div>
-        <div class="skills-pillar-title">Experience Design</div>
-        <div class="skills-pillar-copy">Core design skills I use to shape product structure, behavior, and interfaces.</div>
-        <div class="skills-points">
-          <div>UX Design</div>
-          <div>UI Design</div>
-          <div>Interaction Design</div>
-          <div>Information Architecture</div>
-          <div>Journey Mapping</div>
-          <div>Service Design</div>
+
+    <div class="sk-display">
+
+      <div class="sk-pane sk-active" data-pane="0">
+        <div class="sk-pane-eyebrow">01 &nbsp;/&nbsp; 05</div>
+        <div class="sk-pane-title">Experience<br>Design</div>
+        <div class="sk-pane-desc">Designing high-complexity flows across fintech, blockchain, enterprise SaaS, and operational platforms — where trust and clarity are non-negotiable.</div>
+        <div class="sk-pane-tags">
+          <span class="sk-ptag">KYC &amp; Regulated Onboarding</span>
+          <span class="sk-ptag">Enterprise Dashboard UX</span>
+          <span class="sk-ptag">B2B Workflow Design</span>
+          <span class="sk-ptag">Blockchain Interface Design</span>
+          <span class="sk-ptag">Operational Intelligence UI</span>
+          <span class="sk-ptag">Progressive Access Design</span>
         </div>
       </div>
-      <div class="skills-pillar reveal d3">
-        <div class="skills-pillar-no">02</div>
-        <div class="skills-pillar-title">Research & Validation</div>
-        <div class="skills-pillar-copy">Methods I use to understand users, evaluate decisions, and improve usability.</div>
-        <div class="skills-points">
-          <div>User Research</div>
-          <div>Usability Testing</div>
-          <div>User Flows</div>
-          <div>Wireframing</div>
-          <div>Heuristic Reviews</div>
-          <div>UX Audits</div>
+
+      <div class="sk-pane" data-pane="1">
+        <div class="sk-pane-eyebrow">02 &nbsp;/&nbsp; 05</div>
+        <div class="sk-pane-title">Research &amp;<br>Validation</div>
+        <div class="sk-pane-desc">Research methods I use to reduce assumption, validate direction, and surface the real problem before any pixel is placed.</div>
+        <div class="sk-pane-tags">
+          <span class="sk-ptag">Stakeholder Interviews</span>
+          <span class="sk-ptag">Jobs-to-be-Done</span>
+          <span class="sk-ptag">Discovery Workshops</span>
+          <span class="sk-ptag">Competitive Audit</span>
+          <span class="sk-ptag">Usability Testing</span>
+          <span class="sk-ptag">Heuristic Analysis</span>
         </div>
       </div>
-      <div class="skills-pillar reveal d4">
-        <div class="skills-pillar-no">03</div>
-        <div class="skills-pillar-title">Design Tools</div>
-        <div class="skills-pillar-copy">The tools I use most often for interface design, flows, workshops, and visual work.</div>
-        <div class="skills-points">
-          <div>Figma</div>
-          <div>FigJam</div>
-          <div>Miro</div>
-          <div>Photoshop</div>
-          <div>Illustrator</div>
-          <div>Cursor</div>
-          <div>Google Suite</div>
-          <div>VS Code</div>
-          <div>Claude</div>
-          <div>ChatGPT</div>
-          <div>AI-Assisted Design</div>
+
+      <div class="sk-pane" data-pane="2">
+        <div class="sk-pane-eyebrow">03 &nbsp;/&nbsp; 05</div>
+        <div class="sk-pane-title">Design<br>Tools</div>
+        <div class="sk-pane-desc">My primary stack for interfaces, prototyping, workshops, and AI-assisted design — including tools most designers haven't shipped with yet.</div>
+        <div class="sk-pane-tags">
+          <span class="sk-ptag">Figma &amp; FigJam</span>
+          <span class="sk-ptag">Miro</span>
+          <span class="sk-ptag">Adobe Suite</span>
+          <span class="sk-ptag">Claude Code</span>
+          <span class="sk-ptag">Cursor</span>
+          <span class="sk-ptag">VS Code</span>
+          <span class="sk-ptag">Midjourney</span>
+          <span class="sk-ptag">AI-Assisted Workflows</span>
         </div>
       </div>
-      <div class="skills-pillar reveal d4">
-        <div class="skills-pillar-no">04</div>
-        <div class="skills-pillar-title">Product & Systems</div>
-        <div class="skills-pillar-copy">Areas where I focus on scale, consistency, and complex product environments.</div>
-        <div class="skills-points">
-          <div>Design Systems</div>
-          <div>Prototyping</div>
-          <div>Dashboard Design</div>
-          <div>SaaS Platforms</div>
-          <div>Enterprise UX</div>
-          <div>AI Product Design</div>
-          <div>Web3 Workflows</div>
+
+      <div class="sk-pane" data-pane="3">
+        <div class="sk-pane-eyebrow">04 &nbsp;/&nbsp; 05</div>
+        <div class="sk-pane-title">Product &amp;<br>Systems</div>
+        <div class="sk-pane-desc">Scaling design across multi-module products where consistency, logic, and cross-team alignment matter as much as the interface itself.</div>
+        <div class="sk-pane-tags">
+          <span class="sk-ptag">Cross-product Design Systems</span>
+          <span class="sk-ptag">Multi-module SaaS</span>
+          <span class="sk-ptag">Fintech &amp; Payments UX</span>
+          <span class="sk-ptag">Web3 &amp; DeFi Platforms</span>
+          <span class="sk-ptag">Ops Intelligence Dashboards</span>
+          <span class="sk-ptag">AI Support Platforms</span>
         </div>
       </div>
-      <div class="skills-pillar reveal d4">
-        <div class="skills-pillar-no">05</div>
-        <div class="skills-pillar-title">Collaboration</div>
-        <div class="skills-pillar-copy">How I work across teams to move projects from design thinking into delivery.</div>
-        <div class="skills-points">
-          <div>Cross-functional collaboration</div>
-          <div>Stakeholder communication</div>
-          <div>Design Reviews</div>
-          <div>Team Leadership</div>
-          <div>Workshop Facilitation</div>
-          <div>Developer Handoff</div>
+
+      <div class="sk-pane" data-pane="4">
+        <div class="sk-pane-eyebrow">05 &nbsp;/&nbsp; 05</div>
+        <div class="sk-pane-title">Collaboration<br>&amp; Delivery</div>
+        <div class="sk-pane-desc">Moving work from ambiguity to execution — aligning PMs, engineers, and business stakeholders without losing design intent along the way.</div>
+        <div class="sk-pane-tags">
+          <span class="sk-ptag">Design Lead (4+ Teams)</span>
+          <span class="sk-ptag">Stakeholder Alignment</span>
+          <span class="sk-ptag">Discovery Workshops</span>
+          <span class="sk-ptag">Design Critiques</span>
+          <span class="sk-ptag">Sprint Planning</span>
+          <span class="sk-ptag">Figma-to-Dev Handoff</span>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<section id="contact">
+<section id="contact" style="scroll-margin-top:82px">
   <div class="s-tag reveal">Get In Touch</div>
   <div class="contact-shell reveal d1">
     <div class="contact-grid">
@@ -2259,7 +3293,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
         <div class="contact-cta-row">
           <a href="https://www.linkedin.com/in/aishwarya-gondlyala-756309182/" target="_blank" rel="noreferrer" class="contact-cta contact-cta-primary">LinkedIn Profile ↗</a>
           <a href="https://ritzy-tusk-12212444.figma.site/" target="_blank" rel="noreferrer" class="contact-cta contact-cta-secondary">View Case Studies ↗</a>
-          <a href="aishwarya_resume_2026.html" target="_blank" rel="noreferrer" class="contact-cta contact-cta-resume">Download Resume ↓</a>
+          <a href="Aishwarya_Gondlyala_Resume_2026.pdf" target="_blank" download rel="noreferrer" class="contact-cta contact-cta-resume">Download Resume ↓</a>
         </div>
       </div>
     </div>
@@ -2301,9 +3335,6 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-eyebrow">Case Study 01</div>
   <h1 class="cs-hero-title">DIGITAL<br><span class="red">PAYMENTS</span> <span class="outline">PLATFORM</span></h1>
   <p class="cs-hero-sub">A mobile digital payments concept designed around trust, verification, and progressive access to financial features.</p>
-  <div class="cs-hero-cta-row">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/digital-payments" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
-  </div>
   <div class="cs-tags-row"><span class="cs-tag">Fintech</span><span class="cs-tag">Mobile UX</span><span class="cs-tag">KYC Flows</span><span class="cs-tag">Wallet Design</span><span class="cs-tag">Payments Journey</span></div>
   <div class="cs-meta-row">
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product and experience design</div></div>
@@ -2313,48 +3344,104 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   </div>
 </div>
 
-<div class="cs-section" id="epay-snapshot">
-  <div class="cs-section-label">Snapshot</div>
-  <div class="cs-2col">
-    <div>
-      <h2 class="cs-section-title">AT A <span class="red">GLANCE</span></h2>
-      <div class="cs-body">
-        <p>I explored a mobile-first digital payments experience that combines onboarding, KYC verification, wallet access, utility payments, transaction history, and support into one product journey.</p>
-        <p>The core idea was <strong>progressive unlock</strong>: helping users begin with limited but meaningful functionality and gain access to more features as trust and verification milestones are completed.</p>
-        <p>Instead of treating compliance as a separate technical layer, I made it a visible part of the journey so the product feels honest, guided, and predictable.</p>
+
+<div class="cs-tension">
+  <div class="cs-tension-eyebrow">The Challenge</div>
+  <blockquote class="cs-tension-quote">If users are blocked too early, the app feels empty. If you expose too many features too soon, it loses credibility. Financial products have to earn trust before they can ask for compliance — and most get it backwards.</blockquote>
+  <p class="cs-tension-sub">The real design challenge wasn't the flows or the screens. It was the sequencing. When users hit a locked feature with no explanation, the app stops feeling like a product and starts feeling like a wall. Every dead end is a trust deficit.</p>
+</div>
+
+<div class="cs-reframe-section">
+  <div class="cs-section-label">Design Reframe</div>
+  <p class="cs-reframe-text">Instead of treating compliance as a hidden technical layer — something to get past — I made access states a <em>visible, legible part of the journey</em>. So the product feels honest and predictable from the first screen, not just after verification.</p>
+  <div class="cs-reframe-principle">
+    <span class="cs-rp-label">Core Principle</span>
+    <span class="cs-rp-text">Progressive unlock: users begin with limited but meaningful functionality and earn access to more features as trust milestones are completed.</span>
+  </div>
+</div>
+
+<div class="cs-section" id="epay-scope" style="background:var(--black2);">
+  <div class="cs-section-label">Process</div>
+  <h2 class="cs-section-title">SCOPE OF <span class="red">WORK</span></h2>
+  <div class="cs-scope-wrap">
+    <div class="cs-scope-grid">
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="3.5"/><line x1="7.8" y1="7.8" x2="10" y2="10"/></svg></div>
+          <span class="cs-scope-col-name">Problem</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Regulated flows feel blocking</span>
+          <span class="cs-scope-pill">Compliance as a hidden layer</span>
+          <span class="cs-scope-pill">Access state confusion</span>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="cs-stats">
-        <div class="cs-stat"><div class="cs-stat-num">3</div><div class="cs-stat-lbl">Primary user states drive product behavior</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">1</div><div class="cs-stat-lbl">Connected logic across onboarding and payments</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">4+</div><div class="cs-stat-lbl">Everyday payment use cases anchored in utility</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">Trust</div><div class="cs-stat-lbl">Restrictions made legible instead of hidden</div></div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><text x="6" y="9.5" text-anchor="middle" font-size="9" font-weight="700" font-family="sans-serif">!</text></svg></div>
+          <span class="cs-scope-col-name">Research</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Fintech user flows</span>
+          <span class="cs-scope-pill">KYC UX patterns</span>
+          <span class="cs-scope-pill">Competitive audit</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v1M6 9v1M2 6H1M11 6h-1M3.5 3.5l-.7-.7M9.2 9.2l-.7-.7M3.5 8.5l-.7.7M9.2 2.8l-.7.7"/><circle cx="6" cy="6" r="2"/></svg></div>
+          <span class="cs-scope-col-name">Solution</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Access state architecture</span>
+          <span class="cs-scope-pill">Progressive unlock system</span>
+          <span class="cs-scope-pill">Guided restriction pattern</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><line x1="4" y1="5" x2="8" y2="5"/><line x1="4" y1="7" x2="7" y2="7"/></svg></div>
+          <span class="cs-scope-col-name">UI & Prototype</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Onboarding & KYC screens</span>
+          <span class="cs-scope-pill">Wallet & payments UI</span>
+          <span class="cs-scope-pill">Utility & support flows</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><polyline points="4,6 5.5,7.5 8,4.5"/></svg></div>
+          <span class="cs-scope-col-name">Delivery</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Mobile UI kit</span>
+          <span class="cs-scope-pill">Figma prototype</span>
+          <span class="cs-scope-pill">Interaction specs</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="cs-section" id="epay-context" style="background:var(--black2);">
-  <div class="cs-section-label">Context</div>
-  <h2 class="cs-section-title">CONTEXT AND <span class="red">DESIGN</span> LOGIC</h2>
-  <div class="cs-2col">
-    <div class="cs-body">
-      <p>Financial products have to balance speed and simplicity with security, trust, and compliance. In many payment apps, users only discover restrictions after they attempt something, which creates confusion and friction.</p>
-      <p>I structured the app around three major states:</p>
-      <ul>
-        <li>Pre-KYC users with limited access and guided onboarding.</li>
-        <li>Users who completed Video KYC and can access wallet functionality.</li>
-        <li>Fully approved users who can use a wider set of payment and account features.</li>
-      </ul>
-      <p>This state-based structure became the backbone of the product. It allowed the interface to change meaningfully depending on user status, rather than simply locking buttons without explanation.</p>
-      <p>I approached onboarding as both a registration journey and a trust-building journey. Multiple KYC paths made the flow feel more realistic and gave users a stronger sense of agency.</p>
+<div class="cs-dec-section">
+  <div class="cs-section-label">Design Decisions</div>
+  <h2 class="cs-section-title">3 CALLS I <span class="red">MADE</span></h2>
+  <div class="cs-dec-grid">
+    <div class="cs-dec">
+      <div class="cs-dec-num">01</div>
+      <div class="cs-dec-title">State before screens</div>
+      <div class="cs-dec-body">I mapped three user states — pre-KYC, partial KYC, and fully approved — before designing a single screen. The alternative was to build features first and add access gates later. That approach creates an interface full of unexplained dead ends. State-first meant every restriction was designed in, not bolted on.</div>
     </div>
-    <div class="cs-body">
-      <p>After KYC is submitted, the experience does not simply stop. The product communicates that the user is in a transitional state, what review may look like, and what they can still do while waiting.</p>
-      <p>The wallet becomes a central value layer, but not one automatically available to everyone. If the user is not ready, the reason is explicit. If they are eligible, the wallet becomes a natural bridge into payments.</p>
-      <p>The payment side is grounded in practical categories like electricity bills, mobile recharge, DTH or cable, and FASTag, making the product feel familiar and useful.</p>
-      <p>The strongest design decision is that access restrictions are not hidden. Users may not be able to do everything immediately, but progression stays understandable and motivating rather than frustrating.</p>
+    <div class="cs-dec">
+      <div class="cs-dec-num">02</div>
+      <div class="cs-dec-title">KYC as a trust journey, not a gate</div>
+      <div class="cs-dec-body">Instead of treating verification as a checkpoint to get past, I designed it as a product moment. The in-review state tells users what they can still do, what's coming next, and that the app is working with them. No disappearing into a black hole after submission. Compliance becomes part of the story, not the end of it.</div>
+    </div>
+    <div class="cs-dec">
+      <div class="cs-dec-num">03</div>
+      <div class="cs-dec-title">Every restriction earns its presence</div>
+      <div class="cs-dec-body">Any feature the user can't access has to explain why, show the path forward, and signal when it changes. The tradeoff was more states to design and more conditional specs to write. The payoff was an app that feels honest rather than hostile — one where restrictions are understood, not just encountered.</div>
     </div>
   </div>
 </div>
@@ -2425,11 +3512,21 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-body">
     <p>This project shows my ability to design around business rules, compliance requirements, and user trust at the same time. It reflects how I think about progressive enablement, product clarity, and useful experiences under real-world constraints.</p>
   </div>
+
+  <div class="cs-actions">
+    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/digital-payments" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+  </div>
 </div>
 
-<div class="cs-next" data-page="proj-huemn">
-  <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">STUDIO PROJECT OPERATIONS SYSTEM</div></div>
-  <div class="cs-next-arrow">→</div>
+<div class="cs-proj-nav">
+  <div class="cs-prev" data-page="home" data-scroll="projects">
+    <div class="cs-prev-arrow">←</div>
+    <div><div class="cs-next-label">All Projects</div><div class="cs-prev-title">BACK TO CASE STUDIES</div></div>
+  </div>
+  <div class="cs-next" data-page="proj-huemn">
+    <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">STUDIO PROJECT OPERATIONS SYSTEM</div></div>
+    <div class="cs-next-arrow">→</div>
+  </div>
 </div>
 </div><!-- /proj-epay -->
 
@@ -2458,9 +3555,6 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-eyebrow">Case Study 02</div>
   <h1 class="cs-hero-title">STUDIO PROJECT<br><span class="red">OPERATIONS</span> <span class="outline">SYSTEM</span></h1>
   <p class="cs-hero-sub">A workflow-driven project and shoot management system for photography studios, built inside a broader studio business platform.</p>
-  <div class="cs-hero-cta-row">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/studio-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
-  </div>
   <div class="cs-tags-row"><span class="cs-tag">Workflow Design</span><span class="cs-tag">Dashboard UX</span><span class="cs-tag">Service Business Tools</span><span class="cs-tag">Project Planning</span><span class="cs-tag">Operations Design</span></div>
   <div class="cs-meta-row">
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product and workflow experience design</div></div>
@@ -2470,53 +3564,104 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   </div>
 </div>
 
-<div class="cs-section" id="huemn-snapshot">
-  <div class="cs-section-label">Snapshot</div>
-  <div class="cs-2col">
-    <div>
-      <h2 class="cs-section-title">AT A <span class="red">GLANCE</span></h2>
-      <div class="cs-body">
-        <p>I worked on the project-operations layer of a business platform for photographers and studios. The focus was on helping a studio create a new project, break it into multiple shoot events, plan deliverables, and keep client payments visible in one connected workflow.</p>
-        <p>Instead of treating projects like generic task lists, I approached the experience as a studio-specific operating system built around how photography work actually happens.</p>
+
+<div class="cs-tension">
+  <div class="cs-tension-eyebrow">The Challenge</div>
+  <blockquote class="cs-tension-quote">Studios end up stitching together spreadsheets, calendars, chats, and finance trackers — not because they want to, but because no product was built around how they actually work.</blockquote>
+  <p class="cs-tension-sub">A wedding studio managing 20 clients doesn't have a project problem. They have a coordination problem. Multiple events, multiple photographers, multiple payment milestones — all moving in parallel, all connected. Generic project tools model tasks. Studios model relationships.</p>
+</div>
+
+<div class="cs-reframe-section">
+  <div class="cs-section-label">Design Reframe</div>
+  <p class="cs-reframe-text">Instead of adapting a generic project management model to studio work, I treated the product as a <em>studio-specific operating system</em> — one that mirrors how photography work actually unfolds, from booking intake through final delivery.</p>
+  <div class="cs-reframe-principle">
+    <span class="cs-rp-label">Core Principle</span>
+    <span class="cs-rp-text">Workflow-first design: every screen connects to the next real step in a studio's operational flow, not just a list of features.</span>
+  </div>
+</div>
+
+<div class="cs-section" id="huemn-scope" style="background:var(--black2);">
+  <div class="cs-section-label">Process</div>
+  <h2 class="cs-section-title">SCOPE OF <span class="red">WORK</span></h2>
+  <div class="cs-scope-wrap">
+    <div class="cs-scope-grid">
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="3.5"/><line x1="7.8" y1="7.8" x2="10" y2="10"/></svg></div>
+          <span class="cs-scope-col-name">Problem</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Generic tools don't fit studios</span>
+          <span class="cs-scope-pill">Multi-event project complexity</span>
+          <span class="cs-scope-pill">Payments disconnected from work</span>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="cs-stats">
-        <div class="cs-stat"><div class="cs-stat-num">100%</div><div class="cs-stat-lbl">Adoption across 100+ target studios at launch</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">30%</div><div class="cs-stat-lbl">Increase in monthly active users post-redesign</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">1</div><div class="cs-stat-lbl">Connected view of shoots, payments, and deliverables</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">6mo</div><div class="cs-stat-lbl">End-to-end design and shipped within 6 months</div></div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><text x="6" y="9.5" text-anchor="middle" font-size="9" font-weight="700" font-family="sans-serif">!</text></svg></div>
+          <span class="cs-scope-col-name">Research</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Studio workflow mapping</span>
+          <span class="cs-scope-pill">Photography business patterns</span>
+          <span class="cs-scope-pill">SaaS workflow audit</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v1M6 9v1M2 6H1M11 6h-1M3.5 3.5l-.7-.7M9.2 9.2l-.7-.7M3.5 8.5l-.7.7M9.2 2.8l-.7.7"/><circle cx="6" cy="6" r="2"/></svg></div>
+          <span class="cs-scope-col-name">Solution</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Workflow-first project creation</span>
+          <span class="cs-scope-pill">Connected shoot management</span>
+          <span class="cs-scope-pill">Integrated payment tracking</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><line x1="4" y1="5" x2="8" y2="5"/><line x1="4" y1="7" x2="7" y2="7"/></svg></div>
+          <span class="cs-scope-col-name">UI & Prototype</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">4-step project creation flow</span>
+          <span class="cs-scope-pill">Shoots management view</span>
+          <span class="cs-scope-pill">Projects dashboard</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><polyline points="4,6 5.5,7.5 8,4.5"/></svg></div>
+          <span class="cs-scope-col-name">Delivery</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Desktop web system</span>
+          <span class="cs-scope-pill">Figma prototype</span>
+          <span class="cs-scope-pill">Workflow specifications</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="cs-section" id="huemn-context" style="background:var(--black2);">
-  <div class="cs-section-label">Context</div>
-  <h2 class="cs-section-title">FROM CLIENT WORK TO <span class="red">OPERATIONS</span></h2>
-  <div class="cs-2col">
-    <div class="cs-body">
-      <p>Photography and wedding studios do not operate like standard teams using generic project software. A single client project can include multiple events, photographers, deliverables, and staggered payment milestones.</p>
-      <p>The core problem was not simply how to list projects. It was how to turn booked client work into a structured, trackable operational flow.</p>
-      <p>I designed the experience as a connected journey:</p>
-      <ul>
-        <li>Create the project and define the core client details.</li>
-        <li>Break the project into shoot events.</li>
-        <li>Plan deliverables.</li>
-        <li>Track payments and project progress together.</li>
-      </ul>
-      <p>The Projects dashboard combines summary-level business visibility and project-level execution insight. It becomes a decision surface, not just a list.</p>
+<div class="cs-dec-section">
+  <div class="cs-section-label">Design Decisions</div>
+  <h2 class="cs-section-title">3 CALLS I <span class="red">MADE</span></h2>
+  <div class="cs-dec-grid">
+    <div class="cs-dec">
+      <div class="cs-dec-num">01</div>
+      <div class="cs-dec-title">A guided flow, not a form</div>
+      <div class="cs-dec-body">The new project experience is a 4-step guided journey — define details, set up shoots, plan deliverables, track payments — rather than a single flat form. This matches how studios actually think about a booking: first what, then when, then what's produced, then what's owed. Breaking it into steps makes a complex setup feel like a conversation.</div>
     </div>
-    <div class="cs-body">
-      <p>The project summary panel adds richer operational context with reminders, completion states, payment information, and deliverable progress, reducing the need to bounce between screens.</p>
-      <p>The New Project flow uses four steps that reflect the real way studio work is scoped:</p>
-      <ul>
-        <li>Project name and package price</li>
-        <li>Shoots</li>
-        <li>Deliverables</li>
-        <li>Client payments</li>
-      </ul>
-      <p>The Shoots screen becomes the core planning layer, supported by filters like Unscheduled, Unassigned, Upcoming, and Today, plus detail panels for venue, timing, crew, notes, and attachments.</p>
+    <div class="cs-dec">
+      <div class="cs-dec-num">02</div>
+      <div class="cs-dec-title">Shoots as first-class objects</div>
+      <div class="cs-dec-body">I treated shoot events as distinct entities with their own crew assignments, status, and context — not just items on a project checklist. That decision unlocks operational visibility: filter by overdue shoots, see unassigned crew, track each event independently. When shoots have their own identity, managing them stops being memory work.</div>
+    </div>
+    <div class="cs-dec">
+      <div class="cs-dec-num">03</div>
+      <div class="cs-dec-title">Payments inside the project, not beside it</div>
+      <div class="cs-dec-body">Client payment milestones live inside the project view, not in a separate finance module. I considered keeping finances separate — it's cleaner in isolation. But a studio managing 20 projects can't afford the context switch. Keeping payments adjacent to the work they're tied to means one less place to check and one fewer thing to forget.</div>
     </div>
   </div>
 </div>
@@ -2587,11 +3732,21 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-body">
     <p>This project demonstrates my ability to design for a highly specific business domain rather than relying on generic SaaS patterns. It shows how I map real operational workflows and build product structure around how work truly happens.</p>
   </div>
+
+  <div class="cs-actions">
+    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/studio-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+  </div>
 </div>
 
-<div class="cs-next" data-page="proj-resolute">
-  <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">DECENTRALIZED INTERCHAIN PLATFORM</div></div>
-  <div class="cs-next-arrow">→</div>
+<div class="cs-proj-nav">
+  <div class="cs-prev" data-page="proj-epay">
+    <div class="cs-prev-arrow">←</div>
+    <div><div class="cs-next-label">Previous Project</div><div class="cs-prev-title">DIGITAL PAYMENTS PLATFORM</div></div>
+  </div>
+  <div class="cs-next" data-page="proj-resolute">
+    <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">DECENTRALIZED INTERCHAIN PLATFORM</div></div>
+    <div class="cs-next-arrow">→</div>
+  </div>
 </div>
 </div><!-- /proj-huemn -->
 
@@ -2620,9 +3775,6 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-eyebrow">Case Study 03</div>
   <h1 class="cs-hero-title">DECENTRALIZED<br><span class="red">INTERCHAIN</span> <span class="outline">PLATFORM</span></h1>
   <p class="cs-hero-sub">A decentralized interchain dashboard concept designed to make governance, staking, portfolio visibility, and transfers more structured and usable.</p>
-  <div class="cs-hero-cta-row">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/decentralized-platform" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
-  </div>
   <div class="cs-tags-row"><span class="cs-tag">Web3 Product Design</span><span class="cs-tag">Dashboard UX</span><span class="cs-tag">Governance Flows</span><span class="cs-tag">Design System</span><span class="cs-tag">Cross-chain Experience</span></div>
   <div class="cs-meta-row">
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product, dashboard, and design system work</div></div>
@@ -2632,47 +3784,104 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   </div>
 </div>
 
-<div class="cs-section" id="resolute-snapshot">
-  <div class="cs-section-label">Snapshot</div>
-  <div class="cs-2col">
-    <div>
-      <h2 class="cs-section-title">AT A <span class="red">GLANCE</span></h2>
-      <div class="cs-body">
-        <p>I designed an interchain dashboard concept that brings together portfolio visibility, staking, governance participation, and token transfers into one unified experience.</p>
-        <p>The goal was to make crypto-native actions feel more intentional and easier to navigate by combining dashboard clarity with deeper proposal-reading and decision-making flows.</p>
+
+<div class="cs-tension">
+  <div class="cs-tension-eyebrow">The Challenge</div>
+  <blockquote class="cs-tension-quote">Web3 products ask users to switch between multiple tools just to understand what they hold, what they can do next, and how participation actually works. That's not a content problem. It's a product structure problem.</blockquote>
+  <p class="cs-tension-sub">The crypto-native assumption is that users already understand the protocol. Most don't. The result is interfaces that are technically accurate but experientially exhausting — lots of information, almost no guidance. Governance participation especially suffers: raw on-chain data with no context for why it matters.</p>
+</div>
+
+<div class="cs-reframe-section">
+  <div class="cs-section-label">Design Reframe</div>
+  <p class="cs-reframe-text">Instead of building around protocol capability and expecting users to navigate around it, I designed around <em>user intent</em> — what are you trying to do, what context do you need, and how do you act with confidence in a domain where trust is earned slowly.</p>
+  <div class="cs-reframe-principle">
+    <span class="cs-rp-label">Core Principle</span>
+    <span class="cs-rp-text">Participation platform over wallet utility — governance, staking, transfers, and portfolio visibility united under one coherent surface.</span>
+  </div>
+</div>
+
+<div class="cs-section" id="resolute-scope" style="background:var(--black2);">
+  <div class="cs-section-label">Process</div>
+  <h2 class="cs-section-title">SCOPE OF <span class="red">WORK</span></h2>
+  <div class="cs-scope-wrap">
+    <div class="cs-scope-grid">
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="3.5"/><line x1="7.8" y1="7.8" x2="10" y2="10"/></svg></div>
+          <span class="cs-scope-col-name">Problem</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Fragmented Web3 tools</span>
+          <span class="cs-scope-pill">Protocol complexity for users</span>
+          <span class="cs-scope-pill">Governance hard to participate in</span>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="cs-stats">
-        <div class="cs-stat"><div class="cs-stat-num">35%</div><div class="cs-stat-lbl">Lift in task completion rate after redesign</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">25%</div><div class="cs-stat-lbl">Reduction in staking flow abandonment</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">4</div><div class="cs-stat-lbl">Core workflows unified in one dashboard</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">1</div><div class="cs-stat-lbl">Persistent navigation model across all modules</div></div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><text x="6" y="9.5" text-anchor="middle" font-size="9" font-weight="700" font-family="sans-serif">!</text></svg></div>
+          <span class="cs-scope-col-name">Research</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Web3 UX patterns</span>
+          <span class="cs-scope-pill">Governance workflow analysis</span>
+          <span class="cs-scope-pill">Interchain product landscape</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v1M6 9v1M2 6H1M11 6h-1M3.5 3.5l-.7-.7M9.2 9.2l-.7-.7M3.5 8.5l-.7.7M9.2 2.8l-.7.7"/><circle cx="6" cy="6" r="2"/></svg></div>
+          <span class="cs-scope-col-name">Solution</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Unified participation platform</span>
+          <span class="cs-scope-pill">4-module dashboard system</span>
+          <span class="cs-scope-pill">Structured design language</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><line x1="4" y1="5" x2="8" y2="5"/><line x1="4" y1="7" x2="7" y2="7"/></svg></div>
+          <span class="cs-scope-col-name">UI & Prototype</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Dashboard & overview</span>
+          <span class="cs-scope-pill">Governance voting flows</span>
+          <span class="cs-scope-pill">Staking & transfer UI</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><polyline points="4,6 5.5,7.5 8,4.5"/></svg></div>
+          <span class="cs-scope-col-name">Delivery</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">High-fidelity screens</span>
+          <span class="cs-scope-pill">Component system</span>
+          <span class="cs-scope-pill">Interaction documentation</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="cs-section" id="resolute-context" style="background:var(--black2);">
-  <div class="cs-section-label">Context</div>
-  <h2 class="cs-section-title">FROM FRAGMENTED FLOWS TO <span class="red">PARTICIPATION</span></h2>
-  <div class="cs-2col">
-    <div class="cs-body">
-      <p>Web3 products often ask users to switch between multiple contexts just to understand what they hold, what they can do next, and how participation works. I designed a more complete product surface where users can monitor assets, take action, and engage with governance from one place.</p>
-      <p>I organized the platform around four core workflows:</p>
-      <ul>
-        <li>Overview</li>
-        <li>Transfers</li>
-        <li>Staking</li>
-        <li>Governance</li>
-      </ul>
-      <p>The design direction centered on turning protocol capability into product clarity. Instead of exposing raw technical behavior, the interface turns balances, proposals, staking behavior, and transfers into a coherent dashboard-led experience.</p>
+<div class="cs-dec-section">
+  <div class="cs-section-label">Design Decisions</div>
+  <h2 class="cs-section-title">3 CALLS I <span class="red">MADE</span></h2>
+  <div class="cs-dec-grid">
+    <div class="cs-dec">
+      <div class="cs-dec-num">01</div>
+      <div class="cs-dec-title">Four workflows, one navigation</div>
+      <div class="cs-dec-body">Governance, staking, transfers, and portfolio overview all live in one persistent navigation rail instead of separate disconnected tools. A narrower product might have done one thing better. But interchain users don't have one job — they monitor, participate, and move assets. One nav keeps context intact across all of them.</div>
     </div>
-    <div class="cs-body">
-      <p>One of the strongest aspects of the project is the visible progression from low-fi wireframes to a more resolved visual system with stronger hierarchy and a reusable design language.</p>
-      <p>The overview screen acts as the user’s anchor, surfacing available balance, asset distribution, portfolio summaries, and recent transactions in one place.</p>
-      <p>Governance became one of the most distinctive modules. Instead of treating voting as a shallow toggle, I designed for proposal listing, proposal detail, participation status, and outcome visibility.</p>
-      <p>Staking and transfers extend the platform from visibility into action, making it feel like a place to view, act, and participate, not just store tokens.</p>
+    <div class="cs-dec">
+      <div class="cs-dec-num">02</div>
+      <div class="cs-dec-title">Structure first, visual language second</div>
+      <div class="cs-dec-body">I spent the first design phase on layout logic and information architecture before committing to any visual direction. The dark, high-contrast purple system came after the product structure was resolved. In Web3, trust and clarity are both weak by default. The visual direction had to reinforce both — not just signal premium.</div>
+    </div>
+    <div class="cs-dec">
+      <div class="cs-dec-num">03</div>
+      <div class="cs-dec-title">Governance as readable decisions</div>
+      <div class="cs-dec-body">Proposal screens were designed to give users enough context to vote with actual understanding: full description, voting distribution, and an integrated voting interface. The alternative — surfacing raw on-chain data — would have been accurate for protocol experts. But accurate and usable are different things. I designed for the person who needs to vote, not just the one who already knows how.</div>
     </div>
   </div>
 </div>
@@ -2743,11 +3952,21 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-body">
     <p>This project demonstrates my ability to work in technically dense, emerging product categories without losing sight of usability. It also shows range across wireframing, iterative refinement, dashboard design, and system-level thinking.</p>
   </div>
+
+  <div class="cs-actions">
+    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/decentralized-platform" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+  </div>
 </div>
 
-<div class="cs-next" data-page="proj-governance">
-  <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">DATA GOVERNANCE PLATFORM</div></div>
-  <div class="cs-next-arrow">→</div>
+<div class="cs-proj-nav">
+  <div class="cs-prev" data-page="proj-huemn">
+    <div class="cs-prev-arrow">←</div>
+    <div><div class="cs-next-label">Previous Project</div><div class="cs-prev-title">STUDIO PROJECT OPERATIONS SYSTEM</div></div>
+  </div>
+  <div class="cs-next" data-page="proj-governance">
+    <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">DATA GOVERNANCE PLATFORM</div></div>
+    <div class="cs-next-arrow">→</div>
+  </div>
 </div>
 </div><!-- /proj-resolute -->
 
@@ -2766,7 +3985,7 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-topbar-nav">
     <a class="cs-topbar-link" data-page="home" data-scroll="projects">All Projects</a>
     <a class="cs-topbar-link" data-page="home" data-scroll="about">About</a>
-    <a class="cs-topbar-link" href="https://ritzy-tusk-12212444.figma.site/data-governance" target="_blank">Full Case Study ↗</a>
+    <a class="cs-topbar-link" href="https://ritzy-tusk-12212444.figma.site/" target="_blank">Full Case Study ↗</a>
   </div>
 </div>
 <div class="cs-hero">
@@ -2776,9 +3995,6 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-eyebrow">Case Study 04</div>
   <h1 class="cs-hero-title">DATA<br><span class="red">GOVERNANCE</span> <span class="outline">PLATFORM</span></h1>
   <p class="cs-hero-sub">A multi-module enterprise platform for managing datasets, policies, access permissions, audit trails, and compliance workflows.</p>
-  <div class="cs-hero-cta-row">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/data-governance" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
-  </div>
   <div class="cs-tags-row"><span class="cs-tag">Enterprise SaaS</span><span class="cs-tag">Governance UX</span><span class="cs-tag">Access Control</span><span class="cs-tag">Policy Design</span><span class="cs-tag">Admin Systems</span></div>
   <div class="cs-meta-row">
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product and experience design</div></div>
@@ -2788,40 +4004,104 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   </div>
 </div>
 
-<div class="cs-section" id="governance-snapshot">
-  <div class="cs-section-label">Snapshot</div>
-  <div class="cs-2col">
-    <div>
-      <h2 class="cs-section-title">AT A <span class="red">GLANCE</span></h2>
-      <div class="cs-body">
-        <p>I worked on an internal enterprise platform designed to centralize governance work across datasets, policies, access permissions, auditability, and compliance.</p>
-        <p>The focus was on helping multiple admin-heavy workflows feel coherent inside one system while still supporting the depth needed for governance operations and AI-assisted decision-making.</p>
+
+<div class="cs-tension">
+  <div class="cs-tension-eyebrow">The Challenge</div>
+  <blockquote class="cs-tension-quote">Policies affect datasets. Access affects users and groups. Audit logs validate whether governance rules are actually working. When the product doesn't make those relationships visible, teams stop trusting the system and start building workarounds.</blockquote>
+  <p class="cs-tension-sub">Enterprise governance tools are usually assembled department by department. Policies live in one system. Access lives in another. Audit is somewhere else entirely. The result is governance as overhead — something you do after the real work, not something that enables it.</p>
+</div>
+
+<div class="cs-reframe-section">
+  <div class="cs-section-label">Design Reframe</div>
+  <p class="cs-reframe-text">Instead of building isolated modules for each governance function, I designed the platform around <em>the relationships between them</em> — so that a policy decision connects visibly to the datasets it affects, the users it governs, and the audit trail that proves it worked.</p>
+  <div class="cs-reframe-principle">
+    <span class="cs-rp-label">Core Principle</span>
+    <span class="cs-rp-text">Decisions before data — every module is designed to help governance teams make calls, not just store records.</span>
+  </div>
+</div>
+
+<div class="cs-section" id="governance-scope" style="background:var(--black2);">
+  <div class="cs-section-label">Process</div>
+  <h2 class="cs-section-title">SCOPE OF <span class="red">WORK</span></h2>
+  <div class="cs-scope-wrap">
+    <div class="cs-scope-grid">
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="3.5"/><line x1="7.8" y1="7.8" x2="10" y2="10"/></svg></div>
+          <span class="cs-scope-col-name">Problem</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Governance tools are fragmented</span>
+          <span class="cs-scope-pill">Policy decisions are opaque</span>
+          <span class="cs-scope-pill">Audit has no product home</span>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="cs-stats">
-        <div class="cs-stat"><div class="cs-stat-num">6</div><div class="cs-stat-lbl">Primary modules connected across the platform</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">AI</div><div class="cs-stat-lbl">Workflow support for policy and discovery tasks</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">1</div><div class="cs-stat-lbl">Unified surface for policy, access, audit, and evidence</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">Ctrl</div><div class="cs-stat-lbl">Built for administrative rigor and high-stakes decisions</div></div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><text x="6" y="9.5" text-anchor="middle" font-size="9" font-weight="700" font-family="sans-serif">!</text></svg></div>
+          <span class="cs-scope-col-name">Research</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Enterprise governance patterns</span>
+          <span class="cs-scope-pill">Admin workflow analysis</span>
+          <span class="cs-scope-pill">AI integration models</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v1M6 9v1M2 6H1M11 6h-1M3.5 3.5l-.7-.7M9.2 9.2l-.7-.7M3.5 8.5l-.7.7M9.2 2.8l-.7.7"/><circle cx="6" cy="6" r="2"/></svg></div>
+          <span class="cs-scope-col-name">Solution</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Catalog-first architecture</span>
+          <span class="cs-scope-pill">Policy simulation layer</span>
+          <span class="cs-scope-pill">AI-assisted drafting</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><line x1="4" y1="5" x2="8" y2="5"/><line x1="4" y1="7" x2="7" y2="7"/></svg></div>
+          <span class="cs-scope-col-name">UI & Prototype</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Dashboard & module views</span>
+          <span class="cs-scope-pill">Policy creation & preview</span>
+          <span class="cs-scope-pill">Access & audit flows</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><polyline points="4,6 5.5,7.5 8,4.5"/></svg></div>
+          <span class="cs-scope-col-name">Delivery</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Enterprise UI system</span>
+          <span class="cs-scope-pill">Figma prototype</span>
+          <span class="cs-scope-pill">Flow documentation</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="cs-section" id="governance-context" style="background:var(--black2);">
-  <div class="cs-section-label">Context</div>
-  <h2 class="cs-section-title">STRUCTURING A DENSE <span class="red">ENTERPRISE</span> SYSTEM</h2>
-  <div class="cs-2col">
-    <div class="cs-body">
-      <p>Data governance work is often fragmented across tools and teams. Data catalogs, access approvals, and compliance evidence frequently live in separate systems, which creates operational overhead and weakens visibility.</p>
-      <p>I treated the catalog and dataset layer as the foundation of the platform. If users cannot understand what data exists and how it is organized, the rest of governance becomes abstract.</p>
-      <p>On top of that foundation sits the policy layer. Policies are not just forms here. They are operational rules that can be created, mapped, previewed, edited, and simulated before activation.</p>
+<div class="cs-dec-section">
+  <div class="cs-section-label">Design Decisions</div>
+  <h2 class="cs-section-title">3 CALLS I <span class="red">MADE</span></h2>
+  <div class="cs-dec-grid">
+    <div class="cs-dec">
+      <div class="cs-dec-num">01</div>
+      <div class="cs-dec-title">Catalog as the foundation</div>
+      <div class="cs-dec-body">I started with the data catalog layer because if teams can't understand what data exists and how it's organized, every downstream decision — policies, access, audit — becomes abstract. Catalog-first meant every other module had something concrete to anchor to. Governance about nothing in particular is just documentation.</div>
     </div>
-    <div class="cs-body">
-      <p>Access management became another major pillar through users, groups, invitations, permission levels, and access review behaviors. Governance is ultimately about who can do what, under which conditions, and how those decisions are maintained over time.</p>
-      <p>Audit and compliance workflows extend the product into logs, violations, evidence, and reporting, turning the platform into a control surface rather than a setup-only tool.</p>
-      <p>I positioned AI as a workflow assistant for tasks like policy creation, catalog assistance, search, and schema conflict handling, supporting complex work without replacing governance logic.</p>
+    <div class="cs-dec">
+      <div class="cs-dec-num">02</div>
+      <div class="cs-dec-title">Policy simulation before activation</div>
+      <div class="cs-dec-body">Instead of making policy changes irreversible or opaque, I designed a simulation and impact-preview flow. Teams can see which subjects, actions, and resources a policy affects before going live. The tradeoff was added product complexity. The payoff was a governance workflow that doesn't require perfect confidence upfront — test, revise, then activate.</div>
+    </div>
+    <div class="cs-dec">
+      <div class="cs-dec-num">03</div>
+      <div class="cs-dec-title">AI for drafting, not deciding</div>
+      <div class="cs-dec-body">I positioned AI inside specific high-complexity tasks — policy creation in plain language, catalog setup, schema conflict handling — not as a general assistant. The design question was where AI reduces genuine cognitive load versus where it adds noise. In enterprise governance, the answer is drafting and discovery, not decision-making. AI helps you start. The team decides.</div>
     </div>
   </div>
 </div>
@@ -2892,11 +4172,21 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-body">
     <p>This project demonstrates my ability to work on complex enterprise systems where information architecture, operational clarity, and cross-module thinking matter more than isolated screens. It reflects how I design products that need to support administrative rigor and long-term usability.</p>
   </div>
+
+  <div class="cs-actions">
+    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+  </div>
 </div>
 
-<div class="cs-next" data-page="proj-indigo">
-  <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">GROUND OPERATIONS INTELLIGENCE PLATFORM</div></div>
-  <div class="cs-next-arrow">→</div>
+<div class="cs-proj-nav">
+  <div class="cs-prev" data-page="proj-resolute">
+    <div class="cs-prev-arrow">←</div>
+    <div><div class="cs-next-label">Previous Project</div><div class="cs-prev-title">DECENTRALIZED INTERCHAIN PLATFORM</div></div>
+  </div>
+  <div class="cs-next" data-page="proj-indigo">
+    <div><div class="cs-next-label">Next Project</div><div class="cs-next-title">GROUND OPERATIONS INTELLIGENCE PLATFORM</div></div>
+    <div class="cs-next-arrow">→</div>
+  </div>
 </div>
 </div><!-- /proj-governance -->
 
@@ -2925,9 +4215,6 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-eyebrow">Case Study 05</div>
   <h1 class="cs-hero-title">GROUND OPERATIONS<br><span class="red">INTELLIGENCE</span> <span class="outline">PLATFORM</span></h1>
   <p class="cs-hero-sub">A two-part dashboard system for airport ground support operations, combining live monitoring with fleet health and operational analytics.</p>
-  <div class="cs-hero-cta-row">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/ground-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
-  </div>
   <div class="cs-tags-row"><span class="cs-tag">Operations Intelligence</span><span class="cs-tag">Dashboard Design</span><span class="cs-tag">Map Monitoring</span><span class="cs-tag">Fleet Analytics</span><span class="cs-tag">Operational UX</span></div>
   <div class="cs-meta-row">
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product and dashboard experience design</div></div>
@@ -2937,40 +4224,104 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   </div>
 </div>
 
-<div class="cs-section" id="indigo-snapshot">
-  <div class="cs-section-label">Snapshot</div>
-  <div class="cs-2col">
-    <div>
-      <h2 class="cs-section-title">AT A <span class="red">GLANCE</span></h2>
-      <div class="cs-body">
-        <p>I designed a two-part dashboard system: one for live monitoring and one for operations analytics. Together, they create a platform for managing airport ground support assets in real time while also improving long-term fleet health, maintenance strategy, utilization, and SLA performance.</p>
-        <p>The split was intentional because operations teams and planning teams need different interfaces for different decision horizons.</p>
+
+<div class="cs-tension">
+  <div class="cs-tension-eyebrow">The Challenge</div>
+  <blockquote class="cs-tension-quote">When visibility is weak, teams struggle to respond quickly. When planning is weak, the same failures repeat. The problem isn't that operations teams don't have data — it's that they have the wrong data at the wrong moment.</blockquote>
+  <p class="cs-tension-sub">Airport ground support runs under tight time pressure. One delayed response cascades into a missed departure. But the tools built for real-time response and the tools built for operational planning have always been separate — because they were designed for different people, at different moments, with completely different needs.</p>
+</div>
+
+<div class="cs-reframe-section">
+  <div class="cs-section-label">Design Reframe</div>
+  <p class="cs-reframe-text">Instead of forcing both needs into one overloaded dashboard, I <em>separated the two jobs</em> — a monitoring dashboard for live situational awareness, and an operations dashboard for longer-term fleet intelligence — while keeping both inside one connected platform.</p>
+  <div class="cs-reframe-principle">
+    <span class="cs-rp-label">Core Principle</span>
+    <span class="cs-rp-text">Different decision horizons need different interfaces, but they should live in the same system so insights from one inform the other.</span>
+  </div>
+</div>
+
+<div class="cs-section" id="indigo-scope" style="background:var(--black2);">
+  <div class="cs-section-label">Process</div>
+  <h2 class="cs-section-title">SCOPE OF <span class="red">WORK</span></h2>
+  <div class="cs-scope-wrap">
+    <div class="cs-scope-grid">
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="3.5"/><line x1="7.8" y1="7.8" x2="10" y2="10"/></svg></div>
+          <span class="cs-scope-col-name">Problem</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Real-time and planning in one tool</span>
+          <span class="cs-scope-pill">Alert stream with no context</span>
+          <span class="cs-scope-pill">No link from insight to action</span>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="cs-stats">
-        <div class="cs-stat"><div class="cs-stat-num">2</div><div class="cs-stat-lbl">Connected dashboards with distinct jobs</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">Live</div><div class="cs-stat-lbl">Map-based awareness and alert handling</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">Fleet</div><div class="cs-stat-lbl">Maintenance, cost, and utilization intelligence</div></div>
-        <div class="cs-stat"><div class="cs-stat-num">Multi</div><div class="cs-stat-lbl">Airport-level comparisons and monitoring zones</div></div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><text x="6" y="9.5" text-anchor="middle" font-size="9" font-weight="700" font-family="sans-serif">!</text></svg></div>
+          <span class="cs-scope-col-name">Research</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Airport ops context</span>
+          <span class="cs-scope-pill">Fleet management patterns</span>
+          <span class="cs-scope-pill">Control-room interface research</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v1M6 9v1M2 6H1M11 6h-1M3.5 3.5l-.7-.7M9.2 9.2l-.7-.7M3.5 8.5l-.7.7M9.2 2.8l-.7.7"/><circle cx="6" cy="6" r="2"/></svg></div>
+          <span class="cs-scope-col-name">Solution</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Dual-dashboard architecture</span>
+          <span class="cs-scope-pill">Map-based monitoring layer</span>
+          <span class="cs-scope-pill">Predictive analytics module</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="8" height="8" rx="1"/><line x1="4" y1="5" x2="8" y2="5"/><line x1="4" y1="7" x2="7" y2="7"/></svg></div>
+          <span class="cs-scope-col-name">UI & Prototype</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Monitoring dashboard</span>
+          <span class="cs-scope-pill">Operations analytics view</span>
+          <span class="cs-scope-pill">Alert & zone management</span>
+        </div>
+      </div>
+      <div class="cs-scope-col">
+        <div class="cs-scope-head">
+          <div class="cs-scope-icon"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><polyline points="4,6 5.5,7.5 8,4.5"/></svg></div>
+          <span class="cs-scope-col-name">Delivery</span>
+        </div>
+        <div class="cs-scope-pills">
+          <span class="cs-scope-pill">Desktop dashboards</span>
+          <span class="cs-scope-pill">Figma prototype</span>
+          <span class="cs-scope-pill">System documentation</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="cs-section" id="indigo-context" style="background:var(--black2);">
-  <div class="cs-section-label">Context</div>
-  <h2 class="cs-section-title">FROM REAL-TIME RESPONSE TO <span class="red">OPTIMIZATION</span></h2>
-  <div class="cs-2col">
-    <div class="cs-body">
-      <p>Ground support operations at airports involve a large network of vehicles and equipment operating under strict timing pressure. Pushback tractors, GPUs, baggage loaders, ambulifts, fuel bowsers, and service vehicles all influence turnaround reliability.</p>
-      <p>I designed the monitoring dashboard to behave like a control-room interface. It uses a map-based foundation so users can understand assets in operational context rather than through abstract rows or isolated metrics.</p>
-      <p>The system supports multiple airports and operational zones such as service roads, emergency services, cargo operations, terminal operations, passenger services, and fuel operations. These zones make monitoring more meaningful because alerts can be understood spatially.</p>
+<div class="cs-dec-section">
+  <div class="cs-section-label">Design Decisions</div>
+  <h2 class="cs-section-title">3 CALLS I <span class="red">MADE</span></h2>
+  <div class="cs-dec-grid">
+    <div class="cs-dec">
+      <div class="cs-dec-num">01</div>
+      <div class="cs-dec-title">Map-based monitoring, not a data table</div>
+      <div class="cs-dec-body">The live monitoring dashboard uses a spatial map as its foundation, not rows or abstract metrics. Airport assets have location — and that location affects urgency, response routing, and zone assignment. Seeing an asset in spatial context is a fundamentally different and faster decision than reading its status in a table. The map is the interface, not just a widget inside it.</div>
     </div>
-    <div class="cs-body">
-      <p>The operations dashboard moves up a level from incident response to fleet intelligence. It looks across time, asset categories, and airports to show recurring failures, maintenance categories, cost movement, SLA adherence, and utilization quality.</p>
-      <p>The concept becomes especially strong when it moves beyond diagnosis into recommendations. Instead of stopping at what is wrong, the dashboard suggests predictive maintenance, smart redeployment, and AI-driven allocation models.</p>
-      <p>That turns the interface into a decision-support tool rather than a passive reporting layer, and helps teams act, prioritize, and improve over time.</p>
+    <div class="cs-dec">
+      <div class="cs-dec-num">02</div>
+      <div class="cs-dec-title">Zones as alert logic, not decoration</div>
+      <div class="cs-dec-body">Geofences and operational zones — terminal ops, cargo, fuel, emergency services — aren't just visual overlays on the map. I used them to structure the alert model: an incident in a fuel zone carries different urgency than one in passenger services. Without spatial context, the alert stream is just noise. With it, teams can triage by location, not just by timestamp.</div>
+    </div>
+    <div class="cs-dec">
+      <div class="cs-dec-num">03</div>
+      <div class="cs-dec-title">Operations dashboard that recommends, not just reports</div>
+      <div class="cs-dec-body">The analytics layer was deliberately designed to suggest interventions — predictive maintenance schedules, smart redeployment, AI-driven allocation — rather than stop at diagnosis. Most reporting tools tell you what went wrong. In airport operations, knowing something is broken is only useful if you know what to do about it next. The dashboard closes that gap.</div>
     </div>
   </div>
 </div>
@@ -3041,11 +4392,21 @@ section{padding:7rem 5.5rem;position:relative;z-index:1;}
   <div class="cs-body">
     <p>This project demonstrates my ability to design operational systems where clarity, urgency, and layered decision-making matter. It shows how I think about real-time products, geospatial monitoring, analytics workflows, and the relationship between tactical and strategic dashboard design.</p>
   </div>
+
+  <div class="cs-actions">
+    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/ground-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+  </div>
 </div>
 
-<div class="cs-next" data-page="proj-epay">
-  <div><div class="cs-next-label">Back to First Project</div><div class="cs-next-title">DIGITAL PAYMENTS PLATFORM</div></div>
-  <div class="cs-next-arrow">→</div>
+<div class="cs-proj-nav">
+  <div class="cs-prev" data-page="proj-governance">
+    <div class="cs-prev-arrow">←</div>
+    <div><div class="cs-next-label">Previous Project</div><div class="cs-prev-title">DATA GOVERNANCE PLATFORM</div></div>
+  </div>
+  <div class="cs-next" data-page="proj-epay">
+    <div><div class="cs-next-label">Back to First Project</div><div class="cs-next-title">DIGITAL PAYMENTS PLATFORM</div></div>
+    <div class="cs-next-arrow">→</div>
+  </div>
 </div>
 </div><!-- /proj-indigo -->
 <!-- ═══════════════════════════════════
@@ -3086,7 +4447,7 @@ function goToPage(pageId,scrollTo){
     initImgReveal();
     initCaseStudySlideshows();
     if(document.querySelector('.page.active.cs-page'))initCasePage();
-    if(window._cnavSync)window._cnavSync();
+    if(window._tnavSync)window._tnavSync();
   },325);
 }
 
@@ -3120,6 +4481,30 @@ function initReveal(){
 }
 initReveal();
 
+/* ── WORD-BY-WORD LINE REVEAL ── */
+(function initLinesReveal(){
+  document.querySelectorAll('.js-lines').forEach(function(el){
+    var text=el.textContent;
+    var tokens=text.split(/(\s+)/);
+    el.innerHTML=tokens.map(function(tok){
+      if(/^\s+$/.test(tok))return ' ';
+      return '<span class="w-clip"><span class="w-inner">'+tok+'</span></span>';
+    }).join('');
+  });
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(!entry.isIntersecting)return;
+      var words=entry.target.querySelectorAll('.w-inner');
+      words.forEach(function(w,i){
+        w.style.transitionDelay=(0.05+i*0.04).toFixed(3)+'s';
+        w.classList.add('in');
+      });
+      obs.unobserve(entry.target);
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.js-lines').forEach(function(el){obs.observe(el);});
+})();
+
 /* ── COUNTERS ── */
 function countUp(el,target,duration=1500){
   let start=0,step=target/((duration/16));
@@ -3131,11 +4516,11 @@ function initCounters(){
   if(!el1) return;
   const cntObs=new IntersectionObserver(entries=>{
     if(entries[0].isIntersecting){
-      countUp(el1,6);
+      countUp(el1,15,1500);
       const el2=document.getElementById('cnt2');
       const el3=document.getElementById('cnt3');
-      if(el2) countUp(el2,15,1800);
-      if(el3) countUp(el3,3,1000);
+      if(el2) countUp(el2,5,1100);
+      if(el3) countUp(el3,6,1800);
       cntObs.disconnect();
     }
   },{threshold:.5});
@@ -3548,6 +4933,84 @@ function initProjStagger(){
 }
 initProjStagger();
 
+/* ── Fan deck — card carousel with hover reveal ── */
+function initFanDeck(){
+  const deck=document.querySelector('.page.active .fan-deck');
+  if(!deck)return;
+  const cards=[...deck.querySelectorAll('.fan-card')];
+  const BASE_ROTS=[-24,-12,0,12,24];
+  const BASE_Z=[1,2,5,2,1];
+
+  function resetCards(){
+    cards.forEach((c,i)=>{
+      c.style.transform='';
+      c.style.zIndex=BASE_Z[i];
+      c.classList.remove('fan-hovered');
+    });
+  }
+
+  cards.forEach((card,idx)=>{
+    card.addEventListener('mouseenter',()=>{
+      cards.forEach((c,i)=>{
+        c.classList.remove('fan-hovered');
+        if(i===idx){
+          c.style.transform='rotate(0deg) translateY(-65px) scale(1.05)';
+          c.style.zIndex='20';
+          c.style.boxShadow='0 28px 70px rgba(0,0,0,.85)';
+          c.classList.add('fan-hovered');
+        } else {
+          const spread=i<idx ? BASE_ROTS[i]-8 : BASE_ROTS[i]+8;
+          c.style.transform=`rotate(${spread}deg)`;
+          c.style.zIndex=BASE_Z[i];
+          c.style.boxShadow='';
+        }
+      });
+    });
+
+    card.addEventListener('mouseleave',()=>{
+      resetCards();
+      cards.forEach(c=>{c.style.boxShadow='';});
+    });
+  });
+
+  /* Staggered entrance */
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      cards.forEach((c,i)=>{
+        c.style.opacity='0';
+        setTimeout(()=>{
+          c.style.transition='opacity .55s ease,transform .55s cubic-bezier(.16,1,.3,1)';
+          c.style.opacity='1';
+          setTimeout(()=>{c.style.transition='';},580);
+        },i*90+80);
+      });
+      obs.unobserve(e.target);
+    });
+  },{threshold:0.05});
+  obs.observe(deck);
+}
+initFanDeck();
+
+/* ── Featured Works — prev-tab click navigation ── */
+function initFwPanels(){
+  /* Scroll-driven stacking: no JS needed for the panel transitions.
+     Previous ghost tabs navigate to their project via data-page
+     which is handled by the global click delegate. */
+}
+initFwPanels();
+
+/* Hide top-nav + chat trigger while #projects section is visible */
+(function(){
+  const projects = document.getElementById('projects');
+  if(!projects) return;
+  const obs = new IntersectionObserver(
+    ([entry]) => document.body.classList.toggle('projects-visible', entry.isIntersecting),
+    { threshold: 0.05 }
+  );
+  obs.observe(projects);
+})();
+
 /* ── Ripple removed (proj-items no longer overflow:hidden) ── */
 
 /* ── Quote text word-by-word reveal ── */
@@ -3726,7 +5189,7 @@ function initCsSectionLabels(){
   });
 }
 
-/* ── CS section titles — clip-path wipe + letter scramble ── */
+/* ── CS section titles — fade-in + letter scramble on scroll ── */
 function initCsSectionTitles(){
   const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#';
   function scramble(el){
@@ -3751,12 +5214,23 @@ function initCsSectionTitles(){
   const obs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
-        e.target.classList.add('cst-in'); /* trigger clip-path wipe */
-        setTimeout(()=>scramble(e.target),120); /* scramble mid-wipe */
+        e.target.classList.add('cst-in');
+        e.target.classList.remove('cst-ready');
+        setTimeout(()=>scramble(e.target),120);
+        obs.unobserve(e.target);
       }
     });
-  },{threshold:.15});
-  document.querySelectorAll('.page.active .cs-section-title').forEach(el=>obs.observe(el));
+  },{threshold:.1});
+  document.querySelectorAll('.page.active .cs-section-title').forEach(el=>{
+    const rect=el.getBoundingClientRect();
+    if(rect.top<window.innerHeight&&rect.bottom>0){
+      el.classList.add('cst-in');
+      setTimeout(()=>scramble(el),120);
+    } else {
+      el.classList.add('cst-ready');
+      obs.observe(el);
+    }
+  });
 }
 
 /* ── CS gallery kicker fade-in ── */
@@ -3844,13 +5318,38 @@ function initCsInsights(){
 
 /* ── CS next project fade-in ── */
 function initCsNext(){
-  const next=document.querySelector('.page.active .cs-next');
-  if(!next)return;
+  const nav=document.querySelector('.page.active .cs-proj-nav')||document.querySelector('.page.active .cs-next');
+  if(!nav)return;
+  const next=nav.querySelector('.cs-next')||nav;
   next.classList.remove('cs-next-in');
   const obs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('cs-next-in');obs.disconnect();}});
   },{threshold:.3});
   obs.observe(next);
+}
+
+/* ── CS Scope of Work columns stagger ── */
+function initCsScopeGrid(){
+  const cols=document.querySelectorAll('.page.active .cs-scope-col');
+  cols.forEach(c=>c.classList.remove('csg-in'));
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const grid=e.target;
+      const items=[...grid.querySelectorAll('.cs-scope-col')];
+      items.forEach((c,i)=>setTimeout(()=>c.classList.add('csg-in'),i*90));
+      obs.unobserve(grid);
+    });
+  },{threshold:.1});
+  document.querySelectorAll('.page.active .cs-scope-grid').forEach(grid=>{
+    const rect=grid.getBoundingClientRect();
+    if(rect.top<window.innerHeight&&rect.bottom>0){
+      const items=[...grid.querySelectorAll('.cs-scope-col')];
+      items.forEach((c,i)=>setTimeout(()=>c.classList.add('csg-in'),i*90));
+    } else {
+      obs.observe(grid);
+    }
+  });
 }
 
 /* Master init for case study pages */
@@ -3862,6 +5361,7 @@ function initCasePage(){
   initCsGalleryKickers();
   initCsStats();
   initCsInsights();
+  initCsScopeGrid();
   initCsNext();
 }
 /* Run on first load if we happen to land on a cs-page */
@@ -4012,61 +5512,72 @@ function initProjPreview(){
 initProjPreview();
 
 /* ══════════════════════════════════════════
-   VERTICAL SCROLLSPY NAV
+   TOP NAV SCROLLSPY + LIQUID GLIDE
 ══════════════════════════════════════════ */
-(function initCnavScrollspy(){
-  const nav=document.querySelector('.corner-nav');
+(function initTnavScrollspy(){
+  const nav=document.getElementById('top-nav');
   if(!nav)return;
-  const links=[...nav.querySelectorAll('a[data-cnav]')];
+  const linksWrap=nav.querySelector('.tnav-links');
+  const links=[...nav.querySelectorAll('a[data-tnav]')];
+  const glide=nav.querySelector('.tnav-glide');
   if(!links.length)return;
 
-  /* Only run when home page is active */
   const homePage=document.getElementById('page-home');
   if(!homePage)return;
 
-  const sectionIds=links.map(l=>l.dataset.cnav);
+  const sectionIds=links.map(l=>l.dataset.tnav);
   let currentActive=null;
+
+  function positionGlide(link){
+    if(!glide||!linksWrap)return;
+    if(!link){glide.classList.remove('visible');return;}
+    const pRect=linksWrap.getBoundingClientRect();
+    const lRect=link.getBoundingClientRect();
+    glide.style.left=(lRect.left-pRect.left)+'px';
+    glide.style.width=lRect.width+'px';
+    glide.classList.add('visible');
+  }
 
   function setActive(id){
     if(id===currentActive)return;
     currentActive=id;
-    links.forEach(l=>l.classList.toggle('cnav-active',l.dataset.cnav===id));
+    const activeLink=links.find(l=>l.dataset.tnav===id)||null;
+    links.forEach(l=>l.classList.toggle('tnav-active',l.dataset.tnav===id));
+    positionGlide(activeLink);
   }
 
-  /* IntersectionObserver: track which section is most visible */
   const ratios={};
   const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      ratios[e.target.id]=e.intersectionRatio;
-    });
-    /* Pick the section with the highest ratio (most visible) */
+    entries.forEach(e=>{ ratios[e.target.id]=e.intersectionRatio; });
     let best=null,bestR=0;
     sectionIds.forEach(id=>{
       const r=ratios[id]||0;
       if(r>bestR){bestR=r;best=id;}
     });
-    /* Also check if hero is in view — if no section, default to null */
     if(best&&bestR>.05)setActive(best);
-    else if(!best)setActive(null);
+    else setActive(null);
   },{threshold:[0,.1,.25,.5,.75,1],root:null});
 
-  /* Observe sections within home page */
   sectionIds.forEach(id=>{
-    const el=homePage.querySelector('#'+id);
+    const el=document.getElementById(id);
     if(el)obs.observe(el);
   });
 
-  /* Show/hide nav based on whether home page is active */
+  /* Re-position glide on resize */
+  window.addEventListener('resize',()=>{
+    const active=links.find(l=>l.classList.contains('tnav-active'));
+    if(active)positionGlide(active);
+  },{passive:true});
+
   function syncVisibility(){
     const isHome=homePage.classList.contains('active');
-    nav.style.opacity=isHome?'1':'0';
-    nav.style.pointerEvents=isHome?'auto':'none';
+    nav.style.opacity=isHome?'':'';
+    nav.style.pointerEvents=isHome?'':'';
   }
   syncVisibility();
 
-  /* Re-check on page transitions */
   document.addEventListener('click',()=>setTimeout(syncVisibility,350));
-  window._cnavSync=syncVisibility;
+  window._tnavSync=syncVisibility;
 })();
 
 /* ── Extend initReveal to include new inits on page transitions ── */
@@ -4076,6 +5587,8 @@ window.initReveal=initReveal=function(){
   initSkillStagger();
   initProcessConnector();
   initProjStagger();
+  initFanDeck();
+  initFwPanels();
   initQuoteReveal();
   initHeroParticles();
   initValueCards();
@@ -4094,6 +5607,7 @@ window.initReveal=initReveal=function(){
   var heroEntered = false;
   var heroObs = new IntersectionObserver(function(entries) {
     if (entries[0].isIntersecting && !heroEntered) {
+      if (!window._heroCanReveal) return; /* wait for preloader to exit */
       heroEntered = true;
       hero.classList.add('hero-in');
       heroObs.disconnect();
@@ -4282,23 +5796,23 @@ window.initReveal=initReveal=function(){
     /* Progress bar */
     if (bar) bar.style.transform = 'scaleX(' + p + ')';
 
-    /* Grid zooms 2.5× faster than content — depth parallax */
-    intro.style.setProperty('--igrid', (1 + p * 2.5).toFixed(3));
+    /* Grid zoom stays in sync with content scale */
+    intro.style.setProperty('--igrid', (1 + p * 1.5).toFixed(3));
 
-    /* Fly-through: scale rushes in (1→3.2), tiny rotateX gives tilt of diving.
-       Hold full opacity until p=0.55, then fade out by p=0.95 so user gets
-       a long look at the zoom before it dissolves.                           */
-    var scale   = 1 + p * 2.2;
-    var rotX    = -(p * 7);                                    /* slight forward tilt */
-    var opacity = p < 0.55 ? 1 : Math.max(0, 1 - (p - 0.55) / 0.4);
+    /* Cinematic exit: scale zooms gently, tilt is subtle.
+       Blur + opacity fade start late (p=0.60) for a clean hold then dissolve. */
+    var scale    = 1 + p * 1.2;
+    var rotX     = -(p * 3);
+    var blurVal  = p > 0.60 ? ((p - 0.60) * 14).toFixed(1) : 0;
+    var opacity  = p < 0.65 ? 1 : Math.max(0, 1 - (p - 0.65) / 0.30);
 
-    /* perspective() in the transform itself so it works on a fixed element */
     intro.style.transform =
       'perspective(1200px) scale(' + scale.toFixed(4) + ') rotateX(' + rotX.toFixed(2) + 'deg)';
+    intro.style.filter     = blurVal > 0 ? 'blur(' + blurVal + 'px)' : '';
     intro.style.opacity    = opacity.toFixed(4);
     intro.style.visibility = (opacity <= 0.005) ? 'hidden' : 'visible';
 
-    /* Show/hide nav + chat trigger based on whether intro is visible */
+    /* Show/hide nav based on intro visibility */
     if (opacity <= 0.005) {
       document.body.classList.remove('imm-active');
     } else {
@@ -4552,5 +6066,63 @@ window.initReveal=initReveal=function(){
   });
 })();
 </script>
+
+<script>
+/* ── Skills interactive panel ── */
+(function(){
+  const btns  = document.querySelectorAll('.sk-cat-btn');
+  const panes = document.querySelectorAll('.sk-pane');
+  if(!btns.length) return;
+  btns.forEach(btn => {
+    btn.addEventListener('mouseenter', function(){
+      const idx = this.dataset.sk;
+      btns.forEach(b  => b.classList.remove('sk-active'));
+      panes.forEach(p => p.classList.remove('sk-active'));
+      this.classList.add('sk-active');
+      document.querySelector('.sk-pane[data-pane="'+idx+'"]').classList.add('sk-active');
+    });
+  });
+})();
+</script>
+<script>
+/* ── Preloader sequence ─────────────────────────────────────────── */
+(function(){
+  const pl     = document.getElementById('preloader');
+  const typeEl = document.getElementById('pl-type');
+  const cursor = document.getElementById('pl-cursor');
+
+  const TEXT = 'Welcome to the portfolio of';
+  let i = 0;
+
+  function tick(){
+    if(i < TEXT.length){
+      typeEl.textContent += TEXT[i++];
+      setTimeout(tick, i < 8 ? 72 : i < 20 ? 50 : 42);
+    } else {
+      /* typing done — brief pause, then slide away */
+      setTimeout(()=>{ cursor.style.animation='none'; cursor.style.opacity='0'; }, 300);
+      setTimeout(exit, 700);
+    }
+  }
+
+  function exit(){
+    pl.classList.add('pl-exit');
+    /* Immediately reveal imm-intro — animations trigger as preloader slides up */
+    var immIntro = document.getElementById('imm-intro');
+    if (immIntro) immIntro.classList.add('imm-revealed');
+    /* 180ms into the 1.1s slide — hero content starts rising as the curtain lifts */
+    setTimeout(()=>{
+      window._heroCanReveal = true;
+      var h = document.querySelector('.hero');
+      if (h && !h.classList.contains('hero-in')) h.classList.add('hero-in');
+    }, 180);
+    pl.addEventListener('transitionend', ()=>{ pl.style.display='none'; }, {once:true});
+  }
+
+  setTimeout(tick, 380);
+})();
+
+</script>
+
 </body>
 </html>
