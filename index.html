@@ -457,9 +457,9 @@ body.cs-scrolling-down #ag-trigger{
 .hero--landing{
   display:flex;flex-direction:column;
   justify-content:flex-start;align-items:center;
-  gap:1rem;
-  padding:1rem 2.5rem 2.4rem;
-  padding-top:calc(1rem + 80px);
+  gap:.85rem;
+  padding:1rem 2.5rem 1.6rem;
+  padding-top:calc(2rem + 80px);
   text-align:center;
 }
 
@@ -1427,8 +1427,8 @@ body.cs-scrolling-down #ag-trigger{
 .proj-tags-sm{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:flex-end;}
 .proj-tag{
   font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.1em;
-  text-transform:uppercase;padding:.22rem .55rem;
-  border:1px solid rgba(26,36,48,.1);border-radius:2px;color:var(--grey2);
+  text-transform:uppercase;padding:.22rem .65rem;
+  border:1px solid rgba(26,36,48,.1);border-radius:999px;color:var(--grey2);
   transition:border-color .3s,color .3s,background .3s;
 }
 .proj-item.is-active .proj-tag{border-color:rgba(223,49,67,.2);color:var(--red);background:rgba(223,49,67,.04);}
@@ -1787,15 +1787,15 @@ body.cs-scrolling-down #ag-trigger{
 }
 .fw-info{
   padding:1.6rem 2rem 1.8rem;
-  display:flex;flex-direction:column;gap:.9rem;
+  display:flex;flex-direction:column;gap:1.6rem;
   border-right:1px solid rgba(247,248,251,.08);overflow:hidden;
 }
 
 /* TOP ZONE, metadata, role, tags pin to the top */
 .fw-metrics{
   display:grid;grid-template-columns:1fr 1fr;
-  gap:.7rem .8rem;
-  padding-bottom:.9rem;margin:0;
+  gap:1rem .8rem;
+  padding-bottom:1.2rem;margin:0;
   border-bottom:1px solid rgba(247,248,251,.08);
   flex-shrink:0;
 }
@@ -1812,14 +1812,14 @@ body.cs-scrolling-down #ag-trigger{
 }
 
 .fw-info-role{
-  padding-bottom:.9rem;margin:0;
+  padding-bottom:1.2rem;margin:0;
   border-bottom:1px solid rgba(247,248,251,.08);
   flex-shrink:0;
 }
 
 .fw-info-tags{
-  display:flex;flex-wrap:wrap;gap:.35rem;
-  padding-bottom:.9rem;margin:0;
+  display:flex;flex-wrap:wrap;gap:.4rem;
+  padding-bottom:1.2rem;margin:0;
   border-bottom:1px solid rgba(247,248,251,.08);
   flex-shrink:0;
 }
@@ -1873,8 +1873,8 @@ body.cs-scrolling-down #ag-trigger{
   letter-spacing:.14em;text-transform:uppercase;
   color:#f7f8fb;cursor:pointer;
   border:none;background:var(--red);
-  padding:.72rem 1.2rem;
-  border-radius:3px;
+  padding:.82rem 1.4rem;
+  border-radius:999px;
   transition:opacity .2s;
   align-self:flex-start;margin:.3rem 0 0;
   flex-shrink:0;
@@ -2507,9 +2507,9 @@ body.cs-scrolling-down #ag-trigger{
 #contact{
   background:var(--red);
   color:var(--white);
-  padding:5.5rem clamp(1.5rem, 4vw, 4rem) 1.4rem;
+  padding:6rem clamp(1.5rem, 4vw, 4rem) 1.2rem;
   margin-top:0;
-  min-height:100vh;
+  min-height:50vh;
   display:flex;
   flex-direction:column;
   justify-content:flex-start;
@@ -2548,7 +2548,7 @@ body.cs-scrolling-down #ag-trigger{
   display:flex;
   flex-direction:column;
   flex:1;
-  gap:3rem;
+  gap:1.6rem;
 }
 
 /* ── TOP: headline + 2 cards in a 3-col grid ── */
@@ -2609,10 +2609,10 @@ body.cs-scrolling-down #ag-trigger{
   color:#fff;
   font-family:'Inter',sans-serif;
   font-weight:600;
-  font-size:.95rem;
+  font-size:.92rem;
   letter-spacing:-.005em;
-  padding:1rem 1.2rem;
-  border-radius:4px;
+  padding:.95rem 1.4rem;
+  border-radius:999px;
   text-decoration:none;
   cursor:pointer;
   transition:background .25s, transform .25s;
@@ -2641,7 +2641,7 @@ body.cs-scrolling-down #ag-trigger{
   width:36px; height:36px;
   color:var(--white);
   border:1.5px solid var(--white);
-  border-radius:4px;
+  border-radius:50%;
   cursor:pointer;
   transition:background .25s, color .25s, transform .25s;
 }
@@ -2653,15 +2653,14 @@ body.cs-scrolling-down #ag-trigger{
   font-family:'Inter',sans-serif;
   font-weight:900;
   /* Edge-to-edge mark: extend past the section's side padding to span the
-     full viewport, with a small safety margin so the last glyph never
-     gets clipped at any zoom level. */
+     full viewport, with generous safety margin so neither end clips. */
   width:100vw;
   margin:auto 0 0 calc(50% - 50vw);
-  padding:0 .8vw;
+  padding:0 2.2vw;
   box-sizing:border-box;
-  font-size:18.5vw;
+  font-size:16.5vw;
   line-height:.86;
-  letter-spacing:-.06em;
+  letter-spacing:-.04em;
   color:var(--white);
   white-space:nowrap;
   text-align:center;
