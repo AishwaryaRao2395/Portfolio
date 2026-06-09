@@ -16,14 +16,13 @@
 <meta property="og:title" content="Aishwarya Gondlyala, Product Designer · UX Strategist"/>
 <meta property="og:description" content="Designing clarity with product thinking, across AI, Web3, enterprise SaaS, and fintech."/>
 <meta property="og:url" content="https://aishwaryagondlyala.com/"/>
-<meta property="og:image" content="https://aishwaryagondlyala.com/assets/ag-logo-clean.png"/>
-<!-- TODO: replace og:image with a designed 1200x630 share card -->
+<meta property="og:image" content="https://aishwaryagondlyala.com/assets/og-card.png"/>
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Aishwarya Gondlyala, Product Designer · UX Strategist"/>
 <meta name="twitter:description" content="Designing clarity with product thinking, across AI, Web3, enterprise SaaS, and fintech."/>
-<meta name="twitter:image" content="https://aishwaryagondlyala.com/assets/ag-logo-clean.png"/>
+<meta name="twitter:image" content="https://aishwaryagondlyala.com/assets/og-card.png"/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -86,13 +85,17 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;f
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
   gap:2.4rem;
-  transform:translateY(0);
-  transition:transform .9s cubic-bezier(.7, 0, .25, 1);
+  transform:scale(1);
+  transform-origin:50% 50%;
+  opacity:1;
+  transition:transform 1.05s cubic-bezier(.55, .05, .25, 1), opacity .85s cubic-bezier(.55, .05, .25, 1), filter .9s ease;
   cursor:default;
-  will-change:transform;
+  will-change:transform, opacity, filter;
 }
 .intro-overlay.intro-hide{
-  transform:translateY(-100vh);
+  transform:scale(1.55);
+  opacity:0;
+  filter:blur(8px);
   pointer-events:none;
 }
 /* Soft red bloom at center + dark vignette at edges */
@@ -199,29 +202,387 @@ body.intro-active{ overflow:hidden; }
 @media (max-width:680px){
   .intro-note{ width:88vw; padding:2rem 1.6rem 2.2rem; min-height:180px; }
 }
+/* Sleek scroll cue - no button chrome, but legible. Quiet red accent, tracked caps, bouncing arrow. */
 .intro-scroll{
-  position:relative; z-index:2;
-  display:flex; align-items:center; gap:.7rem;
+  position:absolute;
+  bottom:5.5vh; left:50%;
+  transform:translateX(-50%);
+  z-index:3;
+  display:flex; flex-direction:column; align-items:center; gap:.55rem;
+  padding:.6rem 1rem;
+  background:transparent; border:none;
   font-family:'JetBrains Mono',monospace;
-  font-size:.7rem; letter-spacing:.22em; text-transform:uppercase;
-  color:rgba(247,248,251,.65);
+  font-size:.7rem; letter-spacing:.32em; text-transform:uppercase;
+  font-weight:500;
+  color:#fff;
+  cursor:pointer;
   opacity:0;
-  transform:translateY(8px);
-  transition:opacity .6s ease, transform .6s ease;
+  transition:opacity .6s ease, transform .25s ease, letter-spacing .25s ease;
 }
-.intro-scroll.intro-scroll--visible{ opacity:1; transform:translateY(0); }
+.intro-scroll::before{
+  /* Thin red underline that draws the eye without screaming */
+  content:'';
+  position:absolute;
+  left:50%; bottom:-2px;
+  width:34px; height:1.5px;
+  background:#df3143;
+  transform:translateX(-50%);
+  opacity:.85;
+}
+.intro-scroll.intro-scroll--visible{ opacity:1; }
+.intro-scroll:hover{ letter-spacing:.36em; }
+.intro-scroll:hover span{ color:#df3143; }
 .intro-scroll span{
   display:inline-block;
+  font-size:1.1rem;
+  font-weight:500;
+  color:rgba(255,255,255,.85);
   animation:introArrow 1.6s ease-in-out infinite;
+  transition:color .25s ease;
 }
 @keyframes introArrow{
-  0%, 100% { transform:translateY(0); }
-  50%      { transform:translateY(4px); }
+  0%, 100% { transform:translateY(0); opacity:.85; }
+  50%      { transform:translateY(6px); opacity:1; }
 }
 @media (prefers-reduced-motion: reduce){
   .intro-note{ animation:none; transform:rotate(-2.5deg); }
   .intro-scroll span{ animation:none; }
   .intro-overlay{ transition:none; }
+}
+
+/* ─────────────────────────────────────────────────
+   DESK METAPHOR ELEMENTS
+   Scattered around the centre welcome note: polaroid,
+   currently-note, doodle, coffee ring. Each drops in
+   on its own staggered delay so the desk fills up.
+───────────────────────────────────────────────── */
+
+/* Show the welcome sticky note again (only hide for the old --sketch variant) */
+.intro-overlay--sketch .intro-note{ display:none; }
+.intro-overlay--desk .intro-note{ display:flex; }
+
+/* Universal stroke-drawing animation (reused by all SVG paths). */
+.desk-sketch-path{
+  animation:deskSketchDraw var(--draw-duration, .8s)
+            cubic-bezier(.4, .1, .25, 1)
+            var(--draw-delay, 0s) forwards;
+}
+@keyframes deskSketchDraw{
+  to{ stroke-dashoffset:0; }
+}
+
+/* ── SKETCH LETTER (single-composition intro) ──
+   One bold handwritten statement, drawn line by line, with a red
+   flourish + signature. Designed to feel like watching it written. */
+.sketch-letter{
+  position:relative; z-index:2;
+  max-width:920px;
+  padding:0 2rem;
+  text-align:left;
+  transform:rotate(-1.2deg);
+  /* slight paper-tone wrapper feel */
+}
+.sketch-eyebrow{
+  display:flex; align-items:center; gap:.85rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem; letter-spacing:.32em; text-transform:uppercase;
+  color:rgba(255,255,255,.6);
+  margin-bottom:1.6rem;
+  opacity:0;
+  animation:deskFadeIn .6s ease .5s forwards;
+}
+.sketch-eyebrow-line{ width:54px; height:10px; flex-shrink:0; }
+
+.sketch-text{
+  font-family:'Caveat','Bradley Hand','Segoe Script',cursive;
+  font-weight:700;
+  font-size:clamp(2.8rem, 7vw, 6.6rem);
+  line-height:1.02;
+  color:rgba(255,255,255,.96);
+  margin:0 0 1.4rem;
+  letter-spacing:.005em;
+  -webkit-text-stroke:.4px rgba(255,255,255,.96);
+}
+.sketch-text em{
+  color:var(--red);
+  font-style:normal;
+  -webkit-text-stroke:.4px var(--red);
+}
+.sketch-line{
+  display:block;
+  clip-path:inset(0 100% 0 0);
+  animation:sketchLineReveal 1.4s cubic-bezier(.55,.05,.35,.95) forwards;
+}
+.sketch-line-1{ animation-delay:1.2s; }
+.sketch-line-2{ animation-delay:2.45s; }
+.sketch-line-3{ animation-delay:3.7s; }
+@keyframes sketchLineReveal{
+  to{ clip-path:inset(0 0 0 0); }
+}
+
+.sketch-flourish{
+  display:block;
+  width:62%;
+  max-width:440px;
+  height:30px;
+  margin:.4rem 0 1.8rem;
+  overflow:visible;
+}
+
+.sketch-signature{
+  font-family:'Caveat',cursive;
+  font-weight:600;
+  font-size:clamp(1.1rem, 1.6vw, 1.5rem);
+  color:rgba(255,255,255,.7);
+  letter-spacing:.005em;
+  opacity:0;
+  transform:translateY(6px);
+  animation:sketchSigIn .7s cubic-bezier(.16,1,.3,1) 6.3s forwards;
+}
+@keyframes sketchSigIn{
+  to{ opacity:1; transform:translateY(0); }
+}
+
+/* Scroll cue appears AFTER the full sketch finishes */
+.intro-overlay--sketch .intro-scroll{
+  position:absolute;
+  bottom:6vh; left:50%;
+  transform:translateX(-50%);
+}
+.intro-overlay--sketch .intro-scroll.intro-scroll--visible{
+  transform:translateX(-50%) translateY(0);
+}
+
+@media (max-width:780px){
+  .sketch-letter{ padding:0 1.5rem; }
+  .sketch-text{ font-size:clamp(2rem, 9vw, 3.4rem); }
+  .sketch-flourish{ width:80%; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .sketch-line{ animation:none; clip-path:none; }
+  .sketch-signature{ animation:none; opacity:1; transform:none; }
+  .sketch-eyebrow{ animation:none; opacity:1; }
+}
+
+/* Side sticky notes (Recently + Currently) — flanking the centre welcome */
+.desk-note{
+  position:absolute; z-index:2;
+  border-radius:3px;
+  font-family:'Caveat','Bradley Hand',cursive;
+  color:#1a3a4a;
+  opacity:0;
+  box-shadow:
+    0 22px 44px rgba(0,0,0,.55),
+    0 8px 16px rgba(0,0,0,.42);
+  width:210px;
+  padding:1.2rem 1.3rem 1.3rem;
+}
+.desk-note-recent{
+  top:50%; left:6%;
+  background:linear-gradient(150deg, #ffd5b4, #ffae7d);
+  color:#4a2b1a;
+  transform:translate(-30px, calc(-50% - 12vh)) rotate(-3deg);
+  animation:deskNoteDrop 1.4s cubic-bezier(.16, 1, .3, 1) 1.0s forwards;
+}
+.desk-note-currently{
+  top:50%; right:6%;
+  background:linear-gradient(150deg, #c5e7ff, #94cdfa);
+  transform:translate(30px, calc(-50% - 12vh)) rotate(2deg);
+  animation:deskNoteDrop 1.4s cubic-bezier(.16, 1, .3, 1) 1.3s forwards;
+}
+.desk-note-pin{
+  position:absolute; top:-7px; left:50%;
+  transform:translateX(-50%);
+  width:13px; height:13px;
+  background:radial-gradient(circle at 35% 30%, #ffc04a, #c47000 70%, #8a4d00);
+  border-radius:50%;
+  box-shadow:0 3px 5px rgba(0,0,0,.5);
+}
+.desk-note-pin--peach{
+  background:radial-gradient(circle at 35% 30%, #ff8a8a, #c01e36 70%, #8b0000);
+}
+.desk-note-recent .desk-currently-label{ color:rgba(74,43,26,.72); }
+.desk-note-recent .desk-currently-list{ -webkit-text-stroke:.3px #4a2b1a; }
+.desk-note-recent .desk-currently-list li::before,
+.desk-note-recent .desk-currently-list strong{ color:#4a2b1a; }
+.desk-currently-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(26,58,74,.72);
+  margin-bottom:.55rem;
+  font-weight:600;
+}
+.desk-currently-list{
+  list-style:none; padding:0; margin:0;
+  font-size:1.05rem; line-height:1.45;
+  font-weight:700;
+  -webkit-text-stroke:.3px #1a3a4a;
+}
+.desk-currently-list li{
+  position:relative; padding-left:1rem;
+}
+.desk-currently-list li::before{
+  content:'\2192';
+  position:absolute; left:0; top:.05em;
+  color:#1a3a4a;
+  font-weight:700;
+}
+@keyframes deskNoteDrop{
+  0%   { opacity:0; transform:translate(30px, calc(-50% - 12vh)) rotate(-3deg); }
+  100% { opacity:1; transform:translate(0, -50%) rotate(7deg); }
+}
+
+/* Generic doodle wrapper — paths handle their own draw timing */
+.desk-doodle{
+  position:absolute; z-index:1;
+  overflow:visible;
+}
+.desk-sketch-dot{
+  animation:deskFadeIn .35s ease var(--dot-delay, 0s) forwards;
+}
+@keyframes deskFadeIn{ to{ opacity:1; } }
+
+/* ── DOODLE CLUSTERS ──
+   Four corner zones above/below the sticky-note row, so the canvas
+   reads as: top doodles · middle sticky notes · bottom doodles · coffee
+   instead of random scatter. */
+
+/* TOP-LEFT cluster */
+.desk-icon--bulb{      top:8%;   left:5%;   width:58px; height:70px; transform:rotate(-6deg); }
+.desk-icon--wireframe{ top:18%;  left:18%;  width:80px; height:100px; transform:rotate(-4deg); }
+.desk-word--product{   top:6%;   left:18%;  font-size:1.45rem; transform:rotate(-3deg); --word-delay:2.0s; }
+.desk-icon--question{  top:5%;   left:32%;  width:24px; height:42px; transform:rotate(-2deg); }
+
+/* TOP-CENTER cluster */
+.desk-icon--flowchart{ top:8%;   left:50%;  transform:translateX(-50%); width:170px; height:50px; }
+.desk-icon--search{    top:20%;  left:50%;  transform:translateX(-170px) rotate(6deg); width:54px; height:54px; }
+.desk-doodle--arrow{   top:6%;   left:50%;  transform:translateX(140px) rotate(8deg); width:110px; height:74px; }
+
+/* TOP-RIGHT cluster */
+.desk-icon--persona{   top:6%;   right:6%;  width:60px; height:78px; transform:rotate(5deg); }
+.desk-icon--lock{      top:18%;  right:22%; width:42px; height:52px; transform:rotate(8deg); }
+.desk-icon--check{     top:10%;  right:24%; width:32px; height:26px; transform:rotate(-6deg); }
+.desk-word--trust{     top:24%;  right:8%;  font-size:1.45rem; transform:rotate(5deg); --word-delay:2.6s; }
+.desk-sparkle--1{      top:28%;  right:24%; width:22px; height:22px; transform:rotate(8deg); }
+
+/* BOTTOM-LEFT cluster */
+.desk-icon--mobile{    bottom:20%; left:18%; width:46px; height:84px; transform:rotate(-4deg); }
+.desk-icon--eye{       bottom:32%; left:6%;  width:58px; height:34px; transform:rotate(-3deg); }
+.desk-icon--speech{    bottom:7%;  left:6%;  width:60px; height:50px; transform:rotate(-5deg); }
+.desk-sparkle--2{      bottom:36%; left:30%; width:22px; height:22px; transform:rotate(-12deg); }
+
+/* BOTTOM-CENTER cluster */
+.desk-icon--tree{      bottom:18%; left:50%; transform:translateX(-50%); width:96px; height:80px; }
+.desk-icon--heart{     bottom:32%; left:50%; transform:translateX(60px) rotate(-6deg); width:38px; height:34px; }
+
+/* BOTTOM-RIGHT cluster */
+.desk-icon--chart{     bottom:20%; right:14%; width:90px; height:70px; transform:rotate(3deg); }
+.desk-icon--cursor{    bottom:34%; right:8%;  width:30px; height:36px; transform:rotate(12deg); }
+.desk-coffee-svg{      bottom:5%;  right:5%;  width:110px; height:120px; z-index:2; }
+
+/* Hand-drawn words */
+.desk-word{
+  position:absolute; z-index:1;
+  font-family:'Caveat','Bradley Hand',cursive;
+  font-weight:700;
+  color:rgba(255,255,255,.55);
+  letter-spacing:.01em;
+  opacity:0;
+  animation:deskFadeIn .7s ease var(--word-delay,0s) forwards;
+}
+.desk-word--trust{ color:rgba(223,49,67,.7); }
+
+/* Lift desk elements when the overlay dismisses */
+.intro-overlay.intro-lifting .desk-doodle,
+.intro-overlay.intro-lifting .desk-note-currently,
+.intro-overlay.intro-lifting .desk-word{
+  transition:transform .35s cubic-bezier(.34, 1.18, .64, 1);
+}
+.intro-overlay.intro-lifting .desk-note-currently{
+  transform:translate(0, -50%) translateY(-20px) rotate(9deg);
+}
+
+/* Responsive scaling */
+@media (max-width:1200px){
+  .desk-note-recent{ left:3%; width:185px; }
+  .desk-note-currently{ right:3%; width:185px; }
+  .desk-coffee-svg{ right:5%; bottom:6%; width:100px; height:110px; }
+  .desk-icon--bulb{ left:4%; }
+  .desk-icon--lock{ right:11%; }
+  .desk-icon--check{ right:21%; }
+  .desk-word--trust{ right:5%; }
+  .desk-word--product{ left:18%; }
+}
+@media (max-width:1000px){
+  .desk-note-recent, .desk-note-currently{ display:none; }
+  .desk-icon--bulb, .desk-icon--search, .desk-icon--eye,
+  .desk-icon--speech, .desk-icon--cursor, .desk-icon--lock,
+  .desk-icon--heart, .desk-icon--flow, .desk-icon--check, .desk-icon--question,
+  .desk-icon--wireframe, .desk-icon--mobile, .desk-icon--flowchart,
+  .desk-icon--persona, .desk-icon--chart, .desk-icon--tree,
+  .desk-doodle--arrow, .desk-sparkle--1, .desk-sparkle--2,
+  .desk-word--product, .desk-word--trust{ display:none; }
+}
+@media (max-width:780px){
+  .desk-coffee-svg{ width:80px; height:90px; bottom:5%; right:5%; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .desk-sketch-path{ animation:none; stroke-dashoffset:0; }
+  .desk-sketch-dot{ animation:none; opacity:1; }
+  .desk-word{ animation:none; opacity:1; }
+  .intro-scroll.intro-scroll--visible{ animation:none; }
+}
+
+/* Pen trail dots that follow the cursor on the intro overlay */
+.pen-trail-dot{
+  position:fixed;
+  width:6px; height:6px;
+  background:rgba(223,49,67,.7);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:10005;
+  transform:translate(-50%, -50%);
+  animation:penTrailFade .9s cubic-bezier(.4, 0, .4, 1) forwards;
+}
+@keyframes penTrailFade{
+  0%   { opacity:1; width:6px; height:6px; }
+  100% { opacity:0; width:2px; height:2px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .pen-trail-dot{ display:none; }
+}
+
+/* Doodle hover: red glow + slight scale */
+.desk-doodle{
+  transition:filter .3s ease, transform .3s ease;
+}
+.desk-doodle:hover{
+  filter:drop-shadow(0 0 10px rgba(223,49,67,.55)) brightness(1.1);
+}
+/* Hover should subtly scale around the existing transform — use will-change to hint */
+.desk-doodle:hover .desk-sketch-path{
+  stroke-width:2.2 !important;
+}
+.desk-word{
+  transition:color .3s ease, text-shadow .3s ease;
+}
+.desk-word:hover{
+  color:#fff !important;
+  text-shadow:0 0 16px rgba(223,49,67,.6);
+}
+
+/* Sticky notes get a hover lift */
+.intro-note,
+.desk-note{
+  transition-property:transform, box-shadow, filter;
+  transition-duration:.4s;
+  transition-timing-function:cubic-bezier(.16, 1, .3, 1);
+}
+.intro-overlay:not(.intro-lifting) .intro-note:hover,
+.intro-overlay:not(.intro-lifting) .desk-note:hover{
+  filter:drop-shadow(0 0 16px rgba(223,49,67,.25));
 }
 /* ── INSTRUMENT SERIF DISPLAY TUNING ──────────────────
    Instrument Serif has high contrast + sharp terminals; it likes
@@ -457,9 +818,9 @@ body.cs-scrolling-down #ag-trigger{
 .hero--landing{
   display:flex;flex-direction:column;
   justify-content:flex-start;align-items:center;
-  gap:.85rem;
-  padding:1rem 2.5rem 1.6rem;
-  padding-top:calc(2rem + 80px);
+  gap:.55rem;
+  padding:.6rem 2.5rem 1rem;
+  padding-top:calc(1.2rem + 80px);
   text-align:center;
 }
 
@@ -546,6 +907,55 @@ body.cs-scrolling-down #ag-trigger{
   .lp-headline{ white-space:normal; font-size:clamp(1.8rem, 7vw, 2.8rem); }
 }
 .lp-headline-dot{ color:var(--red); }
+
+/* Typewriter headline - JS types white text into .lp-type-text, then on
+   completion swaps to a styled version that pops the accent word red and
+   draws the underline in. */
+.lp-headline-type{
+  min-height:1.35em;
+  display:block;
+}
+.lp-type-text{
+  white-space:pre-wrap;
+}
+.lp-type-cursor{
+  display:inline-block;
+  width:.05em;
+  height:.95em;
+  background:var(--red);
+  vertical-align:-0.08em;
+  margin-left:.06em;
+  animation:lpCursorBlink 1.05s steps(2,end) infinite;
+}
+@keyframes lpCursorBlink{ 50%{ opacity:0; } }
+
+/* "Pop" animation that runs once when the styled version is rendered.
+   The accent flashes to red, the underline draws in left-to-right. */
+@keyframes lpAccentPop{
+  0%   { color:#f3f4f7; }
+  100% { color:var(--red); }
+}
+@keyframes lpUnderlinePop{
+  0%   { transform:scaleX(0); opacity:0; }
+  100% { transform:scaleX(1); opacity:1; }
+}
+.lp-type-text .lp-headline-accent{
+  animation:lpAccentPop .35s cubic-bezier(.16,1,.3,1) both;
+}
+.lp-type-text .lp-headline-accent::after{
+  transform-origin:left center;
+  animation:lpUnderlinePop .55s .12s cubic-bezier(.16,1,.3,1) both;
+}
+.lp-type-text .lp-headline-dot{
+  animation:lpAccentPop .35s .08s cubic-bezier(.16,1,.3,1) both;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .lp-type-cursor{ animation:none; opacity:1; }
+  .lp-type-text .lp-headline-accent,
+  .lp-type-text .lp-headline-accent::after,
+  .lp-type-text .lp-headline-dot{ animation:none; }
+}
 .lp-headline-accent{
   color:var(--red);
   position:relative;
@@ -1539,7 +1949,7 @@ body.cs-scrolling-down #ag-trigger{
   50%    { transform:rotate(3.5deg) translateY(-5px); }
 }
 
-/* Hand-drawn red underline beneath "work." — anchored directly under the
+/* Hand-drawn red underline beneath "work.", anchored directly under the
    red word, draws in after the title settles. */
 .fw-landing-redword{
   position:relative;
@@ -1560,7 +1970,7 @@ body.cs-scrolling-down #ag-trigger{
   stroke-dashoffset:0;
 }
 
-/* Background "06" — subtle drift + faint pulse */
+/* Background "06", subtle drift + faint pulse */
 .fw-landing-bignum{
   animation:fwNumDrift 16s ease-in-out infinite;
 }
@@ -2134,14 +2544,14 @@ body.cs-scrolling-down #ag-trigger{
   padding-bottom:1.4rem;
   border-bottom:1px solid rgba(7,10,14,.08);
 }
-.sk-header-lead{ max-width:640px; }
+.sk-header-lead{ min-width:0; }
 .sk-header-lead .s-title{ text-align:left; margin:0 0 .8rem; }
 .sk-intro{
   font-family:'Inter',sans-serif;
-  font-size:1rem; line-height:1.55; font-weight:300;
+  font-size:.92rem; line-height:1.55; font-weight:300;
   color:rgba(7,10,14,.6);
   margin:0;
-  max-width:48ch;
+  white-space:nowrap;
 }
 .sk-header-meta{
   display:flex;
@@ -2169,6 +2579,11 @@ body.cs-scrolling-down #ag-trigger{
   .sk-header{ grid-template-columns:1fr; gap:1.4rem; align-items:start; }
   .sk-header-meta{ gap:1.4rem; justify-content:flex-start; }
   .sk-stat{ align-items:flex-start; text-align:left; }
+  .sk-intro{ white-space:normal; font-size:.9rem; }
+}
+/* Slightly narrower laptops, allow wrapping rather than overflow */
+@media (max-width:1180px){
+  .sk-intro{ white-space:normal; }
 }
 #skills.skills-section{background:#f9f9fb;}
 
@@ -2295,67 +2710,114 @@ body.cs-scrolling-down #ag-trigger{
   font-family:'JetBrains Mono',monospace;
   font-size:.55rem; letter-spacing:.22em; text-transform:uppercase;
   color:var(--red);
-  margin-bottom:1.1rem;
+  margin-bottom:.7rem;
 }
 .sk-list-back{
-  list-style:none; padding:0; margin:0;
-  display:flex; flex-direction:column; gap:.6rem;
+  list-style:none; padding:0; margin:.4rem 0 0;
+  display:flex; flex-direction:column; gap:.55rem;
 }
 .sk-list-back li{
   font-family:'Inter',sans-serif;
-  font-size:.95rem; line-height:1.25;
+  font-size:.9rem; line-height:1.3;
   color:rgba(247,248,251,.92);
   padding-left:1rem;
   position:relative;
+  transition:padding-left .25s ease, color .25s ease;
 }
 .sk-list-back li::before{
   content:'';
-  position:absolute; left:0; top:.65em;
-  width:6px; height:1px;
+  position:absolute; left:0; top:.6em;
+  width:7px; height:1.5px;
   background:var(--red);
+  border-radius:1px;
+  transition:width .25s ease, background .25s ease;
+}
+.sk-list-back li:hover{
+  padding-left:1.3rem;
+  color:#fff;
+}
+.sk-list-back li:hover::before{
+  width:14px;
+  background:linear-gradient(90deg, var(--red), #fff);
+}
+/* Footer signal block, shared across all 5 cards */
+.sk-back-foot{
+  margin-top:auto;
+  padding-top:.8rem;
+  border-top:1px dashed rgba(255,255,255,.14);
+  display:flex; align-items:center; gap:.55rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+}
+.sk-back-foot-dot{
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--red);
+  flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(223,49,67,.55);
+  animation:sk-foot-pulse 1.8s ease-in-out infinite;
+}
+.sk-back-foot-label{ color:rgba(255,255,255,.45); }
+.sk-back-foot-value{ color:#fff; font-weight:500; letter-spacing:.22em; }
+@keyframes sk-foot-pulse{
+  0%, 100% { box-shadow:0 0 0 0 rgba(223,49,67,.55); opacity:.85; }
+  50%      { box-shadow:0 0 0 5px rgba(223,49,67,0);   opacity:1; }
 }
 
-/* BACK for Tools, 3x3 logo grid fits the card without cropping */
-.sk-back-tools{ padding:1.3rem 1.3rem 1.3rem; }
+/* BACK for Tools, 4x3 grid of real brand logos on uniform white tiles */
+.sk-back-tools{ padding:1.2rem 1.1rem; }
 .sk-back-tools .sk-tools-grid{
   display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:.55rem;
-  margin-top:.4rem;
+  grid-template-columns:repeat(4, 1fr);
+  gap:.45rem;
+  margin:auto 0;  /* vertically center grid in the remaining card space */
 }
 .sk-back-tools .sk-tool{
+  position:relative;
   aspect-ratio:1;
-  border-radius:10px;
+  border-radius:9px;
+  background:#fff;
   display:flex; align-items:center; justify-content:center;
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 4px 10px rgba(0,0,0,.3);
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
   transition:transform .25s, box-shadow .25s;
+  overflow:hidden;
 }
 .sk-back-tools .sk-tool:hover{
   transform:translateY(-2px) scale(1.06);
   box-shadow:0 8px 16px rgba(0,0,0,.45);
 }
+/* Hover label: dark overlay reveals tool name in place of the logo */
+.sk-back-tools .sk-tool::after{
+  content:attr(data-name);
+  position:absolute; inset:0;
+  background:rgba(10,12,18,.94);
+  color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-weight:500;
+  padding:.3rem;
+  line-height:1.25;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+  border-radius:9px;
+}
+.sk-back-tools .sk-tool:hover::after{ opacity:1; }
 .sk-tool-ic{
   display:block;
-  width:50%; height:50%;
-  background-color:#ffffff;
-  -webkit-mask:var(--ic) center/contain no-repeat;
-          mask:var(--ic) center/contain no-repeat;
+  width:74%; height:74%;
+  background-image:var(--ic);
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
 }
-.sk-tool[data-t="notion"] .sk-tool-ic,
-.sk-tool[data-t="sketch"] .sk-tool-ic,
-.sk-tool[data-t="miro"] .sk-tool-ic{ background-color:#050038; }
-
-/* Brand-color tile backgrounds */
-.sk-tool[data-t="figma"]      { background:linear-gradient(135deg,#f24e1e 0%, #a259ff 50%, #1abcfe 100%); }
-.sk-tool[data-t="sketch"]     { background:#ffd02f; }
-.sk-tool[data-t="adobexd"]    { background:#470137; }
-.sk-tool[data-t="miro"]       { background:#ffd02f; }
-.sk-tool[data-t="notion"]     { background:#fff; }
-.sk-tool[data-t="midjourney"] { background:#000; }
-.sk-tool[data-t="anthropic"]  { background:#cc785c; }
-.sk-tool[data-t="vscode"]     { background:#007acc; }
-.sk-tool[data-t="openai"]     { background:#10a37f; }
 
 /* Special, Tools front face uses brand-color accent */
 .sk-flip--tools .sk-front{ background:rgba(255,245,245,.78); }
@@ -2515,7 +2977,7 @@ body.cs-scrolling-down #ag-trigger{
   justify-content:flex-start;
   position:relative;
   overflow:hidden;
-  /* Folder-tab cutout on the TOP-LEFT — the tab itself stays at y=0,
+  /* Folder-tab cutout on the TOP-LEFT, the tab itself stays at y=0,
      the rest of the top edge is recessed 44px so the page bg above
      shows through there (creating the file-folder tab silhouette). */
   clip-path:polygon(
@@ -2584,40 +3046,83 @@ body.cs-scrolling-down #ag-trigger{
 .ft-headline-arr svg{ width:100%; height:auto; display:block; }
 
 /* Each card: bordered, dark border on red, with a dark button inside */
-.ft-card{
+/* Sticky-note CTAs, mirror the intro overlay's desk notes. Tacked onto the
+   red contact panel with pushpins, slight tilt, lift on hover. */
+.ft-note{
+  position:relative;
   display:flex; flex-direction:column;
   justify-content:space-between;
-  padding:2rem 1.6rem 1.6rem;
-  border:1.5px solid var(--white);
-  border-radius:6px;
-  background:transparent;
-  gap:1.4rem;
+  padding:2.6rem 1.6rem 1.7rem;
+  border-radius:4px;
+  gap:1.6rem;
+  box-shadow:
+    0 22px 44px rgba(0,0,0,.38),
+    0 8px 16px rgba(0,0,0,.24);
+  transition:transform .4s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+  will-change:transform;
 }
-.ft-card-q{
-  font-family:'Inter',sans-serif;
-  font-weight:700;
-  font-size:clamp(1.1rem, 1.4vw, 1.4rem);
-  line-height:1.2;
-  color:var(--white);
+.ft-note--yellow{
+  background:linear-gradient(150deg, #fff3a0 0%, #ffd859 100%);
+  transform:rotate(-2.2deg);
+}
+.ft-note--blue{
+  background:linear-gradient(150deg, #d4ecff 0%, #94cdfa 100%);
+  transform:rotate(2.4deg);
+}
+.ft-note:hover{
+  transform:rotate(0deg) translateY(-6px);
+  box-shadow:
+    0 30px 56px rgba(0,0,0,.42),
+    0 12px 20px rgba(0,0,0,.3);
+}
+.ft-note-pin{
+  position:absolute; top:-9px; left:50%;
+  transform:translateX(-50%);
+  width:16px; height:16px;
+  border-radius:50%;
+  box-shadow:
+    0 3px 6px rgba(0,0,0,.45),
+    inset -2px -2px 4px rgba(0,0,0,.25);
+  z-index:2;
+}
+.ft-note--yellow .ft-note-pin{
+  background:radial-gradient(circle at 35% 30%, #6cd7ff, #1f74a6 70%, #0c3f5d);
+}
+.ft-note--blue .ft-note-pin{
+  background:radial-gradient(circle at 35% 30%, #ffd66c, #c87800 70%, #7a4500);
+}
+.ft-note-q{
+  font-family:'Caveat','Bradley Hand',cursive;
+  font-size:clamp(1.55rem, 2.1vw, 2.1rem);
+  font-weight:600;
+  line-height:1.05;
   margin:0;
   text-align:center;
 }
-.ft-card-btn{
-  display:block;
+.ft-note--yellow .ft-note-q{ color:#3a2410; }
+.ft-note--blue .ft-note-q{ color:#0e2a3d; }
+.ft-note-btn{
+  display:inline-block;
+  align-self:center;
   text-align:center;
-  background:var(--white);
+  background:#0c1117;
   color:#fff;
   font-family:'Inter',sans-serif;
   font-weight:600;
-  font-size:.92rem;
+  font-size:.82rem;
   letter-spacing:-.005em;
-  padding:.95rem 1.4rem;
+  padding:.7rem 1.25rem;
+  border:none;
   border-radius:999px;
   text-decoration:none;
   cursor:pointer;
   transition:background .25s, transform .25s;
+  white-space:nowrap;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-.ft-card-btn:hover{ background:#222; transform:translateY(-2px); }
+.ft-note-btn:hover{ background:#1f242c; transform:translateY(-2px); }
 
 /* ── MID: location + social icons ── */
 .ft-mid{
@@ -3272,7 +3777,7 @@ body.cs-scrolling-down #ag-trigger{
 .cs-back::before{content:'←';font-size:.9rem;}
 .cs-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:#c44a58;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;}
 .cs-eyebrow::before{content:'//';color:var(--grey2);}
-/* Match the landing section heads — Instrument Serif, tightened tracking */
+/* Match the landing section heads, Instrument Serif, tightened tracking */
 .cs-hero-title{
   font-family:'Instrument Serif',Georgia,serif;
   font-size:var(--fs-hero);
@@ -3298,11 +3803,11 @@ body.cs-scrolling-down #ag-trigger{
 .cs-meta-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey2);margin-bottom:.3rem;}
 .cs-meta-value{font-size:.88rem;font-weight:600;color:var(--white);line-height:1.45;}
 .cs-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem;}
-/* Hidden in the lightened hero — tags duplicate info already in Scope of Work */
+/* Hidden in the lightened hero, tags duplicate info already in Scope of Work */
 .cs-tags-row{ display:none; }
-/* Hero eyebrow ("Case Study 0X") removed — the cs-hero-num + title carry enough orientation */
+/* Hero eyebrow ("Case Study 0X") removed, the cs-hero-num + title carry enough orientation */
 .cs-eyebrow{ display:none; }
-/* Standalone "3 Calls I Made" section removed — the 5 gallery rows below
+/* Standalone "3 Calls I Made" section removed, the 5 gallery rows below
    now carry the decision-level storytelling. */
 .cs-dec-section{ display:none; }
 .cs-tag{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.28rem .62rem;border:1px solid rgba(223,49,67,.18);border-radius:999px;color:#c44a58;background:rgba(223,49,67,.015);}
@@ -3345,7 +3850,7 @@ body.cs-scrolling-down #ag-trigger{
 .cs-body ul{margin:0 0 1.2rem 1.1rem;}
 .cs-body li{margin-bottom:.55rem;color:rgba(26,36,48,.72);}
 .cs-2col{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
-/* Insights cards hidden — their text duplicates the gallery captions */
+/* Insights cards hidden, their text duplicates the gallery captions */
 .cs-3col{ display:none; }
 /* ═══ 3D COVERFLOW GALLERY ═══ */
 /* ══════════════════════════════════════════
@@ -3543,7 +4048,7 @@ body.cs-scrolling-down #ag-trigger{
 }
 .cfx-hint.gone{opacity:0;}
 .cs-gallery-footer{margin-top:1.2rem;}
-/* Carousel footer CTA hidden — the takeaway section already has the
+/* Carousel footer CTA hidden, the takeaway section already has the
    "View Detailed Case Study" link; this duplicate sits awkwardly below
    the gallery. */
 .cs-gallery-cta{
@@ -4096,6 +4601,94 @@ body.cs-scrolling-down #ag-trigger{
   letter-spacing:.09em;text-transform:uppercase;color:#fff;
 }
 
+/* ── Chat teaser bubble: auto-pops above the trigger to highlight the chat ── */
+#ag-teaser{
+  position:fixed;
+  bottom:5rem;
+  right:2rem;
+  z-index:9999;
+  display:flex; align-items:center; gap:.5rem;
+  background:#fff;
+  color:#070a0e;
+  border-radius:14px 14px 4px 14px;
+  padding:.65rem .55rem .65rem .95rem;
+  box-shadow:0 12px 32px rgba(0,0,0,.22), 0 4px 10px rgba(0,0,0,.12);
+  opacity:0;
+  transform:translateY(8px) scale(.92);
+  pointer-events:none;
+  cursor:pointer;
+  transition:opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1);
+  will-change:transform, opacity;
+}
+#ag-teaser.ag-teaser--in{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+#ag-teaser::after{
+  /* speech-bubble tail pointing down to the trigger */
+  content:'';
+  position:absolute;
+  bottom:-5px; right:22px;
+  width:12px; height:12px;
+  background:#fff;
+  transform:rotate(45deg);
+  box-shadow:3px 3px 6px rgba(0,0,0,.05);
+}
+.ag-teaser-text{
+  font-family:'Inter',sans-serif;
+  font-size:.82rem;
+  font-weight:500;
+  letter-spacing:-.005em;
+  color:#0c1117;
+  white-space:nowrap;
+  display:inline-flex; align-items:center; gap:.35rem;
+}
+.ag-teaser-wave{
+  display:inline-block;
+  font-size:.95rem;
+  transform-origin:70% 70%;
+  animation:agWave 2.4s ease-in-out infinite;
+}
+@keyframes agWave{
+  0%, 60%, 100% { transform:rotate(0deg); }
+  10% { transform:rotate(14deg); }
+  20% { transform:rotate(-8deg); }
+  30% { transform:rotate(14deg); }
+  40% { transform:rotate(-4deg); }
+  50% { transform:rotate(10deg); }
+}
+.ag-teaser-close{
+  background:rgba(7,10,14,.06);
+  border:none;
+  color:rgba(7,10,14,.55);
+  cursor:pointer;
+  font-size:.68rem;
+  width:20px; height:20px;
+  border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:0;
+  line-height:1;
+  flex-shrink:0;
+  transition:background .2s, color .2s;
+}
+.ag-teaser-close:hover{ background:rgba(7,10,14,.12); color:#0c1117; }
+
+/* Hide teaser wherever the trigger is also hidden */
+body.hero-visible #ag-teaser,
+body.projects-visible #ag-teaser,
+body.contact-visible #ag-teaser,
+body.cs-scrolling-down #ag-teaser{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+@media (max-width:720px){
+  #ag-teaser{ bottom:4.2rem; right:1rem; }
+}
+@media (prefers-reduced-motion: reduce){
+  .ag-teaser-wave{ animation:none; }
+  #ag-teaser{ transition:opacity .2s; }
+}
+
 /* ── Chat panel ── */
 #ag-panel{
   position:fixed;bottom:5.4rem;right:2rem;
@@ -4483,6 +5076,112 @@ body.cs-scrolling-down #ag-trigger{
   border-left:3px solid var(--red);
 }
 
+/* ── Key Impact stats block ──
+   Dark band placed right after the hero meta row in case studies that
+   have concrete metrics. Big Bebas Neue numbers, sub-label below. */
+.cs-impact{
+  padding:4rem 5.5rem;
+  background:#0d0f14;
+  border-bottom:1px solid rgba(247,248,251,.06);
+}
+.cs-impact-inner{ max-width:1100px; margin:0 auto; }
+.cs-impact-label{
+  font-family:'Space Mono',monospace;
+  font-size:.62rem; letter-spacing:.26em; text-transform:uppercase;
+  color:#ff5066;
+  display:flex; align-items:center; gap:.9rem;
+  margin-bottom:1.6rem;
+}
+.cs-impact-label::before{
+  content:''; width:32px; height:1px; background:#ff5066;
+}
+.cs-impact-stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:2.4rem;
+}
+.cs-impact-stat{
+  display:flex; flex-direction:column; gap:.45rem;
+  border-left:2px solid rgba(223,49,67,.4);
+  padding-left:1.4rem;
+}
+.cs-impact-num{
+  font-family:'Bebas Neue','Barlow',sans-serif;
+  font-size:clamp(2.8rem, 5vw, 4.6rem);
+  line-height:.95;
+  color:#f7f8fb;
+  letter-spacing:.005em;
+  font-weight:700;
+}
+.cs-impact-num em{ color:var(--red); font-style:normal; }
+.cs-impact-desc{
+  font-family:'Barlow',sans-serif;
+  font-size:.86rem;
+  color:rgba(247,248,251,.55);
+  font-weight:400;
+  line-height:1.45;
+}
+@media(max-width:780px){
+  .cs-impact{ padding:2.6rem 1.5rem; }
+  .cs-impact-stats{ gap:1.6rem; }
+}
+
+/* ── "Looking back" reflection, sticky-note style ──
+   Visually intimate, narrower than a section, slight rotation, handwritten
+   feel. Clearly separate from the takeaway block that follows. */
+.cs-testimonial{
+  position:relative;
+  padding:4rem 5.5rem 4rem;
+  background:transparent;
+  display:flex; justify-content:center;
+}
+.cs-testimonial-inner{
+  position:relative;
+  max-width:480px;
+  background:linear-gradient(150deg, #f5e9b4, #ead387);
+  color:#3b3520;
+  padding:1.7rem 1.7rem 1.6rem;
+  border-radius:3px;
+  box-shadow:0 22px 44px rgba(0,0,0,.16), 0 1px 0 rgba(0,0,0,.06);
+  transform:rotate(-1.4deg);
+}
+.cs-testimonial-inner::before{
+  /* Pin centered on top edge */
+  content:'';
+  position:absolute;
+  top:-7px; left:50%;
+  transform:translateX(-50%);
+  width:14px; height:14px;
+  background:radial-gradient(circle at 35% 30%, #ff8a8a, #c01e36 70%, #8b0000);
+  border-radius:50%;
+  box-shadow:0 3px 5px rgba(0,0,0,.45);
+}
+.cs-testimonial-eyebrow{
+  font-family:'Space Mono',monospace;
+  font-size:.5rem; letter-spacing:.24em; text-transform:uppercase;
+  color:rgba(80,60,30,.62);
+  margin-bottom:.7rem;
+}
+.cs-testimonial-quote{
+  font-family:'Caveat','Bradley Hand','Segoe Script','Apple Chancery',cursive;
+  font-size:clamp(1.2rem, 1.5vw, 1.5rem);
+  line-height:1.36;
+  color:#2e2918;
+  font-weight:400;
+  margin:0 0 .85rem;
+}
+.cs-testimonial-attr{ display:none; }
+/* Sign-off ", A" in the corner */
+.cs-testimonial-inner::after{
+  content:'A';
+  display:block;
+  position:absolute;
+  bottom:1rem; right:1.4rem;
+  font-family:'Caveat','Bradley Hand',cursive;
+  font-size:1rem;
+  color:rgba(80,60,30,.7);
+}
+
 /* ── Takeaway section: matches The shift block (red left-border, serif body) ── */
 .cs-section[id$="-takeaway"]{
   display:flex;
@@ -4494,16 +5193,16 @@ body.cs-scrolling-down #ag-trigger{
   position:relative;
   text-align:left;
   margin:0 0 2.4rem;
-  padding:.6rem 0 .6rem 2.4rem;
-  border-left:5px solid var(--red);
+  padding:.4rem 0 .4rem 1.8rem;
+  border-left:3px solid var(--red);
   border-right:none;
-  max-width:920px;
-  font-family:'Instrument Serif',Georgia,serif;
-  font-size:clamp(1.4rem,2.4vw,2.1rem);
+  max-width:720px;
+  font-family:'Barlow',sans-serif;
+  font-size:clamp(1rem, 1.25vw, 1.15rem);
   font-weight:400;
-  line-height:1.32;
-  letter-spacing:-.01em;
-  color:var(--white);
+  line-height:1.7;
+  letter-spacing:0;
+  color:rgba(26,36,48,.78);
 }
 .cs-section[id$="-takeaway"] .cs-actions{
   justify-content:flex-start;
@@ -4597,6 +5296,71 @@ body.cs-scrolling-down #ag-trigger{
   content:'';position:absolute;top:0;left:0;right:0;height:4px;z-index:2;
 }
 
+/* Anchor offsets, scrolled-to sections sit below the floating nav */
+.cs-page .cs-tension,
+.cs-page .cs-reframe-section,
+.cs-page .cs-dec-section,
+.cs-page .cs-section{
+  scroll-margin-top:96px;
+}
+
+/* ── Case-study Table of Contents ──
+   Sticky vertical nav on the right edge. Each item is a small dot + label
+   that expands on hover. Active section highlighted in red. */
+.cs-toc{
+  position:fixed;
+  right:1.6rem;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:38;
+  display:flex;flex-direction:column;
+  gap:.6rem;
+  padding:1.1rem .9rem;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid rgba(7,10,14,.08);
+  border-radius:14px;
+  box-shadow:0 18px 44px rgba(7,10,14,.08), 0 0 0 1px rgba(255,255,255,.5) inset;
+  opacity:0;pointer-events:none;
+  transition:opacity .45s ease;
+}
+.page.active.cs-page .cs-toc{ opacity:1; pointer-events:auto; }
+.cs-toc-item{
+  display:flex;align-items:center;gap:.7rem;
+  font-family:'Space Mono',monospace;
+  font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(7,10,14,.45);
+  cursor:pointer;
+  text-decoration:none;
+  transition:color .25s ease;
+  white-space:nowrap;
+  padding:.18rem 0;
+}
+.cs-toc-num{
+  color:rgba(7,10,14,.32);
+  font-size:.46rem;
+}
+.cs-toc-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(7,10,14,.2);
+  flex-shrink:0;
+  transition:background .25s, transform .25s, box-shadow .25s;
+}
+.cs-toc-label{
+  display:inline-block;
+}
+.cs-toc-item:hover{ color:rgba(7,10,14,.85); }
+.cs-toc-item:hover .cs-toc-dot{ background:rgba(7,10,14,.55); transform:scale(1.2); }
+.cs-toc-item.is-active{ color:var(--red); }
+.cs-toc-item.is-active .cs-toc-num{ color:var(--red); }
+.cs-toc-item.is-active .cs-toc-dot{
+  background:var(--red);
+  transform:scale(1.4);
+  box-shadow:0 0 12px rgba(223,49,67,.4);
+}
+@media(max-width:1100px){ .cs-toc{ display:none; } }
+
 /* ── Story-driven case study sections ── */
 .cs-tension{background:#0d0f14;padding:7rem 5.5rem;position:relative;overflow:hidden;}
 .cs-tension::after{
@@ -4609,7 +5373,7 @@ body.cs-scrolling-down #ag-trigger{
 .cs-tension-quote{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,4.2vw,3.6rem);font-weight:400;line-height:1.18;letter-spacing:-.015em;color:#f7f8fb;border-left:none;padding-left:0;margin:0;max-width:1000px;}
 .cs-tension-quote .red{color:var(--red);}
 .cs-tension-quote em{font-style:normal;color:var(--red);}
-/* Restored as secondary support context — smaller, lighter, breathable */
+/* Restored as secondary support context, smaller, lighter, breathable */
 .cs-tension-sub{
   display:block;
   font-family:'Inter',sans-serif;
@@ -4721,7 +5485,7 @@ body.cs-scrolling-down #ag-trigger{
   .cs-page .cs-section,
   .cs-page .cs-section--toolset{min-height:auto;}
 }
-/* Per-project accents removed — single red language across all case studies */
+/* Per-project accents removed, single red language across all case studies */
 </style>
 </head>
 <body>
@@ -4730,22 +5494,353 @@ body.cs-scrolling-down #ag-trigger{
      INTRO OVERLAY, sticky note drops in, text writes itself,
      dismisses by sliding up to reveal the hero beneath.
 ═══════════════════════════════════════ -->
-<div id="intro-overlay" class="intro-overlay">
+<div id="intro-overlay" class="intro-overlay intro-overlay--desk">
   <span class="intro-baseline" aria-hidden="true"></span>
 
+  <!-- ── DOODLES (design-themed sketches drawn in with stroke animation) ── -->
+
+  <!-- 💡 Light bulb (top-left) -->
+  <svg class="desk-doodle desk-icon desk-icon--bulb" viewBox="0 0 70 80" aria-hidden="true">
+    <path class="desk-sketch-path" d="M35 10 Q 20 10, 20 26 Q 20 38, 28 46 L 28 56 L 42 56 L 42 46 Q 50 38, 50 26 Q 50 10, 35 10 Z"
+          stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:.5s; --draw-duration:.8s"/>
+    <path class="desk-sketch-path" d="M28 60 L 42 60 M30 65 L 40 65 M32 70 L 38 70"
+          stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.2s; --draw-duration:.4s"/>
+    <path class="desk-sketch-path" d="M35 3 V 7 M52 12 L 55 9 M18 12 L 15 9 M58 28 L 62 28 M12 28 L 8 28"
+          stroke="rgba(223,49,67,.85)" stroke-width="2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.55s; --draw-duration:.5s"/>
+  </svg>
+
+  <!-- 🔍 Magnifying glass (top-right) -->
+  <svg class="desk-doodle desk-icon desk-icon--search" viewBox="0 0 80 80" aria-hidden="true">
+    <circle class="desk-sketch-path" cx="32" cy="32" r="18"
+            stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"
+            pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+            style="--draw-delay:.8s; --draw-duration:.7s"/>
+    <path class="desk-sketch-path" d="M46 46 L 68 68"
+          stroke="rgba(255,255,255,.7)" stroke-width="2.4" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.5s; --draw-duration:.35s"/>
+    <path class="desk-sketch-path" d="M24 26 Q 28 22, 36 26"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.85s; --draw-duration:.3s"/>
+  </svg>
+
+  <!-- 👁 Eye (left of welcome) -->
+  <svg class="desk-doodle desk-icon desk-icon--eye" viewBox="0 0 70 40" aria-hidden="true">
+    <path class="desk-sketch-path" d="M5 20 Q 22 5, 35 5 Q 48 5, 65 20 Q 48 35, 35 35 Q 22 35, 5 20 Z"
+          stroke="rgba(255,255,255,.65)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.1s; --draw-duration:.6s"/>
+    <circle class="desk-sketch-path" cx="35" cy="20" r="7"
+            stroke="rgba(255,255,255,.65)" stroke-width="1.8" fill="none"
+            pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+            style="--draw-delay:1.65s; --draw-duration:.4s"/>
+    <circle cx="35" cy="20" r="2.5" fill="rgba(223,49,67,.9)" opacity="0"
+            class="desk-sketch-dot" style="--dot-delay:2.0s"/>
+  </svg>
+
+  <!-- 💬 Speech bubble (bottom-left) -->
+  <svg class="desk-doodle desk-icon desk-icon--speech" viewBox="0 0 70 60" aria-hidden="true">
+    <path class="desk-sketch-path" d="M8 8 H 56 Q 62 8, 62 14 V 38 Q 62 44, 56 44 H 24 L 14 54 L 17 44 Q 8 44, 8 38 Z"
+          stroke="rgba(255,255,255,.65)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.4s; --draw-duration:.9s"/>
+    <path class="desk-sketch-path" d="M18 22 L 36 22 M18 30 L 50 30"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.2s; --draw-duration:.45s"/>
+  </svg>
+
+  <!-- ➤ Cursor pointer (right of welcome) -->
+  <svg class="desk-doodle desk-icon desk-icon--cursor" viewBox="0 0 36 44" aria-hidden="true">
+    <path class="desk-sketch-path" d="M6 4 L 6 36 L 14 28 L 20 40 L 25 38 L 19 26 L 30 26 Z"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.0s; --draw-duration:.7s"/>
+  </svg>
+
+  <!-- 🔒 Lock (top-center area) -->
+  <svg class="desk-doodle desk-icon desk-icon--lock" viewBox="0 0 50 60" aria-hidden="true">
+    <path class="desk-sketch-path" d="M10 26 H 40 Q 42 26, 42 28 V 50 Q 42 52, 40 52 H 10 Q 8 52, 8 50 V 28 Q 8 26, 10 26 Z"
+          stroke="rgba(223,49,67,.8)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.8s; --draw-duration:.6s"/>
+    <path class="desk-sketch-path" d="M14 26 V 16 Q 14 6, 25 6 Q 36 6, 36 16 V 26"
+          stroke="rgba(223,49,67,.8)" stroke-width="1.8" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.35s; --draw-duration:.55s"/>
+    <circle cx="25" cy="38" r="2.5" fill="rgba(223,49,67,.8)" opacity="0"
+            class="desk-sketch-dot" style="--dot-delay:2.85s"/>
+  </svg>
+
+  <!-- ♡ Heart (bottom-center) -->
+  <svg class="desk-doodle desk-icon desk-icon--heart" viewBox="0 0 50 44" aria-hidden="true">
+    <path class="desk-sketch-path" d="M25 40 L 8 22 Q 2 14, 8 8 Q 14 2, 25 12 Q 36 2, 42 8 Q 48 14, 42 22 Z"
+          stroke="rgba(223,49,67,.75)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.6s; --draw-duration:.7s"/>
+  </svg>
+
+
+  <!-- ✓ Check mark (top-right) -->
+  <svg class="desk-doodle desk-icon desk-icon--check" viewBox="0 0 36 30" aria-hidden="true">
+    <path class="desk-sketch-path" d="M4 16 L 14 26 L 32 4"
+          stroke="rgba(223,49,67,.85)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.65s; --draw-duration:.45s"/>
+  </svg>
+
+  <!-- ? Question mark (decorative) -->
+  <svg class="desk-doodle desk-icon desk-icon--question" viewBox="0 0 30 50" aria-hidden="true">
+    <path class="desk-sketch-path" d="M6 14 Q 6 4, 15 4 Q 24 4, 24 14 Q 24 22, 15 26 V 32"
+          stroke="rgba(255,255,255,.55)" stroke-width="2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.4s; --draw-duration:.6s"/>
+    <circle cx="15" cy="42" r="2.5" fill="rgba(255,255,255,.55)" opacity="0"
+            class="desk-sketch-dot" style="--dot-delay:2.05s"/>
+  </svg>
+
+  <!-- Hand-drawn 'product' word (top-left below bulb) -->
+  <span class="desk-word desk-word--product">product</span>
+  <!-- Hand-drawn 'trust' word (right of welcome) -->
+  <span class="desk-word desk-word--trust">trust</span>
+
+  <!-- COMPLEX DOODLE 1: Wireframe page sketch (top-left area) -->
+  <svg class="desk-doodle desk-icon desk-icon--wireframe" viewBox="0 0 80 100" aria-hidden="true">
+    <path class="desk-sketch-path" d="M5 6 H 75 V 95 H 5 Z"
+          stroke="rgba(255,255,255,.6)" stroke-width="1.8" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.0s; --draw-duration:.9s"/>
+    <path class="desk-sketch-path" d="M10 16 H 50"
+          stroke="rgba(255,255,255,.55)" stroke-width="2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.85s; --draw-duration:.3s"/>
+    <circle class="desk-sketch-path" cx="22" cy="38" r="9"
+            stroke="rgba(255,255,255,.55)" stroke-width="1.5" fill="none"
+            pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+            style="--draw-delay:2.1s; --draw-duration:.5s"/>
+    <path class="desk-sketch-path" d="M38 34 H 68 M38 41 H 60 M38 48 H 62"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.3" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.5s; --draw-duration:.5s"/>
+    <path class="desk-sketch-path" d="M10 60 H 70 V 78 H 10 Z"
+          stroke="rgba(223,49,67,.7)" stroke-width="1.5" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.95s; --draw-duration:.5s"/>
+    <path class="desk-sketch-path" d="M14 86 H 50"
+          stroke="rgba(255,255,255,.4)" stroke-width="1.2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.45s; --draw-duration:.3s"/>
+  </svg>
+
+  <!-- COMPLEX DOODLE 2: Mobile phone with app grid (bottom-left area) -->
+  <svg class="desk-doodle desk-icon desk-icon--mobile" viewBox="0 0 50 90" aria-hidden="true">
+    <path class="desk-sketch-path" d="M9 4 H 41 Q 45 4, 45 8 V 82 Q 45 86, 41 86 H 9 Q 5 86, 5 82 V 8 Q 5 4, 9 4 Z"
+          stroke="rgba(255,255,255,.65)" stroke-width="1.8" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.2s; --draw-duration:.95s"/>
+    <path class="desk-sketch-path" d="M19 9 H 31"
+          stroke="rgba(255,255,255,.55)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.2s; --draw-duration:.2s"/>
+    <path class="desk-sketch-path" d="M11 19 H 17 V 25 H 11 Z M21 19 H 27 V 25 H 21 Z M31 19 H 37 V 25 H 31 Z M11 30 H 17 V 36 H 11 Z M21 30 H 27 V 36 H 21 Z M31 30 H 37 V 36 H 31 Z M11 41 H 17 V 47 H 11 Z M21 41 H 27 V 47 H 21 Z M31 41 H 37 V 47 H 31 Z"
+          stroke="rgba(255,255,255,.55)" stroke-width="1.3" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.45s; --draw-duration:1.1s"/>
+    <circle class="desk-sketch-path" cx="25" cy="76" r="2.5"
+            stroke="rgba(223,49,67,.75)" stroke-width="1.4" fill="none"
+            pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+            style="--draw-delay:4.6s; --draw-duration:.3s"/>
+  </svg>
+
+  <!-- COMPLEX DOODLE 3: Process flowchart (top-center) -->
+  <svg class="desk-doodle desk-icon desk-icon--flowchart" viewBox="0 0 170 50" aria-hidden="true">
+    <path class="desk-sketch-path" d="M6 12 H 38 Q 41 12, 41 15 V 35 Q 41 38, 38 38 H 6 Q 3 38, 3 35 V 15 Q 3 12, 6 12 Z"
+          stroke="rgba(255,255,255,.65)" stroke-width="1.6" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:.8s; --draw-duration:.5s"/>
+    <path class="desk-sketch-path" d="M41 25 L 62 25"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.35s; --draw-duration:.25s"/>
+    <path class="desk-sketch-path" d="M58 21 L 62 25 L 58 29"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.6s; --draw-duration:.2s"/>
+    <path class="desk-sketch-path" d="M65 12 H 99 Q 102 12, 102 15 V 35 Q 102 38, 99 38 H 65 Q 62 38, 62 35 V 15 Q 62 12, 65 12 Z"
+          stroke="rgba(255,255,255,.65)" stroke-width="1.6" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.85s; --draw-duration:.5s"/>
+    <path class="desk-sketch-path" d="M102 25 L 122 25"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.4s; --draw-duration:.25s"/>
+    <path class="desk-sketch-path" d="M118 21 L 122 25 L 118 29"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.65s; --draw-duration:.2s"/>
+    <path class="desk-sketch-path" d="M125 12 H 159 Q 162 12, 162 15 V 35 Q 162 38, 159 38 H 125 Q 122 38, 122 35 V 15 Q 122 12, 125 12 Z"
+          stroke="rgba(223,49,67,.75)" stroke-width="1.7" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.9s; --draw-duration:.5s"/>
+  </svg>
+
+  <!-- COMPLEX DOODLE 4: Persona face (top-right area) -->
+  <svg class="desk-doodle desk-icon desk-icon--persona" viewBox="0 0 60 75" aria-hidden="true">
+    <circle class="desk-sketch-path" cx="30" cy="22" r="14"
+            stroke="rgba(255,255,255,.7)" stroke-width="1.8" fill="none"
+            pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+            style="--draw-delay:1.6s; --draw-duration:.7s"/>
+    <path class="desk-sketch-path" d="M20 13 Q 24 5, 30 7 Q 36 5, 41 14"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.8" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.35s; --draw-duration:.4s"/>
+    <circle cx="25" cy="20" r="1.4" fill="rgba(255,255,255,.85)" opacity="0"
+            class="desk-sketch-dot" style="--dot-delay:2.8s"/>
+    <circle cx="35" cy="20" r="1.4" fill="rgba(255,255,255,.85)" opacity="0"
+            class="desk-sketch-dot" style="--dot-delay:2.85s"/>
+    <path class="desk-sketch-path" d="M25 28 Q 30 32, 35 28"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.9s; --draw-duration:.3s"/>
+    <path class="desk-sketch-path" d="M14 70 Q 18 50, 30 50 Q 42 50, 46 70"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.8" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.25s; --draw-duration:.7s"/>
+    <path class="desk-sketch-path" d="M48 56 H 60 M48 60 H 58 M48 64 H 56"
+          stroke="rgba(223,49,67,.6)" stroke-width="1.2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.95s; --draw-duration:.5s"/>
+  </svg>
+
+  <!-- COMPLEX DOODLE 5: Chart with bars + trend line (bottom-right area) -->
+  <svg class="desk-doodle desk-icon desk-icon--chart" viewBox="0 0 90 70" aria-hidden="true">
+    <path class="desk-sketch-path" d="M8 6 V 58 H 84"
+          stroke="rgba(255,255,255,.6)" stroke-width="1.6" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.4s; --draw-duration:.5s"/>
+    <path class="desk-sketch-path" d="M18 44 H 26 V 58 H 18 Z"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.5" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.9s; --draw-duration:.3s"/>
+    <path class="desk-sketch-path" d="M32 36 H 40 V 58 H 32 Z"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.5" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:4.2s; --draw-duration:.3s"/>
+    <path class="desk-sketch-path" d="M46 26 H 54 V 58 H 46 Z"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.5" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:4.5s; --draw-duration:.3s"/>
+    <path class="desk-sketch-path" d="M60 14 H 68 V 58 H 60 Z"
+          stroke="rgba(255,255,255,.7)" stroke-width="1.5" fill="none" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:4.8s; --draw-duration:.3s"/>
+    <path class="desk-sketch-path" d="M22 42 Q 32 38, 36 34 Q 46 26, 50 24 Q 60 14, 64 10"
+          stroke="rgba(223,49,67,.85)" stroke-width="2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:5.1s; --draw-duration:.7s"/>
+    <path class="desk-sketch-path" d="M58 14 L 64 10 L 68 18"
+          stroke="rgba(223,49,67,.85)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:5.8s; --draw-duration:.3s"/>
+  </svg>
+
+  <!-- Curved arrow (top, pointing toward welcome) -->
+  <svg class="desk-doodle desk-doodle--arrow" viewBox="0 0 140 90" aria-hidden="true">
+    <path class="desk-sketch-path" d="M8 14 Q 60 6, 90 36 T 118 72"
+          stroke="rgba(255,255,255,.5)" stroke-width="2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.0s; --draw-duration:.85s"/>
+    <path class="desk-sketch-path" d="M110 62 L 118 72 L 126 60"
+          stroke="rgba(255,255,255,.5)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:1.75s; --draw-duration:.35s"/>
+  </svg>
+
+  <!-- Small accents: tiny scribbles and stars -->
+  <svg class="desk-doodle desk-sparkle desk-sparkle--1" viewBox="0 0 28 28" aria-hidden="true">
+    <path class="desk-sketch-path" d="M14 3 V 25 M3 14 H 25"
+          stroke="rgba(223,49,67,.85)" stroke-width="1.8" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.9s; --draw-duration:.35s"/>
+  </svg>
+  <svg class="desk-doodle desk-sparkle desk-sparkle--2" viewBox="0 0 28 28" aria-hidden="true">
+    <path class="desk-sketch-path" d="M14 3 V 25 M3 14 H 25 M7 7 L 21 21 M21 7 L 7 21"
+          stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:4.0s; --draw-duration:.4s"/>
+  </svg>
+
+  <!-- ── STICKY NOTES (paper, drop in) ── -->
+
+  <!-- Main welcome sticky note -->
   <div class="intro-note">
     <span class="intro-note-pin" aria-hidden="true"></span>
-    <p class="intro-note-text" id="intro-text" aria-label="Hi, welcome to my portfolio."></p>
+    <p class="intro-note-text" id="intro-text" aria-label="Welcome. The work, the why, and a bit of me."></p>
     <svg class="intro-underline" id="intro-underline" viewBox="0 0 280 14" aria-hidden="true">
       <path d="M6 8 C 60 3, 110 13, 160 7 S 230 3, 274 9"
-            stroke="#2d2814" stroke-width="2.6" fill="none"
-            stroke-linecap="round"
-            pathLength="100"
-            stroke-dasharray="100"
-            stroke-dashoffset="100"/>
+            stroke="#2d2814" stroke-width="2.6" fill="none" stroke-linecap="round"
+            pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
     </svg>
   </div>
-  <div class="intro-scroll" id="intro-scroll">Scroll to enter <span aria-hidden="true">&darr;</span></div>
+
+  <!-- Got into lately note (LEFT, peach paper) -->
+  <div class="desk-note desk-note-recent">
+    <span class="desk-note-pin desk-note-pin--peach" aria-hidden="true"></span>
+    <div class="desk-currently-label">Got into lately:</div>
+    <ul class="desk-currently-list">
+      <li>Building with Claude Code</li>
+      <li>AI agent UX patterns</li>
+      <li>Prompt-led design</li>
+    </ul>
+  </div>
+
+  <!-- Curious about note (RIGHT, blue paper) -->
+  <div class="desk-note desk-note-currently">
+    <span class="desk-note-pin" aria-hidden="true"></span>
+    <div class="desk-currently-label">Curious about:</div>
+    <ul class="desk-currently-list">
+      <li>AI that shows its work</li>
+      <li>Code-driven prototyping</li>
+      <li>Multi-modal interfaces</li>
+    </ul>
+  </div>
+
+  <!-- Coffee mug sketch (bottom-right) -->
+  <svg class="desk-doodle desk-coffee-svg" viewBox="0 0 130 140" aria-hidden="true">
+    <path class="desk-sketch-path" d="M30 58 L 30 110 Q 30 122, 42 122 L 78 122 Q 90 122, 90 110 L 90 58 Z"
+          stroke="rgba(255,255,255,.6)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:2.6s; --draw-duration:.9s"/>
+    <path class="desk-sketch-path" d="M90 70 Q 110 70, 110 88 Q 110 104, 90 104"
+          stroke="rgba(255,255,255,.6)" stroke-width="2" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.3s; --draw-duration:.5s"/>
+    <path class="desk-sketch-path" d="M34 64 L 86 64"
+          stroke="rgba(255,255,255,.4)" stroke-width="1.5" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.7s; --draw-duration:.3s"/>
+    <path class="desk-sketch-path" d="M44 46 Q 48 36, 44 26 T 44 10"
+          stroke="rgba(255,255,255,.45)" stroke-width="1.6" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:3.9s; --draw-duration:.55s"/>
+    <path class="desk-sketch-path" d="M60 46 Q 64 34, 60 22 T 60 6"
+          stroke="rgba(255,255,255,.45)" stroke-width="1.6" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:4.15s; --draw-duration:.55s"/>
+    <path class="desk-sketch-path" d="M76 46 Q 80 36, 76 26 T 76 10"
+          stroke="rgba(255,255,255,.45)" stroke-width="1.6" fill="none" stroke-linecap="round"
+          pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+          style="--draw-delay:4.4s; --draw-duration:.55s"/>
+  </svg>
+
+  <div class="intro-scroll" id="intro-scroll">Scroll to begin <span aria-hidden="true">&darr;</span></div>
 </div>
 
 <div id="preloader" aria-hidden="true">
@@ -4797,7 +5892,9 @@ body.cs-scrolling-down #ag-trigger{
   <span class="lp-deco lp-dot" aria-hidden="true"></span>
 
   <!-- Centered headline -->
-  <h1 class="lp-headline">I turn <span class="lp-headline-accent">complexity</span> into <span class="lp-headline-accent">clarity</span><span class="lp-headline-dot">.</span></h1>
+  <h1 class="lp-headline lp-headline-type" aria-live="polite">
+    <span class="lp-type-text"></span><span class="lp-type-cursor" aria-hidden="true"></span>
+  </h1>
 
   <!-- Scatter: portrait centered, 4 cards around it -->
   <div class="lp-scatter">
@@ -4806,7 +5903,7 @@ body.cs-scrolling-down #ag-trigger{
     <div class="lp-card lp-card-philosophy">
       <div class="lp-note">
         <span class="lp-note-pin"></span>
-        <p>Turn complexity into clarity. Every screen, every flow.</p>
+        <p>I polish the seams,<br>not just the pixels.</p>
       </div>
     </div>
 
@@ -4945,11 +6042,11 @@ body.cs-scrolling-down #ag-trigger{
           <div class="fw-landing-note">
             <span class="fw-landing-note-pin" aria-hidden="true"></span>
             <p>Pinned, in the order I&rsquo;d walk you through them.</p>
-            <span class="fw-landing-note-sig">&mdash; A</span>
+            <span class="fw-landing-note-sig">A</span>
           </div>
         </div>
 
-        <!-- Domain tags — preview of the six projects' subject areas, no
+        <!-- Domain tags, preview of the six projects' subject areas, no
              interaction (the panel tab-rows below handle navigation). -->
         <ul class="fw-landing-tags">
           <li>Fintech</li>
@@ -4979,7 +6076,7 @@ body.cs-scrolling-down #ag-trigger{
       <div class="fw-panel-body">
                 <div class="fw-info">
           <div class="fw-metrics">
-            <div class="fw-metric"><div class="fw-metric-label">Year</div><div class="fw-metric-val">2024</div></div>
+            <div class="fw-metric"><div class="fw-metric-label">Year</div><div class="fw-metric-val">2025</div></div>
             <div class="fw-metric"><div class="fw-metric-label">Platform</div><div class="fw-metric-val">Web / Control Room</div></div>
             <div class="fw-metric"><div class="fw-metric-label">Domain</div><div class="fw-metric-val">Ops Intelligence</div></div>
             <div class="fw-metric"><div class="fw-metric-label">Pattern</div><div class="fw-metric-val">Dual Dashboard</div></div>
@@ -5342,6 +6439,11 @@ body.cs-scrolling-down #ag-trigger{
           <li>Operational Intelligence</li>
           <li>Progressive Access</li>
         </ul>
+        <div class="sk-back-foot">
+          <span class="sk-back-foot-dot" aria-hidden="true"></span>
+          <span class="sk-back-foot-label">Deepest in,</span>
+          <span class="sk-back-foot-value">KYC &amp; Onboarding</span>
+        </div>
       </div>
     </article>
 
@@ -5368,6 +6470,11 @@ body.cs-scrolling-down #ag-trigger{
           <li>Usability Testing</li>
           <li>Heuristic Analysis</li>
         </ul>
+        <div class="sk-back-foot">
+          <span class="sk-back-foot-dot" aria-hidden="true"></span>
+          <span class="sk-back-foot-label">Default to,</span>
+          <span class="sk-back-foot-value">Jobs-to-be-Done</span>
+        </div>
       </div>
     </article>
 
@@ -5388,15 +6495,23 @@ body.cs-scrolling-down #ag-trigger{
       <div class="sk-face sk-back sk-back-tools">
         <span class="sk-back-label">03 &middot; Stack</span>
         <div class="sk-tools-grid">
-          <div class="sk-tool" data-t="figma" title="Figma"><span class="sk-tool-ic" style="--ic:url('assets/logos/figma.svg')"></span></div>
-          <div class="sk-tool" data-t="sketch" title="Sketch"><span class="sk-tool-ic" style="--ic:url('assets/logos/sketch.svg')"></span></div>
-          <div class="sk-tool" data-t="adobexd" title="Adobe XD"><span class="sk-tool-ic" style="--ic:url('assets/logos/adobexd.svg')"></span></div>
-          <div class="sk-tool" data-t="miro" title="Miro"><span class="sk-tool-ic" style="--ic:url('assets/logos/miro.svg')"></span></div>
-          <div class="sk-tool" data-t="notion" title="Notion"><span class="sk-tool-ic" style="--ic:url('assets/logos/notion.svg')"></span></div>
-          <div class="sk-tool" data-t="midjourney" title="MidJourney"><span class="sk-tool-ic" style="--ic:url('assets/logos/midjourney.svg')"></span></div>
-          <div class="sk-tool" data-t="vscode" title="VS Code"><span class="sk-tool-ic" style="--ic:url('assets/logos/visualstudiocode.svg')"></span></div>
-          <div class="sk-tool" data-t="anthropic" title="Claude Code"><span class="sk-tool-ic" style="--ic:url('assets/logos/anthropic.svg')"></span></div>
-          <div class="sk-tool" data-t="openai" title="OpenAI Codex"><span class="sk-tool-ic" style="--ic:url('assets/logos/openai.svg')"></span></div>
+          <div class="sk-tool" data-t="figma" data-name="Figma" aria-label="Figma"><span class="sk-tool-ic" style="--ic:url('assets/logos/figma.png')"></span></div>
+          <div class="sk-tool" data-t="sketch" data-name="Sketch" aria-label="Sketch"><span class="sk-tool-ic" style="--ic:url('assets/logos/sketch.png')"></span></div>
+          <div class="sk-tool" data-t="adobexd" data-name="Adobe XD" aria-label="Adobe XD"><span class="sk-tool-ic" style="--ic:url('assets/logos/adobexd.png')"></span></div>
+          <div class="sk-tool" data-t="miro" data-name="Miro" aria-label="Miro"><span class="sk-tool-ic" style="--ic:url('assets/logos/miro.png')"></span></div>
+          <div class="sk-tool" data-t="notion" data-name="Notion" aria-label="Notion"><span class="sk-tool-ic" style="--ic:url('assets/logos/notion.png')"></span></div>
+          <div class="sk-tool" data-t="vscode" data-name="VS Code" aria-label="VS Code"><span class="sk-tool-ic" style="--ic:url('assets/logos/vscode.png')"></span></div>
+          <div class="sk-tool" data-t="zeplin" data-name="Zeplin" aria-label="Zeplin"><span class="sk-tool-ic" style="--ic:url('assets/logos/zeplin.png')"></span></div>
+          <div class="sk-tool" data-t="claude" data-name="Claude" aria-label="Claude"><span class="sk-tool-ic" style="--ic:url('assets/logos/claude.png')"></span></div>
+          <div class="sk-tool" data-t="openai" data-name="ChatGPT" aria-label="ChatGPT"><span class="sk-tool-ic" style="--ic:url('assets/logos/openai.png')"></span></div>
+          <div class="sk-tool" data-t="midjourney" data-name="MidJourney" aria-label="MidJourney"><span class="sk-tool-ic" style="--ic:url('assets/logos/midjourney.png')"></span></div>
+          <div class="sk-tool" data-t="notebooklm" data-name="NotebookLM" aria-label="NotebookLM"><span class="sk-tool-ic" style="--ic:url('assets/logos/notebooklm.png')"></span></div>
+          <div class="sk-tool" data-t="elevenlabs" data-name="ElevenLabs" aria-label="ElevenLabs"><span class="sk-tool-ic" style="--ic:url('assets/logos/elevenlabs.png')"></span></div>
+        </div>
+        <div class="sk-back-foot">
+          <span class="sk-back-foot-dot" aria-hidden="true"></span>
+          <span class="sk-back-foot-label">Last picked up,</span>
+          <span class="sk-back-foot-value">Claude Code</span>
         </div>
       </div>
     </article>
@@ -5429,6 +6544,11 @@ body.cs-scrolling-down #ag-trigger{
           <li>Ops Intelligence</li>
           <li>AI Support Platforms</li>
         </ul>
+        <div class="sk-back-foot">
+          <span class="sk-back-foot-dot" aria-hidden="true"></span>
+          <span class="sk-back-foot-label">Newest domain,</span>
+          <span class="sk-back-foot-value">AI Support</span>
+        </div>
       </div>
     </article>
 
@@ -5455,6 +6575,11 @@ body.cs-scrolling-down #ag-trigger{
           <li>Sprint Planning</li>
           <li>Figma-to-Dev Handoff</li>
         </ul>
+        <div class="sk-back-foot">
+          <span class="sk-back-foot-dot" aria-hidden="true"></span>
+          <span class="sk-back-foot-label">Currently leading,</span>
+          <span class="sk-back-foot-value">4 teams</span>
+        </div>
       </div>
     </article>
 
@@ -5480,14 +6605,16 @@ body.cs-scrolling-down #ag-trigger{
         </span>
       </h2>
 
-      <div class="ft-card">
-        <p class="ft-card-q">Looking for a<br>versatile designer?</p>
-        <a class="ft-card-btn" href="mailto:aishwarya.gondlyala@gmail.com">aishwarya.gondlyala@gmail.com</a>
+      <div class="ft-note ft-note--yellow">
+        <span class="ft-note-pin" aria-hidden="true"></span>
+        <p class="ft-note-q">Looking for a<br>versatile designer?</p>
+        <a class="ft-note-btn" href="mailto:aishwarya.gondlyala@gmail.com">aishwarya.gondlyala@gmail.com</a>
       </div>
 
-      <div class="ft-card">
-        <p class="ft-card-q">Want a deeper look<br>at my work?</p>
-        <a class="ft-card-btn" href="Aishwarya_Gondlyala_Resume_2026.pdf" target="_blank" download rel="noreferrer">View Resume</a>
+      <div class="ft-note ft-note--blue">
+        <span class="ft-note-pin" aria-hidden="true"></span>
+        <p class="ft-note-q">Want a deeper look<br>at my work?</p>
+        <a class="ft-note-btn" href="Aishwarya_Gondlyala_Resume_2026.pdf" target="_blank" download rel="noreferrer">View Resume</a>
       </div>
     </div>
 
@@ -5550,12 +6677,31 @@ body.cs-scrolling-down #ag-trigger{
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product and experience design</div></div>
     <div class="cs-meta-item"><div class="cs-meta-label">Problem</div><div class="cs-meta-value">Making regulated payment flows feel guided instead of blocking.</div></div>
     <div class="cs-meta-item"><div class="cs-meta-label">Approach</div><div class="cs-meta-value">KYC-led progressive access across onboarding, wallet, and payments.</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Outcome</div><div class="cs-meta-value">A clearer payments concept built around visible access states.</div></div>
+    <div class="cs-meta-item"><div class="cs-meta-label">Outcome</div><div class="cs-meta-value">Onboarding redesigned around progressive access, pre-KYC users feel included, approved users earn the full feature surface through verification.</div></div>
   </div>
 
   <span class="cs-hero-scroll-cue">Scroll for the story</span>
 </div>
 
+<div class="cs-impact">
+  <div class="cs-impact-inner">
+    <div class="cs-impact-label">By the numbers</div>
+    <div class="cs-impact-stats">
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>3</em></span>
+        <span class="cs-impact-desc">Progressive access states orchestrated (pre-KYC, partial, full)</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num">5+</span>
+        <span class="cs-impact-desc">Core mobile journey flows shipped end-to-end</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num">100%</span>
+        <span class="cs-impact-desc">KYC-integrated onboarding, with compliance visible on every screen</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="cs-tension">
   <h2 class="cs-section-title">The <span class="red">challenge</span></h2>
@@ -5571,7 +6717,7 @@ body.cs-scrolling-down #ag-trigger{
     <span class="cs-rp-text">Progressive unlock. Users earn access by clearing trust milestones, not by filling forms upfront.</span>
   </div>
 
-  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Compliance isn't a barrier — it's the journey, designed.</p><span class="cs-frame-note-sig">&mdash; A</span></div>
+  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Compliance isn't a barrier, it's the journey, designed.</p><span class="cs-frame-note-sig">A</span></div>
 </div>
 
 <div class="cs-section" id="epay-scope" style="background:var(--black2);">
@@ -5743,7 +6889,7 @@ body.cs-scrolling-down #ag-trigger{
 <div class="cs-section" id="epay-takeaway" style="background:var(--black2);">
   <div class="cs-section-label">Takeaway</div>
   <h2 class="cs-section-title">What this project <span class="red">shows</span></h2>
-  <p class="cs-body-line">This project shows my ability to design around business rules, compliance requirements, and user trust at the same time. It reflects how I think about progressive enablement, product clarity, and useful experiences under real-world constraints.</p>
+  <p class="cs-body-line">Compliance and onboarding don't have to feel like a wall. Making access states a first-class surface turned regulation into a guided journey, not a gate, so pre-KYC users feel included instead of locked out.</p>
 
   <div class="cs-actions">
     <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/digital-payments" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
@@ -5798,10 +6944,29 @@ body.cs-scrolling-down #ag-trigger{
   <span class="cs-hero-scroll-cue">Scroll for the story</span>
 </div>
 
+<div class="cs-impact">
+  <div class="cs-impact-inner">
+    <div class="cs-impact-label">By the numbers</div>
+    <div class="cs-impact-stats">
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>100%</em></span>
+        <span class="cs-impact-desc">Studio adoption across the launched cohort</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num">100+</span>
+        <span class="cs-impact-desc">Active studios using the platform</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>30%</em></span>
+        <span class="cs-impact-desc">Monthly active users post-launch</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="cs-tension">
   <h2 class="cs-section-title">The <span class="red">challenge</span></h2>
-  <blockquote class="cs-tension-quote">Studios stitch together spreadsheets, calendars, and trackers — because no product was built around <span class="red">how they actually work</span>.</blockquote>
+  <blockquote class="cs-tension-quote">Studios stitch together spreadsheets, calendars, and trackers, because no product was built around <span class="red">how they actually work</span>.</blockquote>
   <p class="cs-tension-sub">A wedding studio managing 20 clients doesn't have a project problem. They have a coordination problem. Multiple events, multiple photographers, multiple payment milestones, all moving in parallel, all connected. Generic project tools model tasks. Studios model relationships.</p>
 </div>
 
@@ -5813,7 +6978,7 @@ body.cs-scrolling-down #ag-trigger{
     <span class="cs-rp-text">Workflow-first. Every screen connects to the next real step a studio actually takes.</span>
   </div>
 
-  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Studios run on shoots, not tasks. The whole system follows that grain.</p><span class="cs-frame-note-sig">&mdash; A</span></div>
+  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Studios run on shoots, not tasks. The whole system follows that grain.</p><span class="cs-frame-note-sig">A</span></div>
 </div>
 
 <div class="cs-section" id="huemn-scope" style="background:var(--black2);">
@@ -5985,7 +7150,7 @@ body.cs-scrolling-down #ag-trigger{
 <div class="cs-section" id="huemn-takeaway" style="background:var(--black2);">
   <div class="cs-section-label">Takeaway</div>
   <h2 class="cs-section-title">What this project <span class="red">shows</span></h2>
-  <p class="cs-body-line">This project demonstrates my ability to design for a highly specific business domain rather than relying on generic SaaS patterns. It shows how I map real operational workflows and build product structure around how work truly happens.</p>
+  <p class="cs-body-line">Studios don't have a project problem, they have a coordination problem. Treating shoots as first-class objects and embedding payment milestones inside the project view collapsed five tools into one operational surface, adopted by 100+ studios.</p>
 
   <div class="cs-actions">
     <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/studio-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
@@ -6040,10 +7205,29 @@ body.cs-scrolling-down #ag-trigger{
   <span class="cs-hero-scroll-cue">Scroll for the story</span>
 </div>
 
+<div class="cs-impact">
+  <div class="cs-impact-inner">
+    <div class="cs-impact-label">By the numbers</div>
+    <div class="cs-impact-stats">
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>35%</em></span>
+        <span class="cs-impact-desc">Lift in task completion across governance flows</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>25%</em></span>
+        <span class="cs-impact-desc">Reduction in staking flow abandonment</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num">4</span>
+        <span class="cs-impact-desc">Modules unified under one navigation rail</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="cs-tension">
   <h2 class="cs-section-title">The <span class="red">challenge</span></h2>
-  <blockquote class="cs-tension-quote">Web3 asks users to switch tools just to understand what they hold. That's not a content problem — it's a <span class="red">structure</span> problem.</blockquote>
+  <blockquote class="cs-tension-quote">Web3 asks users to switch tools just to understand what they hold. That's not a content problem, it's a <span class="red">structure</span> problem.</blockquote>
   <p class="cs-tension-sub">The crypto-native assumption is that users already understand the protocol. Most don't. The result is interfaces that are technically accurate but experientially exhausting, lots of information, almost no guidance. Governance participation especially suffers: raw on-chain data with no context for why it matters.</p>
 </div>
 
@@ -6055,7 +7239,7 @@ body.cs-scrolling-down #ag-trigger{
     <span class="cs-rp-text">A participation platform, not a wallet. Governance, staking, and visibility on one surface.</span>
   </div>
 
-  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Make the interchain bits feel like product, not protocol.</p><span class="cs-frame-note-sig">&mdash; A</span></div>
+  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Make the interchain bits feel like product, not protocol.</p><span class="cs-frame-note-sig">A</span></div>
 </div>
 
 <div class="cs-section" id="resolute-scope" style="background:var(--black2);">
@@ -6227,7 +7411,7 @@ body.cs-scrolling-down #ag-trigger{
 <div class="cs-section" id="resolute-takeaway" style="background:var(--black2);">
   <div class="cs-section-label">Takeaway</div>
   <h2 class="cs-section-title">What this project <span class="red">shows</span></h2>
-  <p class="cs-body-line">This project demonstrates my ability to work in technically dense, emerging product categories without losing sight of usability. It also shows range across wireframing, iterative refinement, dashboard design, and system-level thinking.</p>
+  <p class="cs-body-line">Web3 interfaces fail when they ask users to assemble context themselves. A unified four-module navigation, structure-first IA, and decision-oriented governance flows cut staking abandonment by 25% and lifted task completion by 35%.</p>
 
   <div class="cs-actions">
     <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/decentralized-platform" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
@@ -6276,12 +7460,31 @@ body.cs-scrolling-down #ag-trigger{
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product and experience design</div></div>
     <div class="cs-meta-item"><div class="cs-meta-label">Problem</div><div class="cs-meta-value">Governance work is fragmented across disconnected tools.</div></div>
     <div class="cs-meta-item"><div class="cs-meta-label">Approach</div><div class="cs-meta-value">Structured around datasets, policies, access, audit, and simulation workflows.</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Outcome</div><div class="cs-meta-value">A more operational governance product with clearer relationships across modules.</div></div>
+    <div class="cs-meta-item"><div class="cs-meta-label">Outcome</div><div class="cs-meta-value">Policies, access, audit, and simulation unified into one operational layer, replacing tool sprawl with traceable, decision-led governance.</div></div>
   </div>
 
   <span class="cs-hero-scroll-cue">Scroll for the story</span>
 </div>
 
+<div class="cs-impact">
+  <div class="cs-impact-inner">
+    <div class="cs-impact-label">By the numbers</div>
+    <div class="cs-impact-stats">
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>6</em></span>
+        <span class="cs-impact-desc">Governance modules unified (catalog, datasets, policies, access, audit, simulation)</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num">4</span>
+        <span class="cs-impact-desc">Distinct user role types orchestrated</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>1</em></span>
+        <span class="cs-impact-desc">Policy simulation layer added, impact-preview before activation</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="cs-tension">
   <h2 class="cs-section-title">The <span class="red">challenge</span></h2>
@@ -6297,7 +7500,7 @@ body.cs-scrolling-down #ag-trigger{
     <span class="cs-rp-text">Decisions before data. Every module helps teams make calls, not just store records.</span>
   </div>
 
-  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Governance is a layer of trust — design the trust, not just the table.</p><span class="cs-frame-note-sig">&mdash; A</span></div>
+  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Governance is a layer of trust, design the trust, not just the table.</p><span class="cs-frame-note-sig">A</span></div>
 </div>
 
 <div class="cs-section" id="governance-scope" style="background:var(--black2);">
@@ -6469,7 +7672,7 @@ body.cs-scrolling-down #ag-trigger{
 <div class="cs-section" id="governance-takeaway" style="background:var(--black2);">
   <div class="cs-section-label">Takeaway</div>
   <h2 class="cs-section-title">What this project <span class="red">shows</span></h2>
-  <p class="cs-body-line">This project demonstrates my ability to work on complex enterprise systems where information architecture, operational clarity, and cross-module thinking matter more than isolated screens. It reflects how I design products that need to support administrative rigor and long-term usability.</p>
+  <p class="cs-body-line">Governance breaks when policies, access, and audit live in separate tools. Anchoring the system to the catalog and adding policy simulation gave compliance teams a place to make calls, not just store records.</p>
 
   <div class="cs-actions">
     <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
@@ -6518,12 +7721,31 @@ body.cs-scrolling-down #ag-trigger{
     <div class="cs-meta-item"><div class="cs-meta-label">Role</div><div class="cs-meta-value">Product and dashboard experience design</div></div>
     <div class="cs-meta-item"><div class="cs-meta-label">Problem</div><div class="cs-meta-value">Teams need both live response tools and long-term planning visibility.</div></div>
     <div class="cs-meta-item"><div class="cs-meta-label">Approach</div><div class="cs-meta-value">Separated real-time monitoring from fleet analytics while keeping one system.</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Outcome</div><div class="cs-meta-value">A dual-dashboard platform for faster response and smarter optimization.</div></div>
+    <div class="cs-meta-item"><div class="cs-meta-label">Outcome</div><div class="cs-meta-value">Two dashboards, one platform, live monitoring for incident response, fleet analytics for long-range optimization.</div></div>
   </div>
 
   <span class="cs-hero-scroll-cue">Scroll for the story</span>
 </div>
 
+<div class="cs-impact">
+  <div class="cs-impact-inner">
+    <div class="cs-impact-label">By the numbers</div>
+    <div class="cs-impact-stats">
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>2</em></span>
+        <span class="cs-impact-desc">Dashboards from one platform, live monitoring + analytics</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num">5+</span>
+        <span class="cs-impact-desc">Operational zones with configurable geofence rules</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>3</em></span>
+        <span class="cs-impact-desc">Insight categories, incident response, utilization, optimization</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="cs-tension">
   <h2 class="cs-section-title">The <span class="red">challenge</span></h2>
@@ -6536,10 +7758,10 @@ body.cs-scrolling-down #ag-trigger{
   <h2 class="cs-section-title">The <span class="red">shift</span></h2>
   <p class="cs-reframe-text">Instead of forcing both needs into one overloaded dashboard, I <em>separated the two jobs</em>, a monitoring dashboard for live situational awareness, and an operations dashboard for longer-term fleet intelligence, while keeping both inside one connected platform.</p>
   <div class="cs-reframe-principle">
-    <span class="cs-rp-text">Different decision horizons need different interfaces — same system, different surfaces.</span>
+    <span class="cs-rp-text">Different decision horizons need different interfaces, same system, different surfaces.</span>
   </div>
 
-  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Two surfaces, not one. Real-time stays real-time. Planning gets room to think.</p><span class="cs-frame-note-sig">&mdash; A</span></div>
+  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>Two surfaces, not one. Real-time stays real-time. Planning gets room to think.</p><span class="cs-frame-note-sig">A</span></div>
 </div>
 
 <div class="cs-section" id="indigo-scope" style="background:var(--black2);">
@@ -6711,7 +7933,7 @@ body.cs-scrolling-down #ag-trigger{
 <div class="cs-section" id="indigo-takeaway" style="background:var(--black2);">
   <div class="cs-section-label">Takeaway</div>
   <h2 class="cs-section-title">What this project <span class="red">shows</span></h2>
-  <p class="cs-body-line">This project demonstrates my ability to design operational systems where clarity, urgency, and layered decision-making matter. It shows how I think about real-time products, geospatial monitoring, analytics workflows, and the relationship between tactical and strategic dashboard design.</p>
+  <p class="cs-body-line">Real-time response and long-term planning need different tools. Splitting the product into a live monitoring map and an analytics dashboard let the same ops team triage incidents in seconds and optimize fleets over weeks, without either job compromising the other.</p>
 
   <div class="cs-actions">
     <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/ground-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
@@ -6766,10 +7988,29 @@ body.cs-scrolling-down #ag-trigger{
   <span class="cs-hero-scroll-cue">Scroll for the story</span>
 </div>
 
+<div class="cs-impact">
+  <div class="cs-impact-inner">
+    <div class="cs-impact-label">By the numbers</div>
+    <div class="cs-impact-stats">
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>2</em></span>
+        <span class="cs-impact-desc">Distinct portals designed, TPRM Manager + Risk Analyst</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num"><em>6</em></span>
+        <span class="cs-impact-desc">Vendor lifecycle states orchestrated, invitation through onboarded</span>
+      </div>
+      <div class="cs-impact-stat">
+        <span class="cs-impact-num">5</span>
+        <span class="cs-impact-desc">AI trust signals built in, confidence, citation, sources, reasoning, repopulate</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="cs-tension">
   <h2 class="cs-section-title">The <span class="red">challenge</span></h2>
-  <blockquote class="cs-tension-quote"><span class="red">60% of breaches</span> start with third parties — yet vendor risk is still tracked through once-a-year spreadsheets.</blockquote>
+  <blockquote class="cs-tension-quote"><span class="red">60% of breaches</span> start with third parties, yet vendor risk is still tracked through once-a-year spreadsheets.</blockquote>
   <p class="cs-tension-sub">Risk and compliance teams need continuous oversight, not annual paperwork. And in a regulated product, AI output isn't useful unless it's defensible. The real design challenge wasn't building dashboards. It was making continuous AI agent analysis trustable enough to stand up to a regulator.</p>
 </div>
 
@@ -6778,10 +8019,10 @@ body.cs-scrolling-down #ag-trigger{
   <h2 class="cs-section-title">The <span class="red">shift</span></h2>
   <p class="cs-reframe-text">Instead of treating vendor risk as paperwork to refile annually, I designed the product around <em>continuous AI-agent oversight</em>, surfacing risk shifts as they happen, with every score, citation, and recommendation traceable to its source document.</p>
   <div class="cs-reframe-principle">
-    <span class="cs-rp-text">Trustable AI by construction. Every agent output ships with confidence scores, citations, and visible sources — auditable, not a black box.</span>
+    <span class="cs-rp-text">Trustable AI by construction. Every agent output ships with confidence scores, citations, and visible sources, auditable, not a black box.</span>
   </div>
 
-  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>AI carries the load, the user keeps the judgment. That's where the trust sits.</p><span class="cs-frame-note-sig">&mdash; A</span></div>
+  <div class="cs-frame-note"><span class="cs-frame-note-pin" aria-hidden="true"></span><p>AI carries the load, the user keeps the judgment. That's where the trust sits.</p><span class="cs-frame-note-sig">A</span></div>
 </div>
 
 <div class="cs-section" id="tprm-scope" style="background:var(--black2);">
@@ -6985,7 +8226,7 @@ body.cs-scrolling-down #ag-trigger{
 <div class="cs-section" id="tprm-takeaway" style="background:var(--black2);">
   <div class="cs-section-label">Takeaway</div>
   <h2 class="cs-section-title">What this project <span class="red">shows</span></h2>
-  <p class="cs-body-line">This project shows my ability to lead design end-to-end on a complex AI-driven enterprise product, from stakeholder discovery through high-fidelity delivery. It reflects how I think about AI trust patterns, role-specific surfaces, and operational software where every decision has to stand up to audit.</p>
+  <p class="cs-body-line">AI in a regulated product is only useful if its output is defensible. The dual-portal split, confidence-plus-citation pattern, and visible source documents made VCM Agent analysis audit-ready, not just accurate.</p>
 
   <div class="cs-actions">
     <a class="cs-detail-cta" href="https://brick-fruit-89755839.figma.site" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
@@ -7016,17 +8257,38 @@ body.cs-scrolling-down #ag-trigger{
   const textEl   = document.getElementById('intro-text');
   const underline= document.getElementById('intro-underline');
   const scroll   = document.getElementById('intro-scroll');
-  if (!overlay || !textEl) return;
+  if (!overlay) return;
 
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
   document.body.classList.add('intro-active');
 
-  const message = "Hi, welcome to\nmy portfolio.";
-  const charMs  = 90;
-  let i = 0, finished = false;
+  /* Pen trail — drops a fading red dot every ~15px of cursor movement,
+     so moving the cursor draws an ephemeral trail like ink. */
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(!reduceMotion){
+    let lastX = -100, lastY = -100;
+    overlay.addEventListener('mousemove', (e) => {
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      if(dx*dx + dy*dy < 260) return; // throttle by distance (~16px)
+      lastX = e.clientX; lastY = e.clientY;
+      const dot = document.createElement('span');
+      dot.className = 'pen-trail-dot';
+      dot.style.left = e.clientX + 'px';
+      dot.style.top  = e.clientY + 'px';
+      overlay.appendChild(dot);
+      setTimeout(() => dot.remove(), 900);
+    }, { passive:true });
+  }
+
+  let finished = false;
+  const message = "Welcome.\nThe work, the why,\nand a bit of me.";
+  const charMs  = 65;
+  let i = 0;
 
   function typeChar(){
+    if (!textEl){ finished = true; return; }
     if (i < message.length){
       textEl.textContent = message.slice(0, i + 1);
       i++;
@@ -7035,32 +8297,26 @@ body.cs-scrolling-down #ag-trigger{
       setTimeout(typeChar, delay);
     } else {
       finished = true;
-      /* Draw the underline beneath the text */
-      setTimeout(() => underline && underline.classList.add('intro-underline--in'), 320);
-      /* Reveal the scroll cue after the underline finishes drawing */
-      setTimeout(() => scroll.classList.add('intro-scroll--visible'), 1700);
+      setTimeout(() => underline && underline.classList.add('intro-underline--in'), 220);
+      setTimeout(() => scroll && scroll.classList.add('intro-scroll--visible'), 1200);
     }
   }
-  /* Note settles ~2.3s. Begin typing then. */
-  setTimeout(typeChar, 2400);
+  /* Sticky note settles ~1.4s. Begin typing then, while doodles continue to draw around it. */
+  setTimeout(typeChar, 1400);
 
-  /* Two-stage dismiss: note tilts + lifts (300ms), then overlay slides up. */
+  /* Immersive dismiss: overlay scales up + fades, as if camera flies INTO the page. */
   function dismiss(){
     if (overlay.classList.contains('intro-hide')) return;
-    overlay.classList.add('intro-lifting');
-    setTimeout(() => {
-      overlay.classList.add('intro-hide');
-      window.scrollTo(0, 0);
-      const hero = document.querySelector('.hero.hero--landing') || document.querySelector('#page-home');
-      if (hero) hero.scrollIntoView({ behavior:'instant', block:'start' });
-    }, 300);
+    window.scrollTo(0, 0);
+    const hero = document.querySelector('.hero.hero--landing') || document.querySelector('#page-home');
+    if (hero) hero.scrollIntoView({ behavior:'instant', block:'start' });
+    overlay.classList.add('intro-hide');
     setTimeout(() => {
       document.body.classList.remove('intro-active');
       window.scrollTo(0, 0);
-      const hero = document.querySelector('.hero.hero--landing') || document.querySelector('#page-home');
       if (hero) hero.scrollIntoView({ behavior:'instant', block:'start' });
-    }, 1150);
-    setTimeout(() => overlay.remove(), 1250);
+    }, 1000);
+    setTimeout(() => overlay.remove(), 1150);
   }
 
   function armDismiss(){
@@ -7069,7 +8325,7 @@ body.cs-scrolling-down #ag-trigger{
       ['wheel','touchmove','click','keydown'].forEach(ev =>
         window.addEventListener(ev, dismiss, { once:true, passive:true })
       );
-    }, 1900);
+    }, 400);
   }
   armDismiss();
 })();
@@ -7152,6 +8408,64 @@ window.addEventListener('scroll',()=>{
   const nav=document.getElementById('nav');
   if(nav) nav.classList.toggle('scrolled',window.scrollY>60);
 });
+
+/* ── Typewriter landing headline ──
+   Type the full sentence in plain white, then on completion swap to the
+   styled version so the accent word pops red + the underline draws in.
+   Hold, clear, pause, then type the next statement. No backwards delete. */
+(function initHeadlineType(){
+  const el = document.querySelector('.lp-headline-type .lp-type-text');
+  if(!el) return;
+  const STATEMENTS = [
+    { prefix: "Most products fail at compliance. I design the ones that ", accent: "don't" },
+    { prefix: "Trust is the product. Everything else is ",                 accent: "interface" },
+    { prefix: "I design for the spaces where mistakes are ",               accent: "expensive" },
+    { prefix: "AI only matters if its output is ",                         accent: "defensible" },
+    { prefix: "State before screens. ",                                    accent: "Always" }
+  ];
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const styledFull = stmt =>
+    esc(stmt.prefix) +
+    '<span class="lp-headline-accent">' + esc(stmt.accent) + '</span>' +
+    '<span class="lp-headline-dot">.</span>';
+
+  const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(reduce){
+    el.innerHTML = styledFull(STATEMENTS[0]);
+    return;
+  }
+  const TYPE_MS    = 55;    // per-char typing speed
+  const HOLD_STYLED = 1800; // hold the fully-styled sentence
+  const HOLD_EMPTY  = 450;  // pause before the next sentence starts
+  let idx = 0;
+
+  function typeStatement(stmt, done){
+    const plain = stmt.prefix + stmt.accent + ".";
+    let i = 0;
+    function step(){
+      if(document.hidden){ setTimeout(step, 200); return; }
+      i++;
+      el.textContent = plain.slice(0, i);
+      if(i >= plain.length){
+        // Swap to styled — accent pops red, underline draws in
+        el.innerHTML = styledFull(stmt);
+        setTimeout(done, HOLD_STYLED);
+        return;
+      }
+      setTimeout(step, TYPE_MS);
+    }
+    step();
+  }
+
+  function loop(){
+    typeStatement(STATEMENTS[idx], () => {
+      el.textContent = "";        // clear instantly, no backwards typing
+      idx = (idx + 1) % STATEMENTS.length;
+      setTimeout(loop, HOLD_EMPTY);
+    });
+  }
+  loop();
+})();
 
 /* ── SCROLL REVEAL ── */
 let revObs;
@@ -7777,7 +9091,7 @@ initFwPanels();
   });
 })();
 
-/* Selected-work landing — fire the staged entrance animation when the
+/* Selected-work landing, fire the staged entrance animation when the
    section enters the viewport. */
 (function(){
   const landing = document.querySelector('.fw-landing');
@@ -7791,7 +9105,7 @@ initFwPanels();
   obs.observe(landing);
 })();
 
-/* Contact footer — animate once on entry + hide the nav while in view. */
+/* Contact footer, animate once on entry + hide the nav while in view. */
 (function(){
   const stage = document.querySelector('#contact .ft-stage');
   const section = document.getElementById('contact');
@@ -8191,6 +9505,82 @@ function initCasePage(){
   initCsInsights();
   initCsScopeGrid();
   initCsNext();
+  initCsToc();
+}
+
+/* ── Case-study TOC ──
+   Injects a sticky right-side anchor nav into every cs-page once, then
+   wires smooth-scroll on click and IntersectionObserver for active state. */
+function initCsToc(){
+  const TOC_ITEMS = [
+    { label:'Challenge', sel:'.cs-tension' },
+    { label:'Reframe',   sel:'.cs-reframe-section' },
+    { label:'Scope',     sel:'.cs-section[id$="-scope"]' },
+    { label:'Decisions', sel:'.cs-dec-section' },
+    { label:'Moves',     sel:'.cs-section[id$="-decisions"]' },
+    { label:'Takeaway',  sel:'.cs-section[id$="-takeaway"]' }
+  ];
+
+  document.querySelectorAll('.cs-page').forEach(page => {
+    if(page.querySelector('.cs-toc')) return; // already injected
+
+    const nav = document.createElement('nav');
+    nav.className = 'cs-toc';
+    nav.setAttribute('aria-label','Section navigation');
+
+    TOC_ITEMS.forEach((item, i) => {
+      const target = page.querySelector(item.sel);
+      if(!target) return;
+      const link = document.createElement('a');
+      link.className = 'cs-toc-item';
+      link.href = '#';
+      link.dataset.tocIdx = i;
+      link.innerHTML =
+        '<span class="cs-toc-dot"></span>' +
+        '<span class="cs-toc-num">' + String(i+1).padStart(2,'0') + '</span>' +
+        '<span class="cs-toc-label">' + item.label + '</span>';
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const rect = target.getBoundingClientRect();
+        const y = rect.top + window.pageYOffset - 88; // offset for fixed nav
+        window.scrollTo({top:y, behavior:'smooth'});
+      });
+      nav.appendChild(link);
+    });
+
+    page.appendChild(nav);
+
+    // Active-section observer scoped to this page's TOC
+    const items = nav.querySelectorAll('.cs-toc-item');
+    const targets = [];
+    TOC_ITEMS.forEach((item, i) => {
+      const el = page.querySelector(item.sel);
+      if(el) targets.push({ el, idx:i });
+    });
+    if(!targets.length) return;
+
+    const setActive = (idx) => {
+      items.forEach(it => it.classList.remove('is-active'));
+      const match = nav.querySelector('.cs-toc-item[data-toc-idx="' + idx + '"]');
+      if(match) match.classList.add('is-active');
+    };
+
+    const obs = new IntersectionObserver((entries) => {
+      // Pick the entry closest to the viewport top that's currently in view
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if(visible.length){
+        const t = targets.find(x => x.el === visible[0].target);
+        if(t) setActive(t.idx);
+      }
+    }, {
+      rootMargin:'-25% 0px -55% 0px',
+      threshold:0
+    });
+    targets.forEach(t => obs.observe(t.el));
+  });
 }
 /* Run on first load if we happen to land on a cs-page */
 if(document.querySelector('.page.active.cs-page'))initCasePage();
@@ -8560,8 +9950,12 @@ window.initReveal=initReveal=function(){
 
 <button id="ag-trigger" aria-label="Chat with Aishwarya">
   <span class="ag-trigger-dot"></span>
-  <span class="ag-trigger-text">Let's Chat</span>
+  <span class="ag-trigger-text">Ask AG</span>
 </button>
+<div id="ag-teaser" aria-hidden="true" role="button" tabindex="-1">
+  <span class="ag-teaser-text"><span class="ag-teaser-wave" aria-hidden="true">&#x1F44B;</span> Hey, ask me anything</span>
+  <button class="ag-teaser-close" aria-label="Dismiss">&#x2715;</button>
+</div>
 
 <div id="ag-panel" role="dialog" aria-label="Chat with Aishwarya" aria-modal="true">
   <!-- Header -->
@@ -8737,6 +10131,58 @@ window.initReveal=initReveal=function(){
   }
 
   setTimeout(tick, 380);
+})();
+
+/* ── CHAT TEASER: auto-pops a friendly bubble above the trigger ~3s after the
+   trigger becomes visible (i.e. user has scrolled off the hero). Dismisses
+   permanently for the session on close, on chat-open, or after 8s. ── */
+(function(){
+  var teaser = document.getElementById('ag-teaser');
+  var trigger = document.getElementById('ag-trigger');
+  if (!teaser || !trigger) return;
+  if (sessionStorage.getItem('ag-teaser-dismissed')) return;
+
+  var armed = false, shown = false, hideTimer;
+
+  function show(){
+    if (shown) return;
+    shown = true;
+    teaser.classList.add('ag-teaser--in');
+    teaser.setAttribute('aria-hidden','false');
+    hideTimer = setTimeout(dismiss, 8000);
+  }
+
+  function dismiss(){
+    teaser.classList.remove('ag-teaser--in');
+    teaser.setAttribute('aria-hidden','true');
+    clearTimeout(hideTimer);
+    try { sessionStorage.setItem('ag-teaser-dismissed','1'); } catch(e){}
+  }
+
+  var closeBtn = teaser.querySelector('.ag-teaser-close');
+  if (closeBtn){
+    closeBtn.addEventListener('click', function(e){ e.stopPropagation(); dismiss(); });
+  }
+  teaser.addEventListener('click', function(){
+    dismiss();
+    trigger.click();
+  });
+  trigger.addEventListener('click', dismiss);
+
+  function arm(){
+    if (armed) return;
+    var b = document.body.classList;
+    var triggerVisible = !b.contains('hero-visible') &&
+                         !b.contains('projects-visible') &&
+                         !b.contains('contact-visible');
+    if (triggerVisible){
+      armed = true;
+      setTimeout(show, 3000);
+    }
+  }
+  arm();
+  var obs = new MutationObserver(arm);
+  obs.observe(document.body, { attributes:true, attributeFilter:['class'] });
 })();
 
 </script>
