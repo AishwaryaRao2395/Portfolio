@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# Editor / logs
+*.log
+*.bak
+.vscode/
+.idea/

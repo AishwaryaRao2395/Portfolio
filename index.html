@@ -23,6 +23,26 @@
 <meta name="twitter:title" content="Aishwarya Gondlyala, Product Designer · UX Strategist"/>
 <meta name="twitter:description" content="Designing clarity with product thinking, across AI, Web3, enterprise SaaS, and fintech."/>
 <meta name="twitter:image" content="https://aishwaryagondlyala.com/assets/og-card.png"/>
+<meta name="twitter:image:alt" content="Aishwarya Gondlyala — Product Designer portfolio"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="theme-color" content="#df3143"/>
+
+<!-- Structured data: Person -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Aishwarya Gondlyala",
+  "jobTitle": "Product Designer",
+  "url": "https://aishwaryagondlyala.com/",
+  "image": "https://aishwaryagondlyala.com/assets/og-card.png",
+  "email": "mailto:aishwarya.gondlyala@gmail.com",
+  "address": { "@type": "PostalAddress", "addressLocality": "Hyderabad", "addressCountry": "IN" },
+  "sameAs": [ "https://www.linkedin.com/in/aishwaryagondlyala/" ],
+  "knowsAbout": ["Product Design", "UX Strategy", "AI Product Design", "Fintech", "Web3", "Enterprise SaaS", "Design Systems"]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -69,6 +89,30 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
+
+/* ── Accessibility: skip link + visible focus for keyboard users ── */
+.skip-link{
+  position:fixed;top:-100px;left:1rem;z-index:2000;
+  background:var(--red,#df3143);color:#fff;
+  padding:.7rem 1.1rem;border-radius:8px;
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.04em;
+  text-decoration:none;transition:top .2s ease;
+}
+.skip-link:focus{top:1rem;outline:2px solid #fff;outline-offset:2px;}
+/* Keyboard focus ring for the interactive routing/controls that were missing one.
+   :focus-visible so it only shows for keyboard users, not mouse clicks. */
+.fw-img-3d:focus-visible,
+.fw-view:focus-visible,
+.fw-tab-cta:focus-visible,
+.tnav-links a:focus-visible,
+.tnav-logo:focus-visible,
+.tnav-resume:focus-visible,
+.cs-topbar-link:focus-visible,
+.cs-detail-cta:focus-visible{
+  outline:2px solid var(--red,#df3143);
+  outline-offset:3px;
+  border-radius:6px;
+}
 body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-optical-sizing:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip;overflow-y:visible;cursor:none;}
 
 /* ── INTRO OVERLAY ─────────────────────────
@@ -800,12 +844,12 @@ body.cs-scrolling-down #ag-trigger{
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   #top-nav{width:min(620px,calc(100vw - 2rem));gap:1rem;padding:0 .6rem 0 .75rem;}
-  .tnav-links a{padding:.36rem .65rem;font-size:.5rem;}
+  .tnav-links a{padding:.42rem .65rem;font-size:.6rem;}
 }
 @media(max-width:640px){
   #top-nav{width:calc(100vw - 1.6rem);grid-template-columns:auto 1fr;gap:.5rem;height:50px;}
   .tnav-right{display:none;}
-  .tnav-links a{font-size:.46rem;padding:.32rem .52rem;}
+  .tnav-links a{font-size:.6rem;padding:.42rem .5rem;}
 }
 
 /* ════════════════════════════════════
@@ -3960,6 +4004,31 @@ body.cs-scrolling-down #ag-trigger{
   height:auto !important;
   border-radius:8px;
 }
+
+/* Portrait mobile screens: render at a crisp phone width, centered, and scroll
+   within the frame if the screen is taller than the viewport. Avoids upscaling a
+   360px-wide mobile screen to the full card width. */
+.cs-gallery-frame.cs-gallery-frame--phone{
+  max-height:460px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  display:flex;
+  justify-content:center;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(26,36,48,.22) transparent;
+}
+.cs-gallery-frame--phone::-webkit-scrollbar{width:6px;}
+.cs-gallery-frame--phone::-webkit-scrollbar-thumb{background:rgba(26,36,48,.22);border-radius:3px;}
+.cs-gallery-frame--phone::-webkit-scrollbar-track{background:transparent;}
+.cs-gallery-frame--phone img{
+  width:auto !important;
+  max-width:300px !important;
+  max-height:none !important;
+  height:auto !important;
+  align-self:flex-start;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.28);
+}
 .cs-gallery-hint{
   display:inline-block;margin-top:.4rem;
   font-family:'JetBrains Mono',monospace;font-size:.58rem;
@@ -4264,7 +4333,7 @@ body.cs-scrolling-down #ag-trigger{
 @media(max-width:640px){
   .hero-stage{padding:0;}
   .hero-panel{padding:0;gap:1.1rem;}
-  .cs-topbar-link{font-size:.54rem;padding:.5rem .72rem;}
+  .cs-topbar-link{font-size:.62rem;padding:.55rem .78rem;}
 
   .hero-3d-stack{display:none;}
   .hero-counter-row{grid-template-columns:1fr;}
@@ -4582,30 +4651,30 @@ body.cs-scrolling-down #ag-trigger{
 
 /* ── Trigger pill ── */
 #ag-trigger{
-  position:fixed;bottom:1.75rem;right:2rem;
+  position:fixed;bottom:2rem;right:2.2rem;
   z-index:10000;cursor:pointer;
-  display:inline-flex;align-items:center;gap:.55rem;
-  padding:.6rem 1.15rem .6rem .95rem;
+  display:inline-flex;align-items:center;gap:.65rem;
+  padding:.85rem 1.5rem .85rem 1.2rem;
   background:var(--red);border:none;border-radius:999px;
-  box-shadow:0 4px 20px rgba(223,49,67,.3);
+  box-shadow:0 6px 24px rgba(223,49,67,.34);
   transition:box-shadow .2s,transform .2s;white-space:nowrap;
 }
-#ag-trigger:hover{box-shadow:0 6px 28px rgba(223,49,67,.42);transform:translateY(-2px);}
+#ag-trigger:hover{box-shadow:0 8px 32px rgba(223,49,67,.46);transform:translateY(-2px);}
 .ag-trigger-dot{
-  width:7px;height:7px;border-radius:50%;
+  width:9px;height:9px;border-radius:50%;
   background:#4ade80;flex-shrink:0;
-  box-shadow:0 0 0 2px rgba(74,222,128,.25);
+  box-shadow:0 0 0 2.5px rgba(74,222,128,.28);
 }
 .ag-trigger-text{
-  font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:700;
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;
   letter-spacing:.09em;text-transform:uppercase;color:#fff;
 }
 
 /* ── Chat teaser bubble: auto-pops above the trigger to highlight the chat ── */
 #ag-teaser{
   position:fixed;
-  bottom:5rem;
-  right:2rem;
+  bottom:5.6rem;
+  right:2.2rem;
   z-index:9999;
   display:flex; align-items:center; gap:.5rem;
   background:#fff;
@@ -4681,9 +4750,6 @@ body.contact-visible #ag-teaser,
 body.cs-scrolling-down #ag-teaser{
   opacity:0; visibility:hidden; pointer-events:none;
 }
-@media (max-width:720px){
-  #ag-teaser{ bottom:4.2rem; right:1rem; }
-}
 @media (prefers-reduced-motion: reduce){
   .ag-teaser-wave{ animation:none; }
   #ag-teaser{ transition:opacity .2s; }
@@ -4691,9 +4757,9 @@ body.cs-scrolling-down #ag-teaser{
 
 /* ── Chat panel ── */
 #ag-panel{
-  position:fixed;bottom:5.4rem;right:2rem;
+  position:fixed;bottom:6rem;right:2.2rem;
   z-index:10001;
-  width:340px;
+  width:400px;
   background:#fff;border-radius:18px;
   box-shadow:0 12px 48px rgba(26,36,48,.16),0 0 0 1px rgba(26,36,48,.07);
   display:flex;flex-direction:column;overflow:hidden;
@@ -4712,11 +4778,12 @@ body.cs-scrolling-down #ag-teaser{
   flex-shrink:0;
 }
 #ag-head-avatar{
-  width:34px;height:34px;border-radius:50%;
-  background:rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#fff;
+  width:36px;height:36px;border-radius:50%;
+  background:#fff url('assets/ag-logo-clean.png') center/72% no-repeat;
+  border:1.5px solid rgba(255,255,255,.55);
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
   flex-shrink:0;
+  font-size:0;
 }
 #ag-head-info{flex:1;min-width:0;}
 #ag-head-name{
@@ -4743,9 +4810,9 @@ body.cs-scrolling-down #ag-teaser{
 /* ── Messages area ── */
 #ag-msgs{
   flex:1;overflow-y:auto;
-  padding:.85rem .9rem;
-  display:flex;flex-direction:column;gap:.6rem;
-  min-height:280px;max-height:360px;
+  padding:1rem 1.05rem;
+  display:flex;flex-direction:column;gap:.7rem;
+  min-height:320px;max-height:440px;
   scroll-behavior:smooth;
 }
 #ag-msgs::-webkit-scrollbar{width:3px;}
@@ -4757,10 +4824,11 @@ body.cs-scrolling-down #ag-teaser{
 .ag-msg.user{flex-direction:row-reverse;}
 
 .ag-avatar{
-  width:24px;height:24px;border-radius:50%;flex-shrink:0;
-  background:var(--red);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'JetBrains Mono',monospace;font-size:.42rem;color:#fff;
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:#fff url('assets/ag-logo-clean.png') center/72% no-repeat;
+  border:1px solid rgba(7,10,14,.08);
+  box-shadow:0 1px 3px rgba(7,10,14,.08);
+  font-size:0;
   margin-bottom:2px;
 }
 .ag-bubble{
@@ -4779,6 +4847,28 @@ body.cs-scrolling-down #ag-teaser{
   border-radius:14px 14px 4px 14px;
 }
 .ag-bubble strong{font-weight:600;}
+/* Inline link in bot messages (case study deep-links, etc.) */
+.ag-link{
+  display:inline-flex; align-items:center; gap:.25rem;
+  color:var(--red);
+  text-decoration:none;
+  border-bottom:1px solid rgba(223,49,67,.3);
+  font-weight:500;
+  cursor:pointer;
+  transition:border-color .15s, color .15s, background .15s;
+  padding:0 1px;
+}
+.ag-link:hover{
+  color:#9c1c2d;
+  border-bottom-color:var(--red);
+  background:rgba(223,49,67,.06);
+}
+/* Welcome bubble, first bot message, gets a slightly richer treatment */
+.ag-msg.bot.ag-msg-welcome .ag-bubble{
+  background:linear-gradient(150deg, #fff 0%, #f6e3e6 100%);
+  border:1px solid rgba(223,49,67,.18);
+  color:#1a2430;
+}
 
 /* ── Typing indicator ── */
 .ag-typing{display:flex;align-items:center;gap:4px;padding:.18rem .1rem;}
@@ -4795,6 +4885,7 @@ body.cs-scrolling-down #ag-teaser{
 #ag-chips{
   display:flex;flex-wrap:wrap;gap:.4rem;
   padding:.1rem .9rem .75rem;
+  transition:opacity .18s ease;
 }
 .ag-chip{
   font-family:'JetBrains Mono',monospace;font-size:.5rem;
@@ -4831,7 +4922,8 @@ body.cs-scrolling-down #ag-teaser{
 
 @media(max-width:520px){
   #ag-trigger{bottom:1.2rem;right:1rem;}
-  #ag-panel{right:1rem;width:calc(100vw - 2rem);bottom:4.8rem;}
+  #ag-panel{right:1rem;width:calc(100vw - 2rem);bottom:5.2rem;}
+  #ag-teaser{bottom:4.6rem;right:1rem;}
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -5490,6 +5582,8 @@ body.cs-scrolling-down #ag-teaser{
 </head>
 <body>
 
+<a class="skip-link" href="#page-home">Skip to content</a>
+
 <!-- ═══════════════════════════════════════
      INTRO OVERLAY, sticky note drops in, text writes itself,
      dismisses by sliding up to reveal the hero beneath.
@@ -5870,7 +5964,7 @@ body.cs-scrolling-down #ag-teaser{
     <a href="#" data-page="home" data-scroll="contact" data-tnav="contact">Contact</a>
   </div>
   <div class="tnav-right">
-    <a href="Aishwarya_Gondlyala_Resume_2026.pdf" target="_blank" rel="noreferrer" class="tnav-resume">Resume ↗</a>
+    <a href="Aishwarya%20Gondlyala_2026.pdf" target="_blank" rel="noreferrer" class="tnav-resume">Resume ↗</a>
   </div>
 </nav>
 
@@ -5893,7 +5987,7 @@ body.cs-scrolling-down #ag-teaser{
 
   <!-- Centered headline -->
   <h1 class="lp-headline lp-headline-type" aria-live="polite">
-    <span class="lp-type-text"></span><span class="lp-type-cursor" aria-hidden="true"></span>
+    <span class="lp-type-text">Most products fail at compliance. I design the ones that don't.</span><span class="lp-type-cursor" aria-hidden="true"></span>
   </h1>
 
   <!-- Scatter: portrait centered, 4 cards around it -->
@@ -5909,7 +6003,7 @@ body.cs-scrolling-down #ag-teaser{
 
     <!-- CENTER, Portrait -->
     <div class="lp-portrait-block">
-      <img class="lp-portrait" src="https://static.wixstatic.com/media/90dd9f_21bd3c264cc74dfb9ca6dd282c549f9c~mv2.jpg/v1/crop/x_147,y_0,w_1049,h_1076/fill/w_600,h_600,al_c,q_85/PHOTO-2025-02-12-19-32-20_edited_edited.jpg" alt="Aishwarya Gondlyala">
+      <img class="lp-portrait" src="assets/ag-portrait.jpg" alt="Aishwarya Gondlyala">
     </div>
 
     <!-- TOP-RIGHT, Currently status -->
@@ -6030,7 +6124,7 @@ body.cs-scrolling-down #ag-teaser{
         <!-- Header: title + intro on the left, sticky note on the right -->
         <div class="fw-landing-header">
           <div class="fw-landing-lead">
-            <div class="fw-landing-eyebrow">Featured Work &middot; 06 Case Studies &middot; 2023&ndash;2025</div>
+            <div class="fw-landing-eyebrow">Featured Work &middot; 06 Case Studies &middot; 2024&ndash;2025</div>
             <h2 class="fw-landing-title">
               Selected <span class="red fw-landing-redword">work.<svg class="fw-landing-underline" viewBox="0 0 200 14" aria-hidden="true"><path d="M4 8 C 50 3, 100 13, 145 7 S 185 4, 196 9" stroke="var(--red)" stroke-width="3" fill="none" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg></span>
             </h2>
@@ -6097,9 +6191,9 @@ body.cs-scrolling-down #ag-teaser{
         </div>
         <div class="fw-img-3d" data-page="proj-indigo" role="link" tabindex="0" aria-label="View Ground Operations case study">
           <div class="fw-img-scene">
-            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/47de891823451c65f0e06a55e2436c9dd6934de6.png" alt="Ground Operations" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/160f55818f03f26e1014a112921aba96ea08b5eb.png" alt="Airport operations analytics dashboard" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f0f4a19a48de2030584f452a2f890ba7f7535e30.png" alt="Airport alert and incident management view" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c1"><img src="assets/case%20studies%20images/Ground%20operations/Container.png" alt="Ground Operations" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="assets/case%20studies%20images/Ground%20operations/Container-1.png" alt="Airport operations analytics dashboard" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="assets/case%20studies%20images/Ground%20operations/Container-2.png" alt="Airport alert and incident management view" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -6146,9 +6240,9 @@ body.cs-scrolling-down #ag-teaser{
         </div>
         <div class="fw-img-3d" data-page="proj-epay" role="link" tabindex="0" aria-label="View Digital Payments case study">
           <div class="fw-img-scene fw-img-scene--phones">
-            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/6501c77168573e0d3d9d6373b7e320baf1ed3786.png" alt="Video KYC call screen with Finny mascot" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/e0688cd5151ee9a77d96f30b941aaab226f9ff97.png" alt="Transactions and service support screen" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/2e663df5355e425bd39558beff6134099a9edf75.png" alt="Utility bill payment flow" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c1"><img src="assets/case%20studies%20images/Epay%20hub/596.png" alt="Payment method screen with saved cards" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="assets/case%20studies%20images/Epay%20hub/555.png" alt="Card showcase with physical and virtual cards" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="assets/case%20studies%20images/Epay%20hub/520.png" alt="Live video KYC verification call" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -6199,9 +6293,9 @@ body.cs-scrolling-down #ag-teaser{
         </div>
         <div class="fw-img-3d" data-page="proj-huemn" role="link" tabindex="0" aria-label="View Studio Operations case study">
           <div class="fw-img-scene">
-            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/5a0209f587c9663e6dbbe7b72b4a9dcb3d099d6d.png" alt="Studio Dashboard" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/ce583502ad4b6c351d8d095b1829c59f2b1dad2b.png" alt="Shoots grid" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/b10f2578a387fdc3812a629347b6f281aa8a03fc.png" alt="Shoot detail" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c1"><img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.06.33%E2%80%AFAM%201.png" alt="Projects dashboard rolling up shoots, payments, and deliverables" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.02.50%E2%80%AFAM%201.png" alt="Shoots management board" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.07.34%E2%80%AFAM%201.png" alt="Guided new-project setup" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -6256,9 +6350,9 @@ body.cs-scrolling-down #ag-teaser{
         </div>
         <div class="fw-img-3d" data-page="proj-resolute" role="link" tabindex="0" aria-label="View Interchain Platform case study">
           <div class="fw-img-scene">
-            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/b08a0326b47b58c79a8174ff5b70dcc121233921.png" alt="Interchain Dashboard" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/d4ca0b3abf4e91e19676b24e35a515c897544cbf.png" alt="Governance proposals list" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/944d288d5dc2a2289dc01f657f1d354826f18a51.png" alt="Transfer" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c1"><img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-1.png" alt="Interchain portfolio dashboard" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-5.png" alt="Governance proposals list" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-3.png" alt="Cross-chain token swap" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -6317,9 +6411,9 @@ body.cs-scrolling-down #ag-teaser{
         </div>
         <div class="fw-img-3d" data-page="proj-governance" role="link" tabindex="0" aria-label="View Data Governance case study">
           <div class="fw-img-scene">
-            <div class="fw-img-card fw-img-c1"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/7b9a39a3a9a2cfc32c0985696971f2f097c6124b.png" alt="Data Governance" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c2"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/ee14c944415184787b4d7c172d4894f26c4d1b52.png" alt="Policy preview" loading="lazy"></div>
-            <div class="fw-img-card fw-img-c3"><img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f907222f62f532c467b34cfb74a4ee93dad8feee.png" alt="Audit" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c1"><img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance-1.png" alt="AI governance assistant" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c2"><img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance-2.png" alt="Add new data catalogue wizard" loading="lazy"></div>
+            <div class="fw-img-card fw-img-c3"><img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance-6.png" alt="Policy simulation and testing" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -6504,7 +6598,7 @@ body.cs-scrolling-down #ag-teaser{
           <div class="sk-tool" data-t="zeplin" data-name="Zeplin" aria-label="Zeplin"><span class="sk-tool-ic" style="--ic:url('assets/logos/zeplin.png')"></span></div>
           <div class="sk-tool" data-t="claude" data-name="Claude" aria-label="Claude"><span class="sk-tool-ic" style="--ic:url('assets/logos/claude.png')"></span></div>
           <div class="sk-tool" data-t="openai" data-name="ChatGPT" aria-label="ChatGPT"><span class="sk-tool-ic" style="--ic:url('assets/logos/openai.png')"></span></div>
-          <div class="sk-tool" data-t="midjourney" data-name="MidJourney" aria-label="MidJourney"><span class="sk-tool-ic" style="--ic:url('assets/logos/midjourney.png')"></span></div>
+          <div class="sk-tool" data-t="midjourney" data-name="Midjourney" aria-label="Midjourney"><span class="sk-tool-ic" style="--ic:url('assets/logos/midjourney.png')"></span></div>
           <div class="sk-tool" data-t="notebooklm" data-name="NotebookLM" aria-label="NotebookLM"><span class="sk-tool-ic" style="--ic:url('assets/logos/notebooklm.png')"></span></div>
           <div class="sk-tool" data-t="elevenlabs" data-name="ElevenLabs" aria-label="ElevenLabs"><span class="sk-tool-ic" style="--ic:url('assets/logos/elevenlabs.png')"></span></div>
         </div>
@@ -6614,7 +6708,7 @@ body.cs-scrolling-down #ag-teaser{
       <div class="ft-note ft-note--blue">
         <span class="ft-note-pin" aria-hidden="true"></span>
         <p class="ft-note-q">Want a deeper look<br>at my work?</p>
-        <a class="ft-note-btn" href="Aishwarya_Gondlyala_Resume_2026.pdf" target="_blank" download rel="noreferrer">View Resume</a>
+        <a class="ft-note-btn" href="Aishwarya%20Gondlyala_2026.pdf" target="_blank" download rel="noreferrer">View Resume</a>
       </div>
     </div>
 
@@ -6662,15 +6756,15 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-topbar-nav">
     <a class="cs-topbar-link" data-page="home" data-scroll="projects">All Projects</a>
     <a class="cs-topbar-link" data-page="home" data-scroll="about">About</a>
-    <a class="cs-topbar-link" href="https://ritzy-tusk-12212444.figma.site/digital-payments" target="_blank">Full Case Study ↗</a>
+    <a class="cs-topbar-link" href="https://deed-pure-19403027.figma.site/digital-payments" target="_blank">Full Case Study ↗</a>
   </div>
 </div>
 <div class="cs-hero">
-  <div class="cs-hero-num">02</div>
+  <div class="cs-hero-num">01</div>
   <div class="cs-hero-bg" style="background:transparent;"></div>
   <a class="cs-back" data-page="home" data-scroll="projects">Back to Work</a>
   <div class="cs-eyebrow">Case Study 01</div>
-  <h1 class="cs-hero-title">Digital<br><span class="red">payments</span> <span class="outline">platform</span></h1>
+  <h2 class="cs-hero-title">Digital<br><span class="red">payments</span> <span class="outline">platform</span></h2>
   <p class="cs-hero-sub">A mobile digital payments concept designed around trust, verification, and progressive access to financial features.</p>
   <div class="cs-tags-row"><span class="cs-tag">Fintech</span><span class="cs-tag">Mobile UX</span><span class="cs-tag">KYC Flows</span><span class="cs-tag">Wallet Design</span><span class="cs-tag">Payments Journey</span></div>
   <div class="cs-meta-row">
@@ -6817,47 +6911,47 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-gallery">
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/6501c77168573e0d3d9d6373b7e320baf1ed3786.png" alt="Video KYC call screen" loading="lazy">
+        <img src="assets/case%20studies%20images/Epay%20hub/720.png" alt="Payments home with wallet balance, quick actions, and utility payments" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Trust Built Into Onboarding</div>
-        <div class="cs-gallery-desc">The KYC flow is treated like part of the product journey, not a hidden compliance checkpoint.</div>
+        <div class="cs-gallery-title">Payments Home</div>
+        <div class="cs-gallery-desc">The home surfaces wallet balance, quick actions, and utility payments in a single glance.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/3a9784709f9303f53df7daafdef8a0f1d49ca143.png" alt="My wallet main screen" loading="lazy">
+        <img src="assets/case%20studies%20images/Epay%20hub/520.png" alt="Live video KYC verification call" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Wallet As Progressive Value</div>
-        <div class="cs-gallery-desc">Once eligibility is clear, the wallet becomes the visible bridge into everyday payment actions.</div>
+        <div class="cs-gallery-title">Video KYC</div>
+        <div class="cs-gallery-desc">Identity verification runs as a guided live video call, framed as a product moment rather than a gate.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/630ce776a6e553e777967d483f01ce1d97d020f3.png" alt="Partial KYC completion screen" loading="lazy">
+        <img src="assets/case%20studies%20images/Epay%20hub/42.png" alt="My Wallet with balance, quick actions, and transaction history" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Progress Visible After Verification</div>
-        <div class="cs-gallery-desc">The partial-KYC state makes available features and next steps explicit instead of leaving users in a dead end.</div>
+        <div class="cs-gallery-title">My Wallet</div>
+        <div class="cs-gallery-desc">Balance, quick actions, and a clear transaction history with completed and queued states.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/2e663df5355e425bd39558beff6134099a9edf75.png" alt="Utility bill payment flow" loading="lazy">
+        <img src="assets/case%20studies%20images/Epay%20hub/43.png" alt="Wallet limits and KYC status sheet" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Everyday Payments Made Practical</div>
-        <div class="cs-gallery-desc">Utility and recharge flows make the product feel useful beyond onboarding by supporting familiar payment moments.</div>
+        <div class="cs-gallery-title">Wallet Limits &amp; KYC Status</div>
+        <div class="cs-gallery-desc">Once KYC is complete, transfer limits and beneficiary rules are shown explicitly, not hidden.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/e0688cd5151ee9a77d96f30b941aaab226f9ff97.png" alt="Transactions and service support screen" loading="lazy">
+        <img src="assets/case%20studies%20images/Epay%20hub/596.png" alt="Payment method screen with saved cards and verify prompt" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Trust Extended Through Support</div>
-        <div class="cs-gallery-desc">History and help surfaces reinforce continuity, so the app feels like an ongoing financial service rather than a one-off tool.</div>
+        <div class="cs-gallery-title">Payment Methods</div>
+        <div class="cs-gallery-desc">Saved cards and a clear verify prompt keep everyday payments quick and trustworthy.</div>
       </div>
     </div>
   </div>
@@ -6892,7 +6986,7 @@ body.cs-scrolling-down #ag-teaser{
   <p class="cs-body-line">Compliance and onboarding don't have to feel like a wall. Making access states a first-class surface turned regulation into a guided journey, not a gate, so pre-KYC users feel included instead of locked out.</p>
 
   <div class="cs-actions">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/digital-payments" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+    <a class="cs-detail-cta" href="https://deed-pure-19403027.figma.site/digital-payments" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
   </div>
 </div>
 
@@ -6923,15 +7017,15 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-topbar-nav">
     <a class="cs-topbar-link" data-page="home" data-scroll="projects">All Projects</a>
     <a class="cs-topbar-link" data-page="home" data-scroll="about">About</a>
-    <a class="cs-topbar-link" href="https://ritzy-tusk-12212444.figma.site/studio-operations" target="_blank">Full Case Study ↗</a>
+    <a class="cs-topbar-link" href="https://deed-pure-19403027.figma.site/studio-operations" target="_blank">Full Case Study ↗</a>
   </div>
 </div>
 <div class="cs-hero">
-  <div class="cs-hero-num">03</div>
+  <div class="cs-hero-num">02</div>
   <div class="cs-hero-bg" style="background:transparent;"></div>
   <a class="cs-back" data-page="home" data-scroll="projects">Back to Work</a>
   <div class="cs-eyebrow">Case Study 02</div>
-  <h1 class="cs-hero-title">Studio project<br><span class="red">operations</span> <span class="outline">system</span></h1>
+  <h2 class="cs-hero-title">Studio project<br><span class="red">operations</span> <span class="outline">system</span></h2>
   <p class="cs-hero-sub">A workflow-driven project and shoot management system for photography studios, built inside a broader studio business platform.</p>
   <div class="cs-tags-row"><span class="cs-tag">Workflow Design</span><span class="cs-tag">Dashboard UX</span><span class="cs-tag">Service Business Tools</span><span class="cs-tag">Project Planning</span><span class="cs-tag">Operations Design</span></div>
   <div class="cs-meta-row">
@@ -7078,47 +7172,47 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-gallery">
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/5a0209f587c9663e6dbbe7b72b4a9dcb3d099d6d.png" alt="Projects dashboard overview" loading="lazy">
+        <img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.06.33%E2%80%AFAM%201.png" alt="Projects dashboard rolling up shoots, client payments, and deliverables" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Operational Dashboard Layer</div>
-        <div class="cs-gallery-desc">The overview screen gives teams business context and execution visibility in one place.</div>
+        <div class="cs-gallery-title">Projects Dashboard</div>
+        <div class="cs-gallery-desc">A single operations view rolls up shoots, client payments, and deliverables across every active project.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/ce583502ad4b6c351d8d095b1829c59f2b1dad2b.png" alt="Shoots grid view with all events" loading="lazy">
+        <img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.07.34%E2%80%AFAM%201.png" alt="New project setup capturing client, package, and wedding details" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Multi-Event Planning</div>
-        <div class="cs-gallery-desc">Shoot events become the true planning surface, with structure for staffing, timing, and coordination.</div>
+        <div class="cs-gallery-title">Guided Project Setup</div>
+        <div class="cs-gallery-desc">Project creation starts with client, package, and wedding details in a guided multi-step flow.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/8ae93da91a928dfef59ccda417f9b0ed4ba91398.png" alt="Projects dashboard with detail panel" loading="lazy">
+        <img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.08.28%E2%80%AFAM%201.png" alt="Deliverables step with quantity, due date, cost, and suggested items" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Project Detail At A Glance</div>
-        <div class="cs-gallery-desc">The side panel adds reminders, payment status, and deliverable progress without forcing constant page-hopping.</div>
+        <div class="cs-gallery-title">Deliverables Planning</div>
+        <div class="cs-gallery-desc">Deliverables are planned with quantity, due dates, and cost, with suggested items to speed setup.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f63b97280fdd3936a998248b719bd606768d22ff.png" alt="New project setup flow" loading="lazy">
+        <img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.02.50%E2%80%AFAM%201.png" alt="Shoots board tracking schedule, crew, and status per event" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Structured Project Creation</div>
-        <div class="cs-gallery-desc">The project setup flow captures package, shoots, deliverables, and payments in a sequence that matches studio work.</div>
+        <div class="cs-gallery-title">Shoots Management</div>
+        <div class="cs-gallery-desc">Every shoot event is tracked with schedule, crew assignment, and status on one board.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/b10f2578a387fdc3812a629347b6f281aa8a03fc.png" alt="Shoot event detail interface" loading="lazy">
+        <img src="assets/case%20studies%20images/Studio%20operations/Screenshot%202026-04-06%20at%2010.03.41%E2%80%AFAM%201.png" alt="Shoot event detail drawer with crew, categories, and notes" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Event Coordination In Context</div>
-        <div class="cs-gallery-desc">Event-level views pull together venue, crew, timing, and notes so planning feels operational, not administrative.</div>
+        <div class="cs-gallery-title">Shoot Event Detail</div>
+        <div class="cs-gallery-desc">An event drawer captures crew, categories, and notes for each individual shoot.</div>
       </div>
     </div>
   </div>
@@ -7153,7 +7247,7 @@ body.cs-scrolling-down #ag-teaser{
   <p class="cs-body-line">Studios don't have a project problem, they have a coordination problem. Treating shoots as first-class objects and embedding payment milestones inside the project view collapsed five tools into one operational surface, adopted by 100+ studios.</p>
 
   <div class="cs-actions">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/studio-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+    <a class="cs-detail-cta" href="https://deed-pure-19403027.figma.site/studio-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
   </div>
 </div>
 
@@ -7184,15 +7278,15 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-topbar-nav">
     <a class="cs-topbar-link" data-page="home" data-scroll="projects">All Projects</a>
     <a class="cs-topbar-link" data-page="home" data-scroll="about">About</a>
-    <a class="cs-topbar-link" href="https://ritzy-tusk-12212444.figma.site/decentralized-platform" target="_blank">Full Case Study ↗</a>
+    <a class="cs-topbar-link" href="https://deed-pure-19403027.figma.site/decentralized-platform" target="_blank">Full Case Study ↗</a>
   </div>
 </div>
 <div class="cs-hero">
-  <div class="cs-hero-num">04</div>
+  <div class="cs-hero-num">03</div>
   <div class="cs-hero-bg" style="background:transparent;"></div>
   <a class="cs-back" data-page="home" data-scroll="projects">Back to Work</a>
   <div class="cs-eyebrow">Case Study 03</div>
-  <h1 class="cs-hero-title">Decentralized<br><span class="red">interchain</span> <span class="outline">platform</span></h1>
+  <h2 class="cs-hero-title">Decentralized<br><span class="red">interchain</span> <span class="outline">platform</span></h2>
   <p class="cs-hero-sub">A decentralized interchain dashboard concept designed to make governance, staking, portfolio visibility, and transfers more structured and usable.</p>
   <div class="cs-tags-row"><span class="cs-tag">Web3 Product Design</span><span class="cs-tag">Dashboard UX</span><span class="cs-tag">Governance Flows</span><span class="cs-tag">Design System</span><span class="cs-tag">Cross-chain Experience</span></div>
   <div class="cs-meta-row">
@@ -7339,47 +7433,47 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-gallery">
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/b08a0326b47b58c79a8174ff5b70dcc121233921.png" alt="Dashboard with asset information" loading="lazy">
+        <img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-1.png" alt="Portfolio dashboard with holdings, staking, rewards, and value" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Portfolio Visibility First</div>
-        <div class="cs-gallery-desc">The dashboard gives users orientation before asking them to act across staking, transfers, or governance.</div>
+        <div class="cs-gallery-title">Portfolio Dashboard</div>
+        <div class="cs-gallery-desc">Holdings, staked balances, rewards, and value sit in one interchain overview before any action.</div>
+      </div>
+    </div>
+    <div class="cs-gallery-card">
+      <div class="cs-gallery-frame">
+        <img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-3.png" alt="Cross-chain token swap with pricing and slippage" loading="lazy">
+      </div>
+      <div class="cs-gallery-copy">
+        <div class="cs-gallery-title">Token Swap</div>
+        <div class="cs-gallery-desc">Cross-chain swaps expose network, pricing, and slippage without hiding the mechanics.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame cs-gallery-frame--tall">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f6ccb04a2bab9c7bd6a03fda45bf4f7cf92aa043.png" alt="Staking screen with validators" loading="lazy">
+        <img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-4.png" alt="Staking with delegations, unbonding, rewards, and validators" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Participation With Structure</div>
-        <div class="cs-gallery-desc">Action-heavy flows are framed as guided product experiences instead of raw protocol controls. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
+        <div class="cs-gallery-title">Staking</div>
+        <div class="cs-gallery-desc">Delegations, unbonding, rewards, and validator selection live in one staking surface. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/d4ca0b3abf4e91e19676b24e35a515c897544cbf.png" alt="Governance proposals list" loading="lazy">
+        <img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-5.png" alt="Governance proposals list with status and summary" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Governance As A Real Workflow</div>
-        <div class="cs-gallery-desc">Proposal browsing is treated like a decision surface, with enough structure to support informed participation.</div>
+        <div class="cs-gallery-title">Governance Proposals</div>
+        <div class="cs-gallery-desc">Active proposals are browsable with status, deadlines, and a summary preview.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/944d288d5dc2a2289dc01f657f1d354826f18a51.png" alt="Interchain transfer flow" loading="lazy">
+        <img src="assets/case%20studies%20images/Decentralzied%20platfrom/Container-6.png" alt="Proposal detail with timeline, tally, and voting" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Transfers Made Product-Led</div>
-        <div class="cs-gallery-desc">Cross-chain movement is presented as a guided action flow, reducing the sense of raw protocol complexity.</div>
-      </div>
-    </div>
-    <div class="cs-gallery-card">
-      <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/5416816af0db22c85af80d9aee564bf8d3351c15.png" alt="Proposal detail and voting screen" loading="lazy">
-      </div>
-      <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Decision Detail Before Action</div>
-        <div class="cs-gallery-desc">Proposal detail screens slow the user down just enough to support more informed participation and voting confidence.</div>
+        <div class="cs-gallery-title">Proposal Detail &amp; Voting</div>
+        <div class="cs-gallery-desc">A proposal detail brings timeline, current tally, and voting into one decision view.</div>
       </div>
     </div>
   </div>
@@ -7414,7 +7508,7 @@ body.cs-scrolling-down #ag-teaser{
   <p class="cs-body-line">Web3 interfaces fail when they ask users to assemble context themselves. A unified four-module navigation, structure-first IA, and decision-oriented governance flows cut staking abandonment by 25% and lifted task completion by 35%.</p>
 
   <div class="cs-actions">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/decentralized-platform" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+    <a class="cs-detail-cta" href="https://deed-pure-19403027.figma.site/decentralized-platform" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
   </div>
 </div>
 
@@ -7445,15 +7539,15 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-topbar-nav">
     <a class="cs-topbar-link" data-page="home" data-scroll="projects">All Projects</a>
     <a class="cs-topbar-link" data-page="home" data-scroll="about">About</a>
-    <a class="cs-topbar-link" href="https://ritzy-tusk-12212444.figma.site/" target="_blank">Full Case Study ↗</a>
+    <a class="cs-topbar-link" href="https://deed-pure-19403027.figma.site/data-governance" target="_blank">Full Case Study ↗</a>
   </div>
 </div>
 <div class="cs-hero">
-  <div class="cs-hero-num">05</div>
+  <div class="cs-hero-num">04</div>
   <div class="cs-hero-bg" style="background:transparent;"></div>
   <a class="cs-back" data-page="home" data-scroll="projects">Back to Work</a>
   <div class="cs-eyebrow">Case Study 04</div>
-  <h1 class="cs-hero-title">Data<br><span class="red">governance</span> <span class="outline">platform</span></h1>
+  <h2 class="cs-hero-title">Data<br><span class="red">governance</span> <span class="outline">platform</span></h2>
   <p class="cs-hero-sub">A multi-module enterprise platform for managing datasets, policies, access permissions, audit trails, and compliance workflows.</p>
   <div class="cs-tags-row"><span class="cs-tag">Enterprise SaaS</span><span class="cs-tag">Governance UX</span><span class="cs-tag">Access Control</span><span class="cs-tag">Policy Design</span><span class="cs-tag">Admin Systems</span></div>
   <div class="cs-meta-row">
@@ -7600,47 +7694,47 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-gallery">
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/7b9a39a3a9a2cfc32c0985696971f2f097c6124b.png" alt="Data catalogue overview with multiple connected sources" loading="lazy">
+        <img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance-1.png" alt="AI governance assistant routing catalogue, policy, dataset, and access tasks" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Catalog As Foundation</div>
-        <div class="cs-gallery-desc">The system starts by making data assets understandable so policy and access decisions have real context.</div>
-      </div>
-    </div>
-    <div class="cs-gallery-card">
-      <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/ee14c944415184787b4d7c172d4894f26c4d1b52.png" alt="Policy preview with SARA breakdown and impact analysis" loading="lazy">
-      </div>
-      <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Policies With Consequences Visible</div>
-        <div class="cs-gallery-desc">Preview and impact layers help governance work feel operational instead of buried inside forms.</div>
+        <div class="cs-gallery-title">AI Governance Assistant</div>
+        <div class="cs-gallery-desc">An AI entry point routes catalogue, policy, dataset, and access tasks from one prompt.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame cs-gallery-frame--tall">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f907222f62f532c467b34cfb74a4ee93dad8feee.png" alt="Audit and compliance monitoring with detailed event logs" loading="lazy">
+        <img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance.png" alt="Compliance dashboard with coverage scores, risk heatmap, and incidents" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Auditability Built In</div>
-        <div class="cs-gallery-desc">Violations, approvals, and event logs make governance accountable instead of purely administrative. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
-      </div>
-    </div>
-    <div class="cs-gallery-card">
-      <div class="cs-gallery-frame cs-gallery-frame--tall">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/92212efb63ec83c59a8a3eea82f53bcf23296030.png" alt="Access control management screen" loading="lazy">
-      </div>
-      <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Access Decisions With Structure</div>
-        <div class="cs-gallery-desc">User and permission management is designed as a controlled workflow, not a loose set of admin toggles. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
+        <div class="cs-gallery-title">Compliance Dashboard</div>
+        <div class="cs-gallery-desc">A governance health view surfaces coverage scores, risk heatmaps, incidents, and the access backlog. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/72bf9247255e3ac2887bd59536fa8490b925045d.png" alt="Governance assistant and policy workflow" loading="lazy">
+        <img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance-2.png" alt="Add-catalogue wizard selecting a data source with live config preview" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">AI Support Inside Governance Work</div>
-        <div class="cs-gallery-desc">Assistant-led patterns help with discovery and policy support without replacing the structured decision layer.</div>
+        <div class="cs-gallery-title">Add New Catalogue</div>
+        <div class="cs-gallery-desc">A guided wizard connects sources like Snowflake, Databricks, and Purview with a live config preview.</div>
+      </div>
+    </div>
+    <div class="cs-gallery-card">
+      <div class="cs-gallery-frame">
+        <img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance-3.png" alt="Create policy with AI, drafting rules from natural language" loading="lazy">
+      </div>
+      <div class="cs-gallery-copy">
+        <div class="cs-gallery-title">Create Policy With AI</div>
+        <div class="cs-gallery-desc">Policies are drafted in natural language, then previewed as structured rules before activation.</div>
+      </div>
+    </div>
+    <div class="cs-gallery-card">
+      <div class="cs-gallery-frame">
+        <img src="assets/case%20studies%20images/Governance/Smart%20Data%20Governance-5.png" alt="Audit and compliance monitoring with access request event logs" loading="lazy">
+      </div>
+      <div class="cs-gallery-copy">
+        <div class="cs-gallery-title">Audit &amp; Compliance Monitoring</div>
+        <div class="cs-gallery-desc">Real-time audit logs track access requests, severity, and violations across the platform.</div>
       </div>
     </div>
   </div>
@@ -7675,7 +7769,7 @@ body.cs-scrolling-down #ag-teaser{
   <p class="cs-body-line">Governance breaks when policies, access, and audit live in separate tools. Anchoring the system to the catalog and adding policy simulation gave compliance teams a place to make calls, not just store records.</p>
 
   <div class="cs-actions">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+    <a class="cs-detail-cta" href="https://deed-pure-19403027.figma.site/data-governance" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
   </div>
 </div>
 
@@ -7706,15 +7800,15 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-topbar-nav">
     <a class="cs-topbar-link" data-page="home" data-scroll="projects">All Projects</a>
     <a class="cs-topbar-link" data-page="home" data-scroll="about">About</a>
-    <a class="cs-topbar-link" href="https://ritzy-tusk-12212444.figma.site/ground-operations" target="_blank">Full Case Study ↗</a>
+    <a class="cs-topbar-link" href="https://deed-pure-19403027.figma.site/ground-operations" target="_blank">Full Case Study ↗</a>
   </div>
 </div>
 <div class="cs-hero">
-  <div class="cs-hero-num">01</div>
+  <div class="cs-hero-num">05</div>
   <div class="cs-hero-bg" style="background:transparent;"></div>
   <a class="cs-back" data-page="home" data-scroll="projects">Back to Work</a>
   <div class="cs-eyebrow">Case Study 05</div>
-  <h1 class="cs-hero-title">Ground operations<br><span class="red">intelligence</span> <span class="outline">platform</span></h1>
+  <h2 class="cs-hero-title">Ground operations<br><span class="red">intelligence</span> <span class="outline">platform</span></h2>
   <p class="cs-hero-sub">A two-part dashboard system for airport ground support operations, combining live monitoring with fleet health and operational analytics.</p>
   <div class="cs-tags-row"><span class="cs-tag">Operations Intelligence</span><span class="cs-tag">Dashboard Design</span><span class="cs-tag">Map Monitoring</span><span class="cs-tag">Fleet Analytics</span><span class="cs-tag">Operational UX</span></div>
   <div class="cs-meta-row">
@@ -7861,47 +7955,47 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-gallery">
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/47de891823451c65f0e06a55e2436c9dd6934de6.png" alt="Main monitoring view with alerts panel" loading="lazy">
+        <img src="assets/case%20studies%20images/Ground%20operations/Container.png" alt="Live satellite map with fleet positions, alerts, and geofences" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Control-Room Monitoring</div>
-        <div class="cs-gallery-desc">The live map, alert layer, and asset context work together to support fast operational response.</div>
+        <div class="cs-gallery-title">Live Monitoring</div>
+        <div class="cs-gallery-desc">A live satellite map tracks fleet position, alerts, and geofences for real-time ground awareness.</div>
+      </div>
+    </div>
+    <div class="cs-gallery-card">
+      <div class="cs-gallery-frame">
+        <img src="assets/case%20studies%20images/Ground%20operations/Container-1.png" alt="Drawing a custom geofence zone on the airport map" loading="lazy">
+      </div>
+      <div class="cs-gallery-copy">
+        <div class="cs-gallery-title">Geofence Drawing</div>
+        <div class="cs-gallery-desc">Operators draw custom geofence zones directly on the airport map to scope alerts and rules.</div>
+      </div>
+    </div>
+    <div class="cs-gallery-card">
+      <div class="cs-gallery-frame">
+        <img src="assets/case%20studies%20images/Ground%20operations/Container-4.png" alt="On-map asset detail showing live status and diagnostics" loading="lazy">
+      </div>
+      <div class="cs-gallery-copy">
+        <div class="cs-gallery-title">On-Map Asset Detail</div>
+        <div class="cs-gallery-desc">Selecting an asset surfaces its live status and diagnostics without leaving the map.</div>
       </div>
     </div>
     <div class="cs-gallery-card">
       <div class="cs-gallery-frame cs-gallery-frame--tall">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/70ca825f5faae2b5a1a5fe7e316387c236b9aab7.png" alt="Fleet health insights showing breakdown analysis and utilization patterns" loading="lazy">
+        <img src="assets/case%20studies%20images/Ground%20operations/Container-7.png" alt="Fleet health insights with breakdown frequency and utilization charts" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Fleet Intelligence Layer</div>
-        <div class="cs-gallery-desc">The analytics view shifts from incidents to recurring patterns, utilization issues, and intervention opportunities. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
+        <div class="cs-gallery-title">Fleet Health Insights</div>
+        <div class="cs-gallery-desc">Fleet health analytics reveal breakdown frequency, utilization, and optimization guidance. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
       </div>
     </div>
     <div class="cs-gallery-card">
-      <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/808a4d2c5eab791e3ca3aaf387cd3b8892d75dce.png" alt="Asset search and filtering interface" loading="lazy">
+      <div class="cs-gallery-frame cs-gallery-frame--tall">
+        <img src="assets/case%20studies%20images/Ground%20operations/Container-5.png" alt="AI-assisted operations dashboard with KPIs and fleet-wide health" loading="lazy">
       </div>
       <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Fast Asset Search In Context</div>
-        <div class="cs-gallery-desc">Search and filtering help teams pinpoint the right vehicle quickly without losing the operational map view.</div>
-      </div>
-    </div>
-    <div class="cs-gallery-card">
-      <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/160f55818f03f26e1014a112921aba96ea08b5eb.png" alt="Airport operations analytics dashboard" loading="lazy">
-      </div>
-      <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Operational Trends Over Time</div>
-        <div class="cs-gallery-desc">Analytics views help teams move from immediate monitoring into longer-term performance, maintenance, and efficiency decisions.</div>
-      </div>
-    </div>
-    <div class="cs-gallery-card">
-      <div class="cs-gallery-frame">
-        <img src="https://ritzy-tusk-12212444.figma.site/_assets/v11/f0f4a19a48de2030584f452a2f890ba7f7535e30.png" alt="Airport alert and incident management view" loading="lazy">
-      </div>
-      <div class="cs-gallery-copy">
-        <div class="cs-gallery-title">Alerts Linked To Action</div>
-        <div class="cs-gallery-desc">Incident and alert layers are tied back to operational context, making the dashboard useful for response, not just monitoring.</div>
+        <div class="cs-gallery-title">Operations Dashboard</div>
+        <div class="cs-gallery-desc">An AI-assisted operations view rolls up KPIs and fleet-wide health for longer-term planning. <span class="cs-gallery-hint">Long page · scroll inside the frame to view.</span></div>
       </div>
     </div>
   </div>
@@ -7936,7 +8030,7 @@ body.cs-scrolling-down #ag-teaser{
   <p class="cs-body-line">Real-time response and long-term planning need different tools. Splitting the product into a live monitoring map and an analytics dashboard let the same ops team triage incidents in seconds and optimize fleets over weeks, without either job compromising the other.</p>
 
   <div class="cs-actions">
-    <a class="cs-detail-cta" href="https://ritzy-tusk-12212444.figma.site/ground-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+    <a class="cs-detail-cta" href="https://deed-pure-19403027.figma.site/ground-operations" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
   </div>
 </div>
 
@@ -7967,7 +8061,7 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-topbar-nav">
     <a class="cs-topbar-link" data-page="home" data-scroll="projects">All Projects</a>
     <a class="cs-topbar-link" data-page="home" data-scroll="about">About</a>
-    <a class="cs-topbar-link" href="https://brick-fruit-89755839.figma.site" target="_blank">Full Case Study ↗</a>
+    <a class="cs-topbar-link" href="https://deed-pure-19403027.figma.site/third-party-risk" target="_blank">Full Case Study ↗</a>
   </div>
 </div>
 <div class="cs-hero">
@@ -7975,7 +8069,7 @@ body.cs-scrolling-down #ag-teaser{
   <div class="cs-hero-bg" style="background:transparent;"></div>
   <a class="cs-back" data-page="home" data-scroll="projects">Back to Work</a>
   <div class="cs-eyebrow">Case Study 06</div>
-  <h1 class="cs-hero-title">Third-party<br><span class="red">risk intelligence</span> <span class="outline">platform</span></h1>
+  <h2 class="cs-hero-title">Third-party<br><span class="red">risk intelligence</span> <span class="outline">platform</span></h2>
   <p class="cs-hero-sub">A dual-surface AI-agent platform for continuous third-party risk management. A Manager-facing TPRM platform and an Analyst-facing Risk Portal, designed for audit-ready evidence and continuous vendor oversight.</p>
   <div class="cs-tags-row"><span class="cs-tag">AI Agent UX</span><span class="cs-tag">Enterprise SaaS</span><span class="cs-tag">Risk &amp; Compliance</span><span class="cs-tag">Dual-Persona Design</span><span class="cs-tag">Trust UX</span></div>
   <div class="cs-meta-row">
@@ -8229,7 +8323,7 @@ body.cs-scrolling-down #ag-teaser{
   <p class="cs-body-line">AI in a regulated product is only useful if its output is defensible. The dual-portal split, confidence-plus-citation pattern, and visible source documents made VCM Agent analysis audit-ready, not just accurate.</p>
 
   <div class="cs-actions">
-    <a class="cs-detail-cta" href="https://brick-fruit-89755839.figma.site" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
+    <a class="cs-detail-cta" href="https://deed-pure-19403027.figma.site/third-party-risk" target="_blank" rel="noreferrer">View Detailed Case Study ↗</a>
   </div>
 </div>
 
@@ -8378,6 +8472,19 @@ document.addEventListener('click',e=>{
   goToPage(page,scroll);
 });
 
+/* Keyboard activation for focusable non-native controls (div[role=link],
+   a[role=button] with no href) that navigate via data-page or data-scroll-panel.
+   Native <button>/<a href> already fire click on Enter/Space, so skip those. */
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter' && e.key!==' ' && e.key!=='Spacebar') return;
+  const el=e.target.closest('[data-page],[data-scroll-panel]');
+  if(!el) return;
+  const tag=el.tagName;
+  if(tag==='BUTTON' || (tag==='A' && el.getAttribute('href'))) return;
+  e.preventDefault();
+  el.click();
+});
+
 /* Ghost-tab clicks: scroll back to that panel inside the home stack
    instead of jumping to the project's case-study page. */
 document.addEventListener('click',e=>{
@@ -8434,6 +8541,7 @@ window.addEventListener('scroll',()=>{
     el.innerHTML = styledFull(STATEMENTS[0]);
     return;
   }
+  el.textContent = '';       // clear the static SEO seed text before animating
   const TYPE_MS    = 55;    // per-char typing speed
   const HOLD_STYLED = 1800; // hold the fully-styled sentence
   const HOLD_EMPTY  = 450;  // pause before the next sentence starts
@@ -9960,7 +10068,7 @@ window.initReveal=initReveal=function(){
 <div id="ag-panel" role="dialog" aria-label="Chat with Aishwarya" aria-modal="true">
   <!-- Header -->
   <div id="ag-head">
-    <div id="ag-head-avatar">A</div>
+    <div id="ag-head-avatar" aria-hidden="true"></div>
     <div id="ag-head-info">
       <div id="ag-head-name">Aishwarya Gondlyala</div>
       <div id="ag-head-status"><span class="ag-status-dot"></span>Say hello!</div>
@@ -9979,7 +10087,7 @@ window.initReveal=initReveal=function(){
   </div>
   <!-- Input -->
   <div id="ag-input-row">
-    <input id="ag-input" type="text" placeholder="Ask me something…" autocomplete="off" maxlength="200"/>
+    <input id="ag-input" type="text" placeholder="Ask me something…" aria-label="Ask a question about Aishwarya's work" autocomplete="off" maxlength="200"/>
     <button id="ag-send" aria-label="Send">
       <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
@@ -9991,23 +10099,132 @@ window.initReveal=initReveal=function(){
 
 <script>
 (function(){
+  /* Knowledge base, ordered by specificity. First regex that matches wins, so
+     project-specific entries (TPRM, payments, web3) come before chip-general
+     entries (your work, your skills). Each entry can carry a `c` array of
+     follow-up chip labels; those swap the chip row after the response. */
+  var DEFAULT_CHIPS = ["Who are you?","Your experience","Your work","Your skills","Work together"];
+
   var KB = [
+    // Greetings
     { p:/\b(hi|hello|hey|sup|yo|howdy|greetings)\b|good\s*(morning|afternoon|evening)/i,
-      r:"Hey, glad you stopped by! I'm Aishwarya, a Product Designer with 7+ years of experience. Feel free to ask me anything, whether it's about my work, my background, or just getting to know me a bit better." }
+      r:"Hey, glad you stopped by! I'm Aishwarya, a Product Designer with **7+ years** across fintech, Web3, AI, and enterprise SaaS. Pick a chip below or ask me anything.",
+      c:DEFAULT_CHIPS },
+
+    // Thanks / Bye
+    { p:/\b(thanks?|thank\s*you|thx|ty)\b|\b(bye|goodbye|see\s*you|cheers|farewell)\b/i,
+      r:"Anytime. Drop me an email if you want to chat more directly: **aishwarya.gondlyala@gmail.com**. Good luck with whatever you're building.",
+      c:["Work together","Your work","Your skills"] },
+
+    // Specific project: TPRM / Covasant
+    { p:/\b(tprm|covasant|vendor\s*risk|third.party|compliance\s*platform)\b/i,
+      r:"My newest case study, a **dual-surface AI agent platform** for continuous vendor risk oversight.\n\n• **Manager portal:** TPRM dashboard with chat-first launchpad\n• **Analyst portal:** Risk Portal for evidence-backed reviews\n\nThe whole product hinges on making AI **defensible**, every output backed by audit-ready evidence. Built for a regulated industry where 'plausibly right' isn't enough.\n\n[View full case study &rarr;](page:proj-tprm)",
+      c:["Favorite project?","What about AI?","Your work","Work together"] },
+
+    // Specific project: Payments
+    { p:/\b(payments?|fintech|epay|transactions?|kyc)\b/i,
+      r:"Digital payments platform, built the transaction surface, onboarding, and KYC flows. Trust-heavy fintech with strict regulatory needs.\n\n[View full case study &rarr;](page:proj-epay)",
+      c:["Tell me about TPRM","What about web3?","Your work","Work together"] },
+
+    // Specific project: Web3
+    { p:/\bweb\s*3\b|\b(blockchain|defi|crypto|interchain|decentral|resolute)\b/i,
+      r:"Decentralized interchain platform, DeFi flows across multiple chains. I've also designed earlier wallet and Web3 surfaces in this space.\n\n[View full case study &rarr;](page:proj-resolute)",
+      c:["Tell me about TPRM","Tell me about payments","Your work","Work together"] },
+
+    // AI / Claude / Prompt-led
+    { p:/\b(ai|artificial\s*intelligence|claude|llm|prompt|gpt|agent)\b/i,
+      r:"AI is making design more conversational and less linear. Lately I'm deep in **prompt-led design** and AI agents that show their work.\n\nMy most recent product (TPRM) is half about making AI **defensible** for regulated industries. The interesting question isn't 'can AI do design?', it's 'how do we design experiences where the AI is the product?'",
+      c:["Tell me about TPRM","Your tools?","Your work","Work together"] },
+
+    // Tools / Stack
+    { p:/\b(tools?|stack|software|figma|sketch|miro|notion|vs\s*code)\b/i,
+      r:"My daily stack:\n\n• **Figma** for design\n• **Miro** for whiteboarding\n• **Notion** for everything else\n• Lately, **Claude Code** for prototyping and **VS Code** when I want to ship the actual code\n\nFull list of 12 tools lives in the Skills section.",
+      c:["Your skills","Your work","Work together"] },
+
+    // Location
+    { p:/\bwhere.*(based|live|from)\b|\b(location|hyderabad|relocate|remote|hybrid)\b/i,
+      r:"Hyderabad, India. Open to remote, hybrid, or relocation for the right role.",
+      c:["When available?","Work together","Your work"] },
+
+    // Salary
+    { p:/\b(salary|compensation|rate|pay|day[-\s]rate|hour[-\s]rate)\b/i,
+      r:"Let's chat over email, **aishwarya.gondlyala@gmail.com**. Happy to share once we've talked about the role.",
+      c:["Work together","Your experience","When available?"] },
+
+    // Resume
+    { p:/\b(resume|cv|curriculum)\b/i,
+      r:"Scroll to the footer, there's a sticky note with a Resume download. Or just ask me what you'd find on it.",
+      c:["Work together","Your experience","Your skills"] },
+
+    // Notice / Availability
+    { p:/\bnotice\s*period\b|\bwhen.*(available|join|start)\b|\bstart\s*date\b/i,
+      r:"Currently shipping work at Covasant, so any move would need a reasonable notice period. Email me, happy to discuss timing.",
+      c:["Work together","Salary?","Your work"] },
+
+    // Favorite project
+    { p:/\bfavori?te\b|\bbest\s*(work|project)\b|\bproud\b/i,
+      r:"**TPRM** (case study 06). Compliance products force you to design for trust at a much deeper level, every AI output had to be audit-defensible. The dual-surface design (Manager + Analyst) was a real systems challenge.\n\n[View TPRM case study &rarr;](page:proj-tprm)",
+      c:["Your work","Your skills","Work together"] },
+
+    // Strengths
+    { p:/\b(strengths?|good\s*at|expertise|what.*bring)\b/i,
+      r:"Four habits I lean on hardest:\n\n**01 Systems Thinking**, turning layered workflows into coherent product structures\n**02 Clarity in Complexity**, design for trust-heavy domains where decisions matter\n**03 Product Sense**, connecting user needs to business logic\n**04 Collaboration That Moves Work**, getting ambiguous things to ship-ready\n\nLonger read in the About section.",
+      c:["Your skills","Your work","Work together"] },
+
+    // Who are you / About
+    { p:/\b(who\s*are\s*you|about\s*you|tell\s*me\s*about\s*you|introduce|your\s*background)\b/i,
+      r:"I'm Aishwarya, a senior product designer with **7+ years** across fintech, Web3, AI, and enterprise SaaS.\n\nI work on products where **trust, complexity, and AI** meet, compliance platforms, KYC flows, multi-team SaaS, AI agents that need to defend their reasoning.\n\nBased in Hyderabad. Outside work, I'm deep into prompt-led design and how AI agents are reshaping product UX.",
+      c:["Your work","Your skills","Work together"] },
+
+    // Your experience
+    { p:/\byour\s*experience\b|\bhow\s*long\b|\byears?\s*of\s*exp\b|\bcareer\b/i,
+      r:"7+ years in product design, currently leading **4+ teams in parallel**.\n\nThings I've shipped:\n• Digital payments platforms\n• Web3 / DeFi and multi-chain apps\n• Data governance and ops intelligence dashboards\n• AI-driven compliance (most recently, TPRM)\n• Studio production and ground operations tools\n\nHands-on through research, design, and dev handoff.",
+      c:["Your work","Favorite project?","Your skills"] },
+
+    // Your work
+    { p:/\byour\s*work\b|\bportfolio\b|\bcase\s*stud\b|\byour\s*projects?\b|\bshow.*work\b/i,
+      r:"Six case studies on this site, all trust-heavy, all multi-step:\n\n**01** [Digital Payments Platform](page:proj-epay), fintech transaction surface\n**02** [Studio Project Operations System](page:proj-huemn), production workflow tool\n**03** [Decentralized Interchain Platform](page:proj-resolute), Web3 / cross-chain\n**04** [Data Governance Platform](page:proj-governance), enterprise SaaS\n**05** [Ground Operations Intelligence Platform](page:proj-indigo), operational dashboards\n**06** [Third-Party Risk Intelligence](page:proj-tprm), AI agents for compliance (newest)\n\nClick any title to open the case study, or ask me to dive into one.",
+      c:["Tell me about TPRM","Tell me about payments","What about web3?"] },
+
+    // Your skills
+    { p:/\byour\s*skills?\b|\bwhat\s*can\s*you\s*do\b|\bwhat\s*do\s*you\s*do\b|\bspecialt|\bdisciplines?\b/i,
+      r:"Five disciplines I bring to every project:\n\n**01 Experience Design**, KYC, enterprise dashboards, B2B workflows, blockchain\n**02 Research & Validation**, JTBD, discovery workshops, usability testing\n**03 Design Tools**, Figma, Miro, Notion, Claude, VS Code + 7 more\n**04 Product & Systems**, design systems, SaaS, fintech, Web3, AI platforms\n**05 Collaboration & Delivery**, leading 4+ teams, stakeholder alignment, dev handoff\n\nLately obsessed with prompt-led design and AI agents that show their work.",
+      c:["Your tools?","Your work","Work together"] },
+
+    // Work together / Hire
+    { p:/\bwork\s*together\b|\bhire\b|\bopportunit|\bavailab|\bhiring\b|\blooking\s*for\b/i,
+      r:"Always open to a conversation. I'm looking for:\n\n• **Senior / Lead** Product Designer roles\n• Products in **AI, fintech, Web3, or enterprise SaaS**\n• Teams where design shapes direction, not just polish\n\nFastest paths:\n• **Email:** aishwarya.gondlyala@gmail.com\n• **Resume:** download from the footer\n• Or just keep chatting here",
+      c:["Your experience","When available?","Salary?"] }
   ];
 
-  var DEFAULT_R = "Hmm, I'm not sure I caught that. Feel free to ask me about my work, experience, skills, or just drop me an email at aishwarya.gondlyala@gmail.com if you'd like to chat directly!";
-  var WELCOME = "Hey there! I'm Aishwarya. Feel free to ask me anything, about my work, my background, what I'm up to, or just say hi. I'd love to connect!";
+  var DEFAULT_R = "That's outside my brain so far, but I'd love to figure it out together. Try one of the chips below, or email me directly at **aishwarya.gondlyala@gmail.com**.";
+  var WELCOME = "Hi, I'm **Aishwarya**, a senior product designer with 7+ years across AI, fintech, Web3, and enterprise SaaS.\n\nPick a chip below or ask me anything: my work, my skills, or how to work together. &#x1F44B;";
+  var WELCOME_CHIPS = DEFAULT_CHIPS;
 
+  function matchKB(q) {
+    for (var i = 0; i < KB.length; i++) { if (KB[i].p.test(q)) return KB[i]; }
+    return null;
+  }
   function getResponse(q) {
-    for (var i = 0; i < KB.length; i++) { if (KB[i].p.test(q)) return KB[i].r; }
-    return DEFAULT_R;
+    var hit = matchKB(q);
+    return hit ? hit.r : DEFAULT_R;
+  }
+  function getChips(q) {
+    var hit = matchKB(q);
+    return (hit && hit.c) ? hit.c : DEFAULT_CHIPS;
   }
   function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s).replace(/&(?!(?:[a-z]+|#x?[0-9a-f]+);)/gi,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
   function fmt(s) {
-    return escHtml(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    /* Order matters: escape first, then **bold**, then [text](page:id) and
+       [text](https?://...) links, then \n to <br>. The link regex runs on the
+       already-escaped string, so its `(` and `)` chars are still literal. */
+    return escHtml(s)
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\[([^\]]+)\]\(page:([a-z0-9-]+)\)/g, '<a class="ag-link" data-page="$2" href="#" role="button">$1</a>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a class="ag-link" href="$2" target="_blank" rel="noreferrer">$1</a>')
+      .replace(/\n/g,'<br>');
   }
 
   var trigger = document.getElementById('ag-trigger');
@@ -10021,17 +10238,18 @@ window.initReveal=initReveal=function(){
 
   function scrollBottom(){ msgs.scrollTop = msgs.scrollHeight; }
 
-  function addBotMsg(text) {
+  function addBotMsg(text, opts) {
+    opts = opts || {};
     var wrap = document.createElement('div');
-    wrap.className = 'ag-msg bot';
-    wrap.innerHTML = '<div class="ag-avatar">A</div><div class="ag-bubble ag-typing"><span></span><span></span><span></span></div>';
+    wrap.className = 'ag-msg bot' + (opts.welcome ? ' ag-msg-welcome' : '');
+    wrap.innerHTML = '<div class="ag-avatar" aria-hidden="true"></div><div class="ag-bubble ag-typing"><span></span><span></span><span></span></div>';
     msgs.appendChild(wrap);
     scrollBottom();
     setTimeout(function(){
       wrap.querySelector('.ag-bubble').innerHTML = fmt(text);
       wrap.querySelector('.ag-bubble').classList.remove('ag-typing');
       scrollBottom();
-    }, 700 + Math.random() * 400);
+    }, opts.welcome ? 350 : 700 + Math.random() * 400);
   }
 
   function addUserMsg(text) {
@@ -10042,23 +10260,42 @@ window.initReveal=initReveal=function(){
     scrollBottom();
   }
 
+  /* Swap the chip row with a brief fade. Empty list keeps the current chips. */
+  function setChips(list) {
+    if (!list || !list.length) return;
+    chips.style.opacity = '0';
+    setTimeout(function(){
+      chips.innerHTML = list.map(function(c){
+        return '<button class="ag-chip">' + escHtml(c) + '</button>';
+      }).join('');
+      chips.style.opacity = '1';
+    }, 180);
+  }
+
   function openChat() {
     panel.classList.add('open');
     if (!hasOpened) {
       hasOpened = true;
-      addBotMsg(WELCOME);
+      addBotMsg(WELCOME, { welcome:true });
+      setChips(WELCOME_CHIPS);
     }
     setTimeout(function(){ input.focus(); }, 280);
   }
 
   function closeChat() { panel.classList.remove('open'); }
 
+  function handleQuery(text) {
+    if (!text) return;
+    addUserMsg(text);
+    addBotMsg(getResponse(text));
+    setChips(getChips(text));
+  }
+
   function handleSend() {
     var text = input.value.trim();
     if (!text) return;
     input.value = '';
-    addUserMsg(text);
-    addBotMsg(getResponse(text));
+    handleQuery(text);
   }
 
   trigger.addEventListener('click', function(e) { e.stopPropagation(); openChat(); });
@@ -10069,12 +10306,23 @@ window.initReveal=initReveal=function(){
   sendBtn.addEventListener('click', handleSend);
   input.addEventListener('keydown', function(e){ if (e.key === 'Enter') handleSend(); });
 
-  chips.querySelectorAll('.ag-chip').forEach(function(chip) {
-    chip.addEventListener('click', function() {
-      var text = chip.textContent.trim();
-      addUserMsg(text);
-      addBotMsg(getResponse(text));
-    });
+  /* Chip clicks: delegated so swapped chips also work without rebinding. */
+  chips.addEventListener('click', function(e){
+    var chip = e.target.closest('.ag-chip');
+    if (!chip) return;
+    handleQuery(chip.textContent.trim());
+  });
+
+  /* In-message page links: close the chat and navigate to the case study. */
+  msgs.addEventListener('click', function(e){
+    var link = e.target.closest('.ag-link[data-page]');
+    if (!link) return;
+    e.preventDefault();
+    var pageId = link.getAttribute('data-page');
+    closeChat();
+    if (typeof goToPage === 'function') {
+      setTimeout(function(){ goToPage(pageId); }, 240);
+    }
   });
 })();
 </script>
@@ -10185,6 +10433,37 @@ window.initReveal=initReveal=function(){
   obs.observe(document.body, { attributes:true, attributeFilter:['class'] });
 })();
 
+</script>
+
+<script>
+/* Auto-fit case-study screenshots inside the gallery frames.
+   Tall full-page captures scroll at full width; portrait mobile screens render as
+   crisp phone-width panels. Landscape dashboards keep the default contain layout. */
+(function(){
+  function classify(img){
+    var w = img.naturalWidth, h = img.naturalHeight;
+    if(!w || !h) return;
+    var frame = img.closest('.cs-gallery-frame');
+    if(!frame) return;
+    var ratio = h / w;
+    frame.classList.remove('cs-gallery-frame--tall','cs-gallery-frame--phone');
+    if(w <= 480 && ratio >= 1.5){
+      frame.classList.add('cs-gallery-frame--phone');
+    } else if(ratio >= 0.85){
+      // Would shrink to an unreadable sliver in the contain box -> scroll at full width.
+      frame.classList.add('cs-gallery-frame--tall');
+    }
+  }
+  function run(){
+    document.querySelectorAll('.cs-gallery-frame > img').forEach(function(img){
+      if(img.complete && img.naturalWidth){ classify(img); }
+      else { img.addEventListener('load', function(){ classify(img); }, { once:true }); }
+    });
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', run);
+  } else { run(); }
+})();
 </script>
 
 </body>
